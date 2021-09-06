@@ -8,3 +8,5 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'RapidPMV2';
 }
+export var userEmail = "";
+export var userPassword = "";
