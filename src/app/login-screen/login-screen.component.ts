@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
+import { UserLogin } from '../user-login';
 
 @Component({
   selector: '[app-login-screen]',
@@ -12,8 +13,8 @@ export class LoginScreenComponent{
   incorrectPassCount = 0;
   errorMessage = "";
   forgotPasswordError = "";
-  userEmail = "";
-  userPassword = "";
+  userEmail = UserLogin.userEmail;
+  userPassword = UserLogin.userPassword;
   mess: Array<JSON> | undefined;
   g = "";
   constructor(private httpClient: HttpClient, private router : Router, private notifierService: NotifierService) { }
@@ -31,6 +32,8 @@ export class LoginScreenComponent{
     this.httpClient.get('http://127.0.0.1:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
       this.errorMessage = (message as any)[0]['message'];
       if(this.errorMessage == "Welcome"){
+        UserLogin.userEmail = this.userEmail;
+        UserLogin.userPassword = this.userPassword;
         this.router.navigate(['/app-project-list']);
       }
       if(this.errorMessage == "Incorrect password"){

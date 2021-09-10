@@ -11,16 +11,24 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
+mycursor.execute("CREATE TABLE IF NOT EXISTS company (company_id INT AUTO_INCREMENT PRIMARY KEY, "
+                                                        "RPM VARCHAR(255) , "
+                                                        "name VARCHAR(255), "
+                                                        "address_line1 VARCHAR(255), "
+                                                        "address_line2 VARCHAR(255), "
+                                                        "address_line3 VARCHAR(255), "
+                                                        "city VARCHAR(255), "
+                                                        "country VARCHAR(255), "
+                                                        "postal_code VARCHAR(255))")
 mycursor.execute("CREATE TABLE IF NOT EXISTS customers (customer_id INT AUTO_INCREMENT PRIMARY KEY, "
                                                         "email VARCHAR(255) , "
                                                         "password VARCHAR(255), "
+                                                        "company_role VARCHAR(255), "
                                                         "name VARCHAR(255), "
                                                         "status VARCHAR(255), "
-                                                        "company VARCHAR(255), "
-                                                        "address VARCHAR(255), "
-                                                         "city VARCHAR(255), "
-                                                         "country VARCHAR(255), "
-                                                         "postal_code VARCHAR(255))")
+                                                        "verified VARCHAR(255), "
+                                                        "company_id INT, "
+                                                        "FOREIGN KEY (company_id ) REFERENCES company(company_id))")
 mycursor.execute("CREATE TABLE IF NOT EXISTS projects (project_id INT AUTO_INCREMENT PRIMARY KEY, "
                                                         "ProjectType VARCHAR(255), "
                                                         "ProjectTitle VARCHAR(255), "
