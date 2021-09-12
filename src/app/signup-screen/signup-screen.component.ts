@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { CustomerInfo } from '../customer-info';
 import { CompanyInfo } from '../company-info';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { DataService } from '../data-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: '[app-signup-screen]',
@@ -8,10 +13,35 @@ import { CompanyInfo } from '../company-info';
   styleUrls: ['./signup-screen.component.css']
 })
 export class SignupScreenComponent{
-
-  constructor(public customerInfo: CustomerInfo, public companyInfo: CompanyInfo) { }
+  signupCompId = ""
+  customerId = ""
+  sub: any;
+  ngOnInit() {
+    this.sub = this.route.params.subscribe(params => {
+      this.signupCompId = params['id'];
+   });
+  }
+  constructor(public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
   onSignup(){
-    console.log(this.customerInfo.status)
-    console.log(this.companyInfo.address_line1)
+    this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
+      this.signupCompId = (response as any)['message'];
+      // this.dataService.adminId = this.signupCompId;
+      this.customerInfo.cust["company_id"] = this.signupCompId;
+      this.http.post('http://127.0.0.1:5002/customer', this.customerInfo.cust).subscribe((response)=>{
+        this.customerId = (response as any)['message'];
+   });
+   this.notifierService.notify('success', 'Company has been registered');
+   this.notifierService.notify('success', 'Admin has been created');
+   });
+  }
+
+  goToUsers(){
+    console.log(this.signupCompId)
+    if(this.signupCompId != "" && this.signupCompId !="id"){
+      this.router.navigate(['/app-user-management-screen', this.signupCompId]);
+    }
+    else{
+      this.notifierService.notify('error', 'Please login to continue');
+    }
   }
 }

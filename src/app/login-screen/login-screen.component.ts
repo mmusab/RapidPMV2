@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { UserLogin } from '../user-login';
 
@@ -17,7 +17,17 @@ export class LoginScreenComponent{
   userPassword = UserLogin.userPassword;
   mess: Array<JSON> | undefined;
   g = "";
-  constructor(private httpClient: HttpClient, private router : Router, private notifierService: NotifierService) { }
+
+  // signupCompId = "";
+  // sub: any;
+
+  // ngOnInit() {
+  //   this.sub = this.route.params.subscribe(params => {
+  //     this.signupCompId = params['id'];
+  //  });
+  // }
+
+  constructor(private httpClient: HttpClient, private router : Router, private route : ActivatedRoute,  private notifierService: NotifierService) { }
 
   resetErrors(){
     this.errorMessage = "";
@@ -55,7 +65,7 @@ export class LoginScreenComponent{
     this.httpClient.get(url).toPromise().then(message => {
       this.errorMessage = (message as any)[0]['message'];
       if(this.errorMessage == "Email address not found" || this.userEmail == ""){
-        this.router.navigate(['/app-signup-screen']);
+        this.router.navigate(['/app-signup-screen', "id"]);
       }
       else{
         this.errorMessage = "Email Already Exists"

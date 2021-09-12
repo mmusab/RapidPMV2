@@ -13,6 +13,8 @@ import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { SignupScreenComponent } from './signup-screen/signup-screen.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { PasswordResetScreenComponent } from './password-reset-screen/password-reset-screen.component';
+import { UserManagementScreenComponent } from './user-management-screen/user-management-screen.component';
+import { DataService } from './data-service';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { PasswordResetScreenComponent } from './password-reset-screen/password-r
     LoginScreenComponent,
     SignupScreenComponent,
     ProjectListComponent,
-    PasswordResetScreenComponent
+    PasswordResetScreenComponent,
+    UserManagementScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,7 @@ import { PasswordResetScreenComponent } from './password-reset-screen/password-r
     HttpClientModule,
     NotifierModule
   ],
-  providers: [CustomerInfo,CompanyInfo],
+  providers: [CustomerInfo,CompanyInfo, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
