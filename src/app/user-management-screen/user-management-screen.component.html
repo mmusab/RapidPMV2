@@ -104,7 +104,7 @@
 	<notifier-container></notifier-container>
 	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Users Account Management</h2>
 <!-- <div class="split left" style="background-color: whitesmoke;"> -->
-<div class="split left" style="background-color: whitesmoke;">
+<div class="split left" style="background-color: white;">
 	<div class="signup-form">
 		<form #f="ngForm" (ngSubmit)="onAddUser()">
 			<h4 style="color: maroon;">Create user account</h4>
@@ -144,9 +144,9 @@
 			<!-- <div class="form-group">
 				<input required ngModel type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" required="required">
 			</div>       -->
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
-			</div>
+			</div> -->
 			<div class="form-group">
 				<button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="!f.valid">Create</button>
 			</div>
@@ -161,24 +161,26 @@
 		<div class="text-center" style="color: blue;">Already have an account? <a style="color: blue;" href="#">Sign in</a></div>
 	</div>
 </div>
-<div class="split right" style="background-color: whitesmoke; margin-top: 200px;">
+<div class="split right" style="background-color: white;">
 	<h3 style="color: black;">Current users</h3><br>
-	<table class="table table-striped">
-		<thead style="color: whitesmoke; background-color: cadetblue;">
-			<tr>
-				<td></td>
-				<td *ngFor="let head of userHead">{{head}}</td>
-			</tr>
-		</thead>
-		<tbody>     
-			<tr *ngFor="let user of users; let i = index;">
-				<td (click)="deleteRow(i)">    
-					<button style="background-color: firebrick; color: whitesmoke;">delete</button>  
-				  </td>
-				<td *ngFor="let head of userHead">{{user[head]}}</td>
-			</tr>
-		</tbody>
-	</table>
+	<div style="overflow-x: scroll;">
+		<table class="table table-striped">
+			<thead style="color: whitesmoke; background-color: cadetblue;">
+				<tr>
+					<td></td>
+					<td *ngFor="let head of userHead">{{head}}</td>
+				</tr>
+			</thead>
+			<tbody>     
+				<tr *ngFor="let user of users; let i = index;">
+					<td (click)="deleteRow(i)">    
+						<button style="background-color: firebrick; color: whitesmoke;">delete</button>  
+					</td>
+					<td *ngFor="let head of userHead">{{user[head]}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	<!-- <table class="table table-striped table-bordered">    
 		<thead>    
 			<tr>    

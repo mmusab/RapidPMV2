@@ -20,6 +20,12 @@ export class SignupScreenComponent{
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
    });
+   if (!localStorage.getItem('foo')) { 
+    localStorage.setItem('foo', 'no reload') 
+    location.reload() 
+  } else {
+    localStorage.removeItem('foo') 
+  }
   }
   constructor(public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
   onSignup(){
@@ -30,6 +36,7 @@ export class SignupScreenComponent{
       this.http.post('http://127.0.0.1:5002/customer', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
    });
+   this.router.navigate(['/app-signup-screen', this.signupCompId]);
    this.notifierService.notify('success', 'Company has been registered');
    this.notifierService.notify('success', 'Admin has been created');
    });

@@ -24,6 +24,12 @@ export class UserManagementScreenComponent{
    this.requestUsers();
     // this.users = this.requestUsers();
     // console.log(this.users)
+    if (!localStorage.getItem('foo')) { 
+      localStorage.setItem('foo', 'no reload') 
+      location.reload() 
+    } else {
+      localStorage.removeItem('foo') 
+    }
   }
   constructor(public uCustomerInfo: CustomerInfo, private http: HttpClient, public dataService: DataService, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService) { }
 
@@ -37,6 +43,7 @@ export class UserManagementScreenComponent{
       // this.dataService.adminId = (response as any)['message'];
       this.notifierService.notify('success', 'New user has been created');
    });
+   location.reload();
   }
   goToSignUp(){
     this.router.navigate(['/app-signup-screen', this.signupCompId]);
@@ -49,15 +56,12 @@ export class UserManagementScreenComponent{
       console.log(this.userHead)
     });
   }
-  addRow(){
-    console.log("i am in add row")
-
-  }
   deleteRow(index: string | number){
     this.http.get('http://127.0.0.1:5002/deleteUser/' + this.users[index]['customer_id']).subscribe((response)=>{
       
     });
     console.log(this.users[index]['customer_id'])
+    location.reload();
   }
 }
 

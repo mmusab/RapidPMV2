@@ -165,7 +165,7 @@
 			<select [(ngModel)]="customerInfo.cust.company_role" type="comapny_role" name="comapny_role" class="form-control">
 				<option selected>{{customerInfo.cust.company_role}}</option>
 				<option value="Admin">Admin</option>
-				<option value="User">User</option>
+				<!-- <option value="User">User</option> -->
 			</select>
 		</div>
 		<div class="form-group">
@@ -184,9 +184,9 @@
 		<!-- <div class="form-group">
 			<input required ngModel type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" required="required">
 		</div>       -->
-		<div class="form-group">
+		<!-- <div class="form-group">
 			<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
-		</div>
+		</div> -->
 		<div class="form-group">
 			<button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="!f.valid">Create/Update</button>
 		</div>

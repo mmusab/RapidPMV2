@@ -17,7 +17,7 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="rapidpm",
   password="password",
-  database = "PM_dataBase",
+  database = "RPM_dataBase",
   auth_plugin='mysql_native_password'
 )
 
@@ -86,7 +86,7 @@ def customer():
 
 @app.route('/getUsers/<company_id>', methods=['GET', 'POST'])
 def getUsers(company_id):
-  sql = "SELECT * FROM PM_dataBase.customers WHERE company_id = '" + company_id + "';"
+  sql = "SELECT * FROM RPM_dataBase.customers WHERE company_id = '" + company_id + "';"
   mycursor.execute(sql)
   result = mycursor.fetchall()
   header = mycursor.description
