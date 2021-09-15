@@ -16,12 +16,14 @@
   .left {
     left: 0;
     background-color: #111;
+    width: 40%;
   }
   
   /* Control the right side */
   .right {
     right: 0;
     background-color: red;
+    width: 40%;
     /* margin-right: 100px; */
   }
   
@@ -40,3 +42,5 @@
     border-radius: 50%;
   }
   
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

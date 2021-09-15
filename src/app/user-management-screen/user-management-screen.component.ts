@@ -16,6 +16,17 @@ export class UserManagementScreenComponent{
   sub: any;
   users:any;
   userHead :any;
+  cust = 
+    {
+      "company_id": "",
+      "company_role": "",
+      "customer_id": "",
+      "email": "",
+      "name": "",
+      "password": "",
+      "status": "",
+      "verified": "",    
+    };
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -33,14 +44,12 @@ export class UserManagementScreenComponent{
   }
   constructor(public uCustomerInfo: CustomerInfo, private http: HttpClient, public dataService: DataService, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService) { }
 
-  onAddUser(){
+  onAddUser(index: string | number){
     console.log(this.dataService.adminId);
     console.log(this.uCustomerInfo.cust);
     this.uCustomerInfo.cust["company_id"] = this.signupCompId;
-    // this.customerInfo.cust["company_id"] = this.signupCustId;
     this.http.post('http://127.0.0.1:5002/customer', this.uCustomerInfo.cust).subscribe((response)=>{
       this.customerId = (response as any)['message'];
-      // this.dataService.adminId = (response as any)['message'];
       this.notifierService.notify('success', 'New user has been created');
    });
    location.reload();
@@ -56,12 +65,35 @@ export class UserManagementScreenComponent{
       console.log(this.userHead)
     });
   }
-  deleteRow(index: string | number){
-    this.http.get('http://127.0.0.1:5002/deleteUser/' + this.users[index]['customer_id']).subscribe((response)=>{
+  // deleteRow(index: string | number){
+  //   this.http.get('http://127.0.0.1:5002/deleteUser/' + this.users[index]['customer_id']).subscribe((response)=>{
       
-    });
-    console.log(this.users[index]['customer_id'])
-    location.reload();
-  }
+  //   });
+  //   console.log(this.users[index]['customer_id'])
+  //   location.reload();
+  // }
+  editField = "";
+
+    awaitingPersonList: Array<any> = [
+      ];
+
+    updateList(id: number, property: string, event: any) {
+      const editField = event.target.textContent;
+      this.users[id][property] = editField;
+      console.log(this.users[id])
+    }
+
+    remove(id: any) {
+      this.awaitingPersonList.push(this.users[id]);
+      this.users.splice(id, 1);
+    }
+
+    add() {
+      this.users.push(this.cust)
+    }
+
+    changeValue(id: number, property: string, event: any) {
+      this.editField = event.target.textContent;
+    }
 }
 
