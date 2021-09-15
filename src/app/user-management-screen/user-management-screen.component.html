@@ -35,7 +35,7 @@
 		  <tr *ngFor="let user of users; let id = index">
 			<ng-container *ngFor="let head of userHead">
 				<td *ngIf="!(head === 'company_id' || head === 'customer_id')">    
-					<span contenteditable="true" (keyup)="changeValue(id, 'age', $event)" (blur)="updateList(id, head, $event)">{{user[head]}}</span>
+					<span contenteditable="true" (blur)="updateList(id, head, $event)">{{user[head]}}</span>
 				</td>
 			</ng-container>
 			<td>
@@ -43,7 +43,7 @@
 				<mat-icon>more_vert</mat-icon>
 			  </button>
 			  <mat-menu #menu="matMenu">
-				<button mat-menu-item>
+				<button (click)=onAddUser(id) mat-menu-item>
 				  <mat-icon>update</mat-icon>
 				  <span>Update</span>
 				</button>

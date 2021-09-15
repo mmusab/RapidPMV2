@@ -67,6 +67,7 @@ def company():
 @app.route('/customer', methods=['GET', 'POST'])
 def customer():
   customer = request.json
+  del customer['customer_id']
   print(customer)
   pairs = customer.items()
   key = []
@@ -105,4 +106,4 @@ def deleteUser(customer_id):
   mydb.commit()
   return ({"message":"success"})
 
-# app.run(host='0.0.0.0', port=5002, debug=True)
+app.run(host='0.0.0.0', port=5002, debug=True)
