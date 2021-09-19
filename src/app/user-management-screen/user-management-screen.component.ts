@@ -52,15 +52,16 @@ export class UserManagementScreenComponent{
   constructor(public uCustomerInfo: CustomerInfo, private http: HttpClient, public dataService: DataService, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService) { }
 
   onAddUser(index: string | number){
-    console.log(this.dataService.adminId);
-    console.log(this.uCustomerInfo.cust);
+    // console.log(this.dataService.adminId);
+    // console.log(this.uCustomerInfo.cust);
     this.uCustomerInfo.cust["company_id"] = this.signupCompId;
     this.users[index]["company_id"] = this.signupCompId;
     this.http.post('http://82.69.10.205:5002/customer', this.users[index]).subscribe((response)=>{
+      console.log(response)
       this.customerId = (response as any)['message'];
       this.notifierService.notify('success', 'New user has been created/updated');
    });
-   location.reload();
+  //  location.reload();
   }
   goToSignUp(){
     this.router.navigate(['/app-signup-screen', this.signupCompId]);
@@ -80,7 +81,7 @@ export class UserManagementScreenComponent{
         console.log(response)
     });
     }
-    location.reload();
+    // location.reload();
   }
   editField = "";
 
