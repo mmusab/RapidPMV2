@@ -20,21 +20,21 @@ export class SignupScreenComponent{
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
    });
-   if (!localStorage.getItem('foo')) { 
-    localStorage.setItem('foo', 'no reload') 
-    location.reload() 
+   if (!localStorage.getItem('foo')) {
+    localStorage.setItem('foo', 'no reload')
+    location.reload()
   } else {
-    localStorage.removeItem('foo') 
+    localStorage.removeItem('foo')
   }
   }
   constructor(public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
   onSignup(){
-    this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
+    this.http.post('http://0.0.0.0:5002/company', this.companyInfo.comp).subscribe((response)=>{
       this.signupCompId = (response as any)['message'];
       // this.dataService.adminId = this.signupCompId;
       this.customerInfo.cust["company_id"] = this.signupCompId;
       this.customerInfo.cust["company_role"] = "Admin";
-      this.http.post('http://127.0.0.1:5002/customer', this.customerInfo.cust).subscribe((response)=>{
+      this.http.post('http://0.0.0.0:5002/customer', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
    });
    this.router.navigate(['/app-signup-screen', this.signupCompId]);

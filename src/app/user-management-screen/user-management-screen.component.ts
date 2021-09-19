@@ -18,7 +18,7 @@ export class UserManagementScreenComponent{
   userHead :any;
   company :any;
   companyName = "";
-  cust = 
+  cust =
     {
       "company_id": "",
       "company_role": "user",
@@ -27,14 +27,14 @@ export class UserManagementScreenComponent{
       "name": "-",
       "password": "-",
       "status": "-",
-      "verified": "Yes",    
+      "verified": "Yes",
     };
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
    });
-   this.http.get('http://127.0.0.1:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
+   this.http.get('http://0.0.0.0:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
       this.company = response as JSON
       this.companyName = this.company[0]["name"]
       console.log(this.companyName)
@@ -42,11 +42,11 @@ export class UserManagementScreenComponent{
    this.requestUsers();
     // this.users = this.requestUsers();
     // console.log(this.users)
-    if (!localStorage.getItem('foo')) { 
-      localStorage.setItem('foo', 'no reload') 
-      location.reload() 
+    if (!localStorage.getItem('foo')) {
+      localStorage.setItem('foo', 'no reload')
+      location.reload()
     } else {
-      localStorage.removeItem('foo') 
+      localStorage.removeItem('foo')
     }
   }
   constructor(public uCustomerInfo: CustomerInfo, private http: HttpClient, public dataService: DataService, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService) { }
@@ -56,7 +56,7 @@ export class UserManagementScreenComponent{
     console.log(this.uCustomerInfo.cust);
     this.uCustomerInfo.cust["company_id"] = this.signupCompId;
     this.users[index]["company_id"] = this.signupCompId;
-    this.http.post('http://127.0.0.1:5002/customer', this.users[index]).subscribe((response)=>{
+    this.http.post('http://0.0.0.0:5002/customer', this.users[index]).subscribe((response)=>{
       this.customerId = (response as any)['message'];
       this.notifierService.notify('success', 'New user has been created/updated');
    });
@@ -67,7 +67,7 @@ export class UserManagementScreenComponent{
   }
 
   requestUsers(){
-    this.http.get('http://127.0.0.1:5002/getUsers/' + this.signupCompId).subscribe((response)=>{
+    this.http.get('http://0.0.0.0:5002/getUsers/' + this.signupCompId).subscribe((response)=>{
       this.users = response as JSON
       this.userHead = Object.keys(this.users[0]);
       console.log(this.userHead)
@@ -76,7 +76,7 @@ export class UserManagementScreenComponent{
   }
   deleteRow(index: string | number){
     if(this.users[index]['customer_id']){
-      this.http.get('http://127.0.0.1:5002/deleteUser/' + this.users[index]['customer_id']).subscribe((response)=>{
+      this.http.get('http://0.0.0.0:5002/deleteUser/' + this.users[index]['customer_id']).subscribe((response)=>{
         console.log(response)
     });
     }
