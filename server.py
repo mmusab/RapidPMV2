@@ -26,13 +26,16 @@ mycursor = mydb.cursor()
 
 #### functions #####
 def checkLogin(userEmail,userPassword):
-  query = "SELECT password FROM customers WHERE email = '" + userEmail + "';"
+  query = "SELECT cu.password, co.RPM FROM customers cu, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
   mycursor.execute(query)
-  password = mycursor.fetchall()
+  result = mycursor.fetchall()
   json_data = []
-  if(password):
-    if(password[0][0] == userPassword):
-      json_data.append(dict(zip(["message"], ["Welcome"])))
+  if(result):
+    if(result[0][0] == userPassword):
+      if(result[0][1] != "Yes"):
+        json_data.append(dict(zip(["message"], ["Welcome"])))
+      else:
+        json_data.append(dict(zip(["message"], ["Welcome RPM"])))
     else:
       json_data.append(dict(zip(["message"], ["Incorrect password"])))
   else:
@@ -67,8 +70,9 @@ def company():
 @app.route('/customer', methods=['GET', 'POST'])
 def customer():
   customer = request.json
-  del customer['customer_id']
   print(customer)
+  custmId = customer['customer_id']
+  del customer['customer_id']
   pairs = customer.items()
   key = []
   value = []
@@ -77,13 +81,23 @@ def customer():
     value.append(str(v))
   key = tuple(key)
   value = tuple(value)
-  sql = "INSERT INTO customers (" +  ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s)"
-  mycursor.execute(sql, value)
-  mydb.commit()
-  sql = "SELECT LAST_INSERT_ID()"
-  mycursor.execute(sql)
-  customerId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]};
-  return jsonify(customerId)
+  print(value)
+  if(custmId == ""):
+    sql = "INSERT INTO customers (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    mycursor.execute(sql, value)
+    mydb.commit()
+    sql = "SELECT LAST_INSERT_ID()"
+    mycursor.execute(sql)
+    customerId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
+    return jsonify(customerId)
+  else:
+    sql = "UPDATE customers SET company_id = '" + value[0] + "', company_role = '" + value[1] + "', email = '" + value[2] + "', name = '" + value[3] + "', password = '" + value[4] + "', status = '" + value[5] + "',verified = '" + value[6] +  "' WHERE customer_id = '" + str(custmId) + "';"
+    # sql = "UPDATE customers SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE customer_id = '" + str(custmId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    customerId = {"message": str(custmId)}
+    return jsonify(customerId)
+
 
 @app.route('/getUsers/<company_id>', methods=['GET', 'POST'])
 def getUsers(company_id):
@@ -91,9 +105,23 @@ def getUsers(company_id):
   mycursor.execute(sql)
   result = mycursor.fetchall()
   header = mycursor.description
-  print(header)
+  # print(header)
   row_headers = [x[0] for x in mycursor.description]
-  print(row_headers)
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
+@app.route('/getCompanies', methods=['GET', 'POST'])
+def getCompanies():
+  sql = "SELECT * FROM RPM_dataBase.company;"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
   result = [dict(zip(row_headers, res)) for res in result]
   # users = {"message": result};
   print(result)
@@ -106,4 +134,18 @@ def deleteUser(customer_id):
   mydb.commit()
   return ({"message":"success"})
 
-app.run(host='0.0.0.0', port=5002, debug=True)
+@app.route('/getCompany/<companyId>', methods=['GET', 'POST'])
+def getCompany(companyId):
+  sql = "SELECT * FROM RPM_dataBase.company WHERE company_id = '" + companyId + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
+# app.run(host='0.0.0.0', port=5002, debug=True)

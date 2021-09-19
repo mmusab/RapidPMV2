@@ -6,7 +6,7 @@ import { DataService } from '../data-service';
 import { NotifierService } from 'angular-notifier';
 
 @Component({
-  selector: 'app-user-management-screen',
+  selector: '[app-user-management-screen]',
   templateUrl: './user-management-screen.component.html',
   styleUrls: ['./user-management-screen.component.css']
 })
@@ -16,22 +16,29 @@ export class UserManagementScreenComponent{
   sub: any;
   users:any;
   userHead :any;
+  company :any;
+  companyName = "";
   cust = 
     {
       "company_id": "",
       "company_role": "user",
       "customer_id": "",
-      "email": "email",
-      "name": "name",
-      "password": "password",
-      "status": "active",
-      "verified": "No",    
+      "email": "-",
+      "name": "-",
+      "password": "-",
+      "status": "-",
+      "verified": "Yes",    
     };
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
    });
+   this.http.get('http://127.0.0.1:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
+      this.company = response as JSON
+      this.companyName = this.company[0]["name"]
+      console.log(this.companyName)
+    });
    this.requestUsers();
     // this.users = this.requestUsers();
     // console.log(this.users)
@@ -51,7 +58,7 @@ export class UserManagementScreenComponent{
     this.users[index]["company_id"] = this.signupCompId;
     this.http.post('http://127.0.0.1:5002/customer', this.users[index]).subscribe((response)=>{
       this.customerId = (response as any)['message'];
-      this.notifierService.notify('success', 'New user has been created');
+      this.notifierService.notify('success', 'New user has been created/updated');
    });
    location.reload();
   }
@@ -64,6 +71,7 @@ export class UserManagementScreenComponent{
       this.users = response as JSON
       this.userHead = Object.keys(this.users[0]);
       console.log(this.userHead)
+      console.log(this.users)
     });
   }
   deleteRow(index: string | number){

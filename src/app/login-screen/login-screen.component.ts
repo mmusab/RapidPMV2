@@ -46,6 +46,11 @@ export class LoginScreenComponent{
         UserLogin.userPassword = this.userPassword;
         this.router.navigate(['/app-project-list']);
       }
+      if(this.errorMessage == "Welcome RPM"){
+        UserLogin.userEmail = this.userEmail;
+        UserLogin.userPassword = this.userPassword;
+        this.router.navigate(['/app-company-list-screen']);
+      }
       if(this.errorMessage == "Incorrect password"){
         this.incorrectPassCount += 1;
         if(this.incorrectPassCount > 2){

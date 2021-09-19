@@ -33,6 +33,7 @@ export class SignupScreenComponent{
       this.signupCompId = (response as any)['message'];
       // this.dataService.adminId = this.signupCompId;
       this.customerInfo.cust["company_id"] = this.signupCompId;
+      this.customerInfo.cust["company_role"] = "Admin";
       this.http.post('http://127.0.0.1:5002/customer', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
    });

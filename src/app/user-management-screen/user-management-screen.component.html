@@ -17,48 +17,61 @@
 	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Users Account Management</h2>
 	<!-- Editable table -->
 <div class="card">
-	<h3 class="card-header text-center font-weight-bold text-uppercase py-4">Editable table</h3>
-	<div class="card-body">
-	  <div id="table" class="table-editable">
-		<button class="text-success" (click)="add()">
-			<mat-icon>add</mat-icon>
-		</button>
-		<table class="table table-bordered table-responsive-md table-striped text-center">
-			<tr>
-				<ng-container *ngFor="let head of userHead">
-					<th class="text-center" *ngIf="!(head === 'company_id' || head === 'customer_id')">
-						<p >{{head}}</p>
-					</th>
-				</ng-container>
-			</tr>
+	<!-- <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Editable table</h3> -->
+	<div class="split left" style="background-color: white">
+		<div class="card-body">
+			<h2>Company: {{companyName}}</h2>
+			<h3>Users</h3>
+			<div id="table" class="table-editable" style="overflow-y: auto;">
+				<button class="text-success" (click)="add()">
+					<mat-icon>add</mat-icon>
+				</button>
+				<table class="table table-bordered table-responsive-md table-striped text-center">
+					<tr>
+						<ng-container *ngFor="let head of userHead">
+							<th class="text-center" *ngIf="!(head === 'company_id' || head === 'customer_id')">
+								<p >{{head}}</p>
+							</th>
+						</ng-container>
+					</tr>
 
-		  <tr *ngFor="let user of users; let id = index">
-			<ng-container *ngFor="let head of userHead">
-				<td *ngIf="!(head === 'company_id' || head === 'customer_id')">    
-					<span contenteditable="true" (blur)="updateList(id, head, $event)">{{user[head]}}</span>
-				</td>
-			</ng-container>
-			<td>
-			  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-				<mat-icon>more_vert</mat-icon>
-			  </button>
-			  <mat-menu #menu="matMenu">
-				<button (click)=onAddUser(id) mat-menu-item>
-				  <mat-icon>update</mat-icon>
-				  <span>Update</span>
-				</button>
-				<button mat-menu-item>
-				  <mat-icon>remove</mat-icon>
-				  <span>Remove</span>
-				</button>
-			  </mat-menu>
-			  
-			</td>
-		  </tr>
-		</table>
-	  </div>
+				<tr *ngFor="let user of users; let id = index">
+					<ng-container *ngFor="let head of userHead">
+						<td *ngIf="!(head === 'company_id' || head === 'customer_id')">    
+							<span [attr.contenteditable]="!(head === 'company_role' || head === 'verified')" (blur)="updateList(id, head, $event)" this.searchValue = ' '>{{user[head]}}</span>
+						</td>
+					</ng-container>
+					<td>
+					<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+						<mat-icon>more_vert</mat-icon>
+					</button>
+					<mat-menu #menu="matMenu">
+						<button (click)=onAddUser(id) mat-menu-item>
+						<mat-icon>update</mat-icon>
+						<span>Update</span>
+						</button>
+						<button (click)=deleteRow(id) mat-menu-item>
+						<mat-icon>remove</mat-icon>
+						<span>Remove</span>
+						</button>
+					</mat-menu>
+					
+					</td>
+				</tr>
+				</table>
+			</div>
+		</div>
 	</div>
-  </div>
+	<div class="split right" style="background-color: white; margin-top: 200px;">
+			<div class="form-group">
+				<button class="btn btn-success btn-lg btn-block" style="width: 30%;" (click)="goToSignUp()" type="button">Company Admin</button>
+				<button class="btn btn-primary btn-lg btn-block" style="width: 30%;" onclick="location.href='/app-project-list'" type="button">Projects</button>
+				<button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" onclick="location.href=''" type="button">Cancel</button>
+				<!-- <a href="#">Manage Users</a><br>
+				<a href="#">Cancel</a> -->
+			</div>
+	</div>
+</div>
   <!-- Editable table -->
 </body>
 </html>

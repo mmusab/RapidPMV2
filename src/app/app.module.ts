@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from "@angular/common/http";
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
 import { MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import { NotifierModule } from 'angular-notifier';
@@ -20,6 +21,7 @@ import { PasswordResetScreenComponent } from './password-reset-screen/password-r
 import { UserManagementScreenComponent } from './user-management-screen/user-management-screen.component';
 import { DataService } from './data-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CompanyListScreenComponent } from './company-list-screen/company-list-screen.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SignupScreenComponent,
     ProjectListComponent,
     PasswordResetScreenComponent,
-    UserManagementScreenComponent
+    UserManagementScreenComponent,
+    CompanyListScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NotifierModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatRadioModule,
     MatMenuModule,
     BrowserAnimationsModule,
     MatIconModule

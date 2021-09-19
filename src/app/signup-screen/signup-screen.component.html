@@ -110,15 +110,47 @@
 	<form #f="ngForm" (ngSubmit)="onSignup()">
 		<div class="split left" style="background-color: white">
 			<!-- <p class="hint-text">Create and Update your account.</p> -->
-			<h4 style="color: maroon;">Company Information</h4>
+			<h4 style="color: maroon;">Company Administrator Account</h4>
 			<div class="form-group">
+				<label for="name">Name</label>
+				<input required ngModel [(ngModel)]="customerInfo.cust.name" type="name" class="form-control" name="name" placeholder="{{customerInfo.cust.name}}">
+			</div>
+			<div class="form-group">
+				<label for="email">Email</label>
+				<input required ngModel #Email="ngModel" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" [(ngModel)]="customerInfo.cust.email" type="email" class="form-control" name="email" placeholder="{{customerInfo.cust.email}}">
+				<div *ngIf="Email.errors && Email.touched" class ="alert alert-danger">
+					<div [hidden]="!Email.errors?.pattern">
+					Invalid pattern
+					</div> 
+				</div> 
+				<!-- <div class="alert alert-danger" *ngIf="Email.touched && !Email.valid">Email is required</div> -->
+			</div>
+			<div class="form-group">
+				<label for="comapny_role">Company Role</label>
+				<input readonly ngModel [(ngModel)]="customerInfo.cust.company_role" type="comapny_role" class="form-control" name="comapny_role" value="Admin" placeholder="Admin">
+			</div>
+			<div class="form-group">
+				<label for="status">Status</label>
+				<select [(ngModel)]="customerInfo.cust.status" type="status" name="status" class="form-control">
+					<option selected>{{customerInfo.cust.status}}</option>
+					<option value="Active">Active</option>
+					<option value="Inactive">Inactive</option>
+					<option value="Pending">Pending</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input required ngModel [(ngModel)]="customerInfo.cust.password" type="password" class="form-control" name="password" placeholder="{{customerInfo.cust.password}}">
+			</div>
+			<h4 style="color: maroon;">Company Information</h4>
+			<!-- <div hidden class="form-group">
 				<label for="rpm">RPM</label>
 				<select [(ngModel)]="companyInfo.comp.RPM" type="rpm" class="form-control" name="rpm">
 					<option selected>{{companyInfo.comp.RPM}}</option>
 					<option value="Yes">Yes</option>
 					<option value="No">No</option>
 				</select>
-			</div>
+			</div> -->
 			<div class="form-group">
 				<label for="company_name">Company Name</label>
 				<input required ngModel [(ngModel)]="companyInfo.comp.name" type="company_name" class="form-control" name="company_name" placeholder="{{companyInfo.comp.name}}">
@@ -147,43 +179,6 @@
 				<label for="postalCode">Postal Code</label>
 				<input required ngModel [(ngModel)]="companyInfo.comp.postal_code" type="postalCode" class="form-control" name="postalCode" placeholder="{{companyInfo.comp.postal_code}}" >
 			</div>
-
-			<h4 style="color: maroon;">Admin Information</h4>
-			<div class="form-group">
-				<label for="name">Name</label>
-				<input required ngModel [(ngModel)]="customerInfo.cust.name" type="name" class="form-control" name="name" placeholder="{{customerInfo.cust.name}}">
-			</div>
-			<div class="form-group">
-				<label for="email">Email</label>
-				<input required ngModel #Email="ngModel" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" [(ngModel)]="customerInfo.cust.email" type="email" class="form-control" name="email" placeholder="{{customerInfo.cust.email}}">
-				<div *ngIf="Email.errors && Email.touched" class ="alert alert-danger">
-					<div [hidden]="!Email.errors?.pattern">
-					Invalid pattern
-					</div> 
-				</div> 
-				<!-- <div class="alert alert-danger" *ngIf="Email.touched && !Email.valid">Email is required</div> -->
-			</div>
-			<div class="form-group">
-				<label for="comapny_role">Company Role</label>
-				<select [(ngModel)]="customerInfo.cust.company_role" type="comapny_role" name="comapny_role" class="form-control">
-					<option selected>{{customerInfo.cust.company_role}}</option>
-					<option value="Admin">Admin</option>
-					<!-- <option value="User">User</option> -->
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="status">Status</label>
-				<select [(ngModel)]="customerInfo.cust.status" type="status" name="status" class="form-control">
-					<option selected>{{customerInfo.cust.status}}</option>
-					<option value="Active">Active</option>
-					<option value="Inactive">Inactive</option>
-					<option value="Pending">Pending</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="password">Password</label>
-				<input required ngModel [(ngModel)]="customerInfo.cust.password" type="password" class="form-control" name="password" placeholder="{{customerInfo.cust.password}}">
-			</div>
 			<!-- <div class="form-group">
 				<input required ngModel type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" required="required">
 			</div>       -->
@@ -193,12 +188,12 @@
 		</div>
 		<div class="split right" style="background-color: white; margin-top: 200px;">
 			<div class="form-group">
-				<button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="!f.valid">Create/Update</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
 			</div>
 			<div class="form-group">
-				<button class="btn btn-primary btn-lg btn-block" (click)="goToUsers()" type="button">Users</button>
-				<button class="btn btn-primary btn-lg btn-block" onclick="location.href='/app-project-list'" type="button">Projects</button>
-				<button class="btn btn-secondary btn-lg btn-block" onclick="location.href=''" type="button">Cancel</button>
+				<button class="btn btn-primary btn-lg btn-block" style="width: 30%;" (click)="goToUsers()" type="button">Users</button>
+				<button class="btn btn-primary btn-lg btn-block" style="width: 30%;" onclick="location.href='/app-project-list'" type="button">Projects</button>
+				<button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" onclick="location.href=''" type="button">Cancel</button>
 				<!-- <a href="#">Manage Users</a><br>
 				<a href="#">Cancel</a> -->
 			</div>

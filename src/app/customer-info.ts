@@ -7,8 +7,9 @@ export class CustomerInfo {
        "password": "",
        "company_role": "",
        "status": "",
-       "verified": "No",
-       "company_id": "1"
+       "verified": "Yes",
+       "company_id": "1",
+       "customer_id": ""
     };
 
 }

@@ -2,7 +2,7 @@ export class CompanyInfo {
 
     public comp = 
                      {
-                        "RPM": "",
+                        "RPM": "No",
                         "name": "",
                         "address_line1": "",
                         "address_line2": "",
