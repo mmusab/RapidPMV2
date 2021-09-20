@@ -89,10 +89,15 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS artifacts (artifact_id INT AUTO_INC
 #                                                         "FOREIGN KEY (stage_id) REFERENCES stages(stage_id))")
 
 
-# sql = "INSERT INTO customers (email, name, status, company, address, city, country, postal_code) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-# customers = [("john@john.co.uk", "john crook", "Active", "velastra", "weryaddress", "london", "uk", "tw7 7 hp"),
-#              ("musab@velastra.co.uk", "M Musab", "Active", "velastra", "qwertaddress", "islamabad", "Pakistan", "10000")]
-# mycursor.executemany(sql, customers)
+sql = "INSERT INTO company (RPM, name, address_line1, address_line2, address_line3, city, country, postal_code) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+company = ("Yes", "RapidPM", "address_line1", "address_line2", "address_line3", "london", "uk", "00000")
+mycursor.execute(sql, company)
+
+mydb.commit()
+
+sql = "INSERT INTO customers (email, password, company_role, name, status, verified, company_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+customers = ("john@rpm.com", "admin", "Admin", "John", "Active", "Yes", "1")
+mycursor.execute(sql, customers)
 #
 # sql = "INSERT INTO projects (ProjectType, ProjectTitle, ProjectDescription, ProjectStart, ProjectEnd, customer_id, CustomerEmail) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 # projects = [("Prince2", "rapidpm", "creation of a pm tool to rapidly project controls and oversight over projects", "3/14/2021", "5/28/2021", 1, "john@john.co.uk"),
@@ -128,7 +133,7 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS artifacts (artifact_id INT AUTO_INC
 #     artifact = (a, "PID", "Management", "Active", "Yes", "No", "4/3/2021", path+a, path+a, 4, 5)
 #     mycursor.execute(sql, artifact)
 #
-# mydb.commit()
+mydb.commit()
 #
 # print(mycursor.rowcount, "record inserted.")
 
