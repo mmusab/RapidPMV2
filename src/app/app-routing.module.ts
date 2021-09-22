@@ -12,7 +12,7 @@ const routes: Routes = [{path:'', component: LoginScreenComponent},
                         {path:'app-project-list', component: ProjectListComponent},
                         {path:'app-password-reset-screen', component: PasswordResetScreenComponent},
                         {path:'app-user-management-screen/:id', component: UserManagementScreenComponent},
-                        {path:'app-company-list-screen', component: CompanyListScreenComponent}];
+                        {path:'app-company-list-screen/:id', component: CompanyListScreenComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

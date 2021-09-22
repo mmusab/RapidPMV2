@@ -26,7 +26,7 @@ mycursor = mydb.cursor()
 
 #### functions #####
 def checkLogin(userEmail,userPassword):
-  query = "SELECT cu.password, co.RPM FROM customers cu, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
+  query = "SELECT cu.password, co.RPM, co.company_id FROM customers cu, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
   mycursor.execute(query)
   result = mycursor.fetchall()
   json_data = []
@@ -36,6 +36,7 @@ def checkLogin(userEmail,userPassword):
         json_data.append(dict(zip(["message"], ["Welcome"])))
       else:
         json_data.append(dict(zip(["message"], ["Welcome RPM"])))
+        json_data.append(dict(zip(["id"], [result[0][2]])))
     else:
       json_data.append(dict(zip(["message"], ["Incorrect password"])))
   else:
@@ -50,6 +51,9 @@ def login(userEmail,userPassword):
 @app.route('/company', methods=['GET', 'POST'])
 def company():
   company = request.json
+  print(company)
+  compId = company['company_id']
+  del company['company_id']
   pairs = company.items()
   key = []
   value = []
@@ -58,14 +62,33 @@ def company():
     value.append(str(v))
   key = tuple(key)
   value = tuple(value)
-  sql = "INSERT INTO company (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-  mycursor.execute(sql, value)
-  mydb.commit()
-  sql = "SELECT LAST_INSERT_ID()"
-  mycursor.execute(sql)
-  companyId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]};
-  return jsonify(companyId)
-  # return ({"message": "customer received"})
+  print(value)
+  if (compId == ""):
+    sql = "INSERT INTO company (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    mycursor.execute(sql, value)
+    mydb.commit()
+    sql = "SELECT LAST_INSERT_ID()"
+    mycursor.execute(sql)
+    companyId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
+    return jsonify(companyId)
+  else:
+    sql = "UPDATE company SET RPM = '" + value[0] + "', name = '" + value[1] + "', address_line1 = '" + value[
+      2] + "', address_line2 = '" + value[3] + "', address_line3 = '" + value[4] + "', city = '" + value[5] + "',country = '" + \
+          value[6] + "',postal_code = '" + value[7] + "' WHERE company_id = '" + str(compId) + "';"
+    # sql = "UPDATE customers SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE customer_id = '" + str(custmId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    companyId = {"message": str(compId)}
+    return jsonify(companyId)
+  #
+  # sql = "INSERT INTO company (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+  # mycursor.execute(sql, value)
+  # mydb.commit()
+  # sql = "SELECT LAST_INSERT_ID()"
+  # mycursor.execute(sql)
+  # companyId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]};
+  # return jsonify(companyId)
+  # # return ({"message": "customer received"})
 
 @app.route('/customer', methods=['GET', 'POST'])
 def customer():
@@ -91,7 +114,7 @@ def customer():
     customerId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
     return jsonify(customerId)
   else:
-    sql = "UPDATE customers SET company_id = '" + value[0] + "', company_role = '" + value[1] + "', email = '" + value[2] + "', name = '" + value[3] + "', password = '" + value[4] + "', status = '" + value[5] + "',verified = '" + value[6] +  "' WHERE customer_id = '" + str(custmId) + "';"
+    sql = "UPDATE customers SET company_id = '" + customer['company_id'] + "', company_role = '" + customer['company_role'] + "', email = '" + customer['email'] + "', name = '" + customer['name'] + "', password = '" + customer['password'] + "', status = '" + customer['status'] + "',verified = '" + customer['verified'] +  "' WHERE customer_id = '" + str(custmId) + "';"
     # sql = "UPDATE customers SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE customer_id = '" + str(custmId) + "';"
     mycursor.execute(sql)
     mydb.commit()
@@ -137,6 +160,20 @@ def deleteUser(customer_id):
 @app.route('/getCompany/<companyId>', methods=['GET', 'POST'])
 def getCompany(companyId):
   sql = "SELECT * FROM RPM_dataBase.company WHERE company_id = '" + companyId + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
+@app.route('/getAdmin/<companyId>', methods=['GET', 'POST'])
+def getAdmin(companyId):
+  sql = "SELECT * FROM RPM_dataBase.customers WHERE company_id = '" + companyId + "' and company_role = 'Admin';"
   mycursor.execute(sql)
   result = mycursor.fetchall()
   header = mycursor.description

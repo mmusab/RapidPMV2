@@ -10,6 +10,7 @@ import { UserLogin } from '../user-login';
   styleUrls: ['./login-screen.component.css']
 })
 export class LoginScreenComponent{
+  companyId = "";
   incorrectPassCount = 0;
   errorMessage = "";
   forgotPasswordError = "";
@@ -39,7 +40,7 @@ export class LoginScreenComponent{
     // this.resetErrors();
     if(this.userEmail == ""){
     }
-    this.httpClient.get('http://82.69.10.205:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
+    this.httpClient.get('http://127.0.0.1:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
       this.errorMessage = (message as any)[0]['message'];
       if(this.errorMessage == "Welcome"){
         UserLogin.userEmail = this.userEmail;
@@ -49,7 +50,9 @@ export class LoginScreenComponent{
       if(this.errorMessage == "Welcome RPM"){
         UserLogin.userEmail = this.userEmail;
         UserLogin.userPassword = this.userPassword;
-        this.router.navigate(['/app-company-list-screen']);
+        this.companyId = (message as any)[1]['id'];
+        console.log(this.companyId);
+        this.router.navigate(['/app-company-list-screen', this.companyId]);
       }
       if(this.errorMessage == "Incorrect password"){
         this.incorrectPassCount += 1;
@@ -65,8 +68,8 @@ export class LoginScreenComponent{
   onregister(){
     // this.resetErrors();
     var url = "";
-    if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
-    else{url = 'http://82.69.10.205:5002/login/none/none'}
+    if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
+    else{url = 'http://127.0.0.1:5002/login/none/none'}
     this.httpClient.get(url).toPromise().then(message => {
       this.errorMessage = (message as any)[0]['message'];
       if(this.errorMessage == "Email address not found" || this.userEmail == ""){
@@ -85,8 +88,8 @@ export class LoginScreenComponent{
     else{
       this.forgotPasswordError = ""
       var url = "";
-      if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
-      else{url = 'http://82.69.10.205:5002/login/none/none'}
+      if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
+      else{url = 'http://127.0.0.1:5002/login/none/none'}
       this.httpClient.get(url).toPromise().then(message => {
         this.errorMessage = (message as any)[0]['message'];
         if(this.errorMessage == "Email address not found" || this.userEmail == ""){

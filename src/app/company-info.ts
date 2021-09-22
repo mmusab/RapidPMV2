@@ -10,6 +10,7 @@ export class CompanyInfo {
                         "city": "",
                         "country": "",
                         "postal_code": "",
+                        "company_id": ""
                      };
 
 }

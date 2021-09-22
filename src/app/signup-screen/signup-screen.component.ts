@@ -16,9 +16,47 @@ export class SignupScreenComponent{
   signupCompId = ""
   customerId = ""
   sub: any;
+  temp:any;
+  temp2!: string[];
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
+      if(this.signupCompId != ""){
+        console.log("id is not empty")
+        this.http.get('http://127.0.0.1:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
+        this.temp = response as JSON;
+        console.log(this.temp[0])
+        this.customerInfo.cust["company_id"] = this.temp[0]["company_id"];
+        this.customerInfo.cust["customer_id"] = this.temp[0]["customer_id"];
+        this.customerInfo.cust["name"] = this.temp[0]["name"];
+        this.customerInfo.cust["email"] = this.temp[0]["email"];
+        this.customerInfo.cust["password"] = this.temp[0]["password"];
+        this.customerInfo.cust["company_role"] = this.temp[0]["company_role"];
+        this.customerInfo.cust["status"] = this.temp[0]["status"];
+        this.customerInfo.cust["verified"] = this.temp[0]["verified"];
+        // this.temp2 = Object.keys(this.temp[0]);
+        // for (let k of this.temp2){
+        //   this.customerInfo.cust[k] = this.temp[0][k]
+        // }
+      });
+      this.http.get('http://127.0.0.1:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
+        this.temp = response as JSON;
+        console.log(this.temp[0])
+        this.companyInfo.comp["company_id"] = this.temp[0]["company_id"];
+        this.companyInfo.comp["name"] = this.temp[0]["name"];
+        this.companyInfo.comp["address_line1"] = this.temp[0]["address_line1"];
+        this.companyInfo.comp["address_line2"] = this.temp[0]["address_line2"];
+        this.companyInfo.comp["address_line3"] = this.temp[0]["address_line3"];
+        this.companyInfo.comp["city"] = this.temp[0]["city"];
+        this.companyInfo.comp["country"] = this.temp[0]["country"];
+        this.companyInfo.comp["postal_code"] = this.temp[0]["postal_code"];
+        this.companyInfo.comp["RPM"] = this.temp[0]["RPM"];
+        // this.temp2 = Object.keys(this.temp[0]);
+        // for (let k of this.temp2){
+        //   this.customerInfo.cust[k] = this.temp[0][k]
+        // }
+      });
+      }
    });
    if (!localStorage.getItem('foo')) {
     localStorage.setItem('foo', 'no reload')
@@ -29,12 +67,12 @@ export class SignupScreenComponent{
   }
   constructor(public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
   onSignup(){
-    this.http.post('http://82.69.10.205:5002/company', this.companyInfo.comp).subscribe((response)=>{
+    this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
       this.signupCompId = (response as any)['message'];
       // this.dataService.adminId = this.signupCompId;
       this.customerInfo.cust["company_id"] = this.signupCompId;
       this.customerInfo.cust["company_role"] = "Admin";
-      this.http.post('http://82.69.10.205:5002/customer', this.customerInfo.cust).subscribe((response)=>{
+      this.http.post('http://127.0.0.1:5002/customer', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
    });
    this.router.navigate(['/app-signup-screen', this.signupCompId]);
