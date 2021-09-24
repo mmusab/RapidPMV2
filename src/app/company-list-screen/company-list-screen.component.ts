@@ -32,8 +32,8 @@ export class CompanyListScreenComponent implements OnInit {
     console.log("in addcompany")
   }
 
-  updateCompany(){
-    this.router.navigate(['/app-signup-screen', this.companyId]);
+  updateCompany(index: string | number){
+    this.router.navigate(['/app-signup-screen', index]);
     console.log("in companyDetail")
   }
 

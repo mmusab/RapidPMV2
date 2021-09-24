@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SignupScreenComponent{
   signupCompId = ""
+  // signupCompIdNumber: number | undefined;
   customerId = ""
   sub: any;
   temp:any;
@@ -22,6 +23,9 @@ export class SignupScreenComponent{
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
       if(this.signupCompId != ""){
+        // this.signupCompIdNumber = +this.signupCompId;
+        // this.signupCompIdNumber = this.signupCompIdNumber + 1;
+        // this.signupCompId = String(this.signupCompIdNumber);
         console.log("id is not empty")
         this.http.get('http://82.69.10.205:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
