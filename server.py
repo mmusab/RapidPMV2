@@ -185,4 +185,66 @@ def getAdmin(companyId):
   print(result)
   return jsonify(result)
 
+@app.route('/getProjectsTree/<customerId>', methods=['GET', 'POST'])
+def getProjectsTree(customerId):
+  sql = "SELECT * FROM RPM_dataBase.projects WHERE customer_id = '" + customerId + "';"
+  mycursor.execute(sql)
+  projects = mycursor.fetchall()
+  projJson = []
+  for p in projects:
+    temp = {}
+    data = {}
+    data["1"] = p[0]
+    data["2"] = p[1]
+    data["3"] = p[2]
+    data["4"] = p[3]
+    data["5"] = p[4]
+    data["6"] = p[5]
+    data["7"] = p[6]
+    data["8"] = p[7]
+    data["node"] = "project"
+    temp["data"] = data
+    sql = "SELECT * FROM RPM_dataBase.stages WHERE project_id = '" + str(p[0]) + "';"
+    mycursor.execute(sql)
+    stages = mycursor.fetchall()
+    stgJson = []
+    for s in stages:
+      temp2 = {}
+      data = {}
+      data['1'] = str(s[0])
+      data['2'] = str(s[1])
+      data['3'] = str(s[2])
+      data['4'] = str(s[3])
+      data['5'] = str(s[4])
+      data['6'] = str(s[5])
+      data['7'] = str(s[6])
+      data["node"] = "stage"
+      temp2["data"] = data
+
+      sql = "SELECT * FROM RPM_dataBase.artifacts WHERE stage_id = '" + str(s[0]) + "';"
+      mycursor.execute(sql)
+      artefacts = mycursor.fetchall()
+      artJson = []
+      for a in artefacts:
+        temp3 = {}
+        data = {}
+        data['1'] = str(a[0])
+        data['2'] = str(a[1])
+        data['3'] = str(a[2])
+        data['4'] = str(a[3])
+        data['5'] = str(a[4])
+        data['6'] = str(a[5])
+        data['7'] = str(a[6])
+        data['8'] = str(a[7])
+        data["node"] = "artifact"
+
+        temp3["data"] = data
+        artJson.append(temp3)
+      temp2["children"] = artJson
+      stgJson.append(temp2)
+    temp["children"] = stgJson
+    projJson.append(temp)
+  print(projJson)
+  return jsonify(projJson)
+
 # app.run(host='0.0.0.0', port=5002, debug=True)

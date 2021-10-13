@@ -7,6 +7,15 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
+import {MatTreeModule} from '@angular/material/tree';
+import {TreeTableModule} from 'primeng/treetable';
+import {ButtonModule} from 'primeng/button';
+import {DialogModule} from 'primeng/dialog';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {InputTextModule} from 'primeng/inputtext';
+import {ToastModule} from 'primeng/toast';
+import {ContextMenuModule} from 'primeng/contextmenu';
+// import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { NotifierModule } from 'angular-notifier';
 import { CustomerInfo } from './customer-info';
 import { CompanyInfo } from './company-info';
@@ -44,7 +53,15 @@ import { CompanyListScreenComponent } from './company-list-screen/company-list-s
     MatRadioModule,
     MatMenuModule,
     BrowserAnimationsModule,
-    MatIconModule
+    MatIconModule,
+    MatTreeModule,
+    DialogModule,
+    ButtonModule,
+    MultiSelectModule,
+    InputTextModule,
+    ToastModule,
+    ContextMenuModule,
+    TreeTableModule
   ],
   providers: [CustomerInfo,CompanyInfo, DataService],
   bootstrap: [AppComponent]
