@@ -1,35 +1,64 @@
-<p-treeTable [value]="files" [columns]="cols[0]">
-  <!-- <ng-template pTemplate="caption">
-      FileSystem
-  </ng-template> -->
-  <ng-template pTemplate="header" let-columns>
-      <tr>
-          <th style="background-color:gainsboro" *ngFor="let col of columns">
-              {{col.header}}
-          </th>
-          <!-- <th style="width: 8rem">
-              <p-button icon="pi pi-cog"></p-button>
-          </th> -->
-      </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-      <tr>
-          <!-- <p>{{map["{{rowData.node}}"]}}</p> -->
-          <!-- <ng-container *ngIf="rowData.node = project" > -->
-            <td style="background-color:beige;" icon="pi pi-search" *ngFor="let col of cols[1]; let i = index">
-                <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                {{rowData[col.field]}}
-            </td>
-            <!-- <td>
-                <p-button icon="pi pi-search" styleClass="p-button-success" [style]="{'margin-right': '.5em'}"></p-button>
-                <p-button icon="pi pi-pencil" styleClass="p-button-warning"></p-button>
-            </td> -->
-        <!-- </ng-container> -->
-      </tr>            
-  </ng-template>
-  <!-- <ng-template pTemplate="summary">
-          <div style="text-align:left">
-              <p-button icon="pi pi-refresh"></p-button>
-          </div>
-  </ng-template> -->
-</p-treeTable>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+        <title>RPM Registration Form</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    </head>
+    <body>
+        <notifier-container></notifier-container>
+        <h2 style="vertical-align:auto; text-align: center; color: maroon;">Project List Screen</h2><br><br>
+        <div style="margin-left: 10%; margin-right: 10%;">
+            <h3 style="float: left;">Company Name: "    "</h3>
+            <button class="btn btn-primary btn-block" style="width: 20%; float: right;">Administration</button>
+        </div>
+        <div><br><br>
+            <div class="card-body">
+                <div id="table">
+                    <button class="text-success" (click)="add()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                        <tr>
+                            <th></th>
+                            <ng-container *ngFor="let head of projectsHead">
+                                <th class="text-center">
+                                    <p >{{head}}</p>
+                                </th>
+                            </ng-container>
+                        </tr>
+
+                        <tr *ngFor="let project of projects; let id = index">
+                            <td>
+                                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item>
+                                    <mat-icon>update</mat-icon>
+                                    <span>Modify record</span>
+                                    </button>
+                                    <button mat-menu-item>
+                                    <mat-icon>remove</mat-icon>
+                                    <span>Delete record</span>
+                                    </button>
+                                </mat-menu> 
+                            </td>
+                            <ng-container *ngFor="let head of projectsHead">
+                                <td>    
+                                    <span>{{project[head]}}</span>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

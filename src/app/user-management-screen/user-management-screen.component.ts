@@ -34,7 +34,7 @@ export class UserManagementScreenComponent{
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
    });
-   this.http.get('http://127.0.0.1:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
+   this.http.get('http://0.0.0.0:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
       this.company = response as JSON
       this.companyName = this.company[0]["name"]
       console.log(this.companyName)
@@ -56,7 +56,7 @@ export class UserManagementScreenComponent{
     // console.log(this.uCustomerInfo.cust);
     this.uCustomerInfo.cust["company_id"] = this.signupCompId;
     this.users[index]["company_id"] = this.signupCompId;
-    this.http.post('http://127.0.0.1:5002/customer', this.users[index]).subscribe((response)=>{
+    this.http.post('http://0.0.0.0:5002/customer', this.users[index]).subscribe((response)=>{
       console.log(response)
       this.customerId = (response as any)['message'];
       this.notifierService.notify('success', 'New user has been created/updated');
@@ -68,7 +68,7 @@ export class UserManagementScreenComponent{
   }
 
   requestUsers(){
-    this.http.get('http://127.0.0.1:5002/getUsers/' + this.signupCompId).subscribe((response)=>{
+    this.http.get('http://0.0.0.0:5002/getUsers/' + this.signupCompId).subscribe((response)=>{
       this.users = response as JSON
       this.userHead = Object.keys(this.users[0]);
       console.log(this.userHead)
@@ -77,7 +77,7 @@ export class UserManagementScreenComponent{
   }
   deleteRow(index: string | number){
     if(this.users[index]['customer_id']){
-      this.http.get('http://127.0.0.1:5002/deleteUser/' + this.users[index]['customer_id']).subscribe((response)=>{
+      this.http.get('http://0.0.0.0:5002/deleteUser/' + this.users[index]['customer_id']).subscribe((response)=>{
         console.log(response)
     });
     }

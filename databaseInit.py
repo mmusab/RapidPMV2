@@ -2,9 +2,9 @@ import mysql.connector
 from os import listdir
 
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="rapidpm",
-  password="password",
+  host="82.69.10.205",
+  user="musab",
+  password="RAPIDPM",
   database = "RPM_dataBase",
   auth_plugin='mysql_native_password'
 )
@@ -29,14 +29,23 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS customers (customer_id INT AUTO_INC
                                                         "verified VARCHAR(255), "
                                                         "company_id INT, "
                                                         "FOREIGN KEY (company_id ) REFERENCES company(company_id))")
+# mycursor.execute("CREATE TABLE IF NOT EXISTS projects (project_id INT AUTO_INCREMENT PRIMARY KEY, "
+#                                                         "ProjectType VARCHAR(255), "
+#                                                         "ProjectTitle VARCHAR(255), "
+#                                                         "ProjectDescription VARCHAR(255), "
+#                                                         "ProjectStart VARCHAR(255), "
+#                                                         "ProjectEnd VARCHAR(255), "
+#                                                         "customer_id INT, "
+#                                                         "CustomerEmail VARCHAR(255), "
+#                                                         "FOREIGN KEY (customer_id) REFERENCES customers(customer_id))")
 mycursor.execute("CREATE TABLE IF NOT EXISTS projects (project_id INT AUTO_INCREMENT PRIMARY KEY, "
-                                                        "ProjectType VARCHAR(255), "
+                                                        "customer_id INT, "
                                                         "ProjectTitle VARCHAR(255), "
-                                                        "ProjectDescription VARCHAR(255), "
+                                                        "Template VARCHAR(255), "
+                                                        "Status VARCHAR(255), "
+                                                        "Owner VARCHAR(255), "
                                                         "ProjectStart VARCHAR(255), "
                                                         "ProjectEnd VARCHAR(255), "
-                                                        "customer_id INT, "
-                                                        "CustomerEmail VARCHAR(255), "
                                                         "FOREIGN KEY (customer_id) REFERENCES customers(customer_id))")
 mycursor.execute("CREATE TABLE IF NOT EXISTS projects_artefactTypeDefault (artefactType_id INT AUTO_INCREMENT PRIMARY KEY, "
                                                         "ArtefactType VARCHAR(255), "

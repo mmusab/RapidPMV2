@@ -14,9 +14,9 @@ CORS(app)
 #### MySQL #######3
 # initializing database connection
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="rapidpm",
-  password="password",
+  host="82.69.10.205",
+  user="musab",
+  password="RAPIDPM",
   database = "RPM_dataBase",
   auth_plugin='mysql_native_password'
 )
@@ -26,14 +26,16 @@ mycursor = mydb.cursor()
 
 #### functions #####
 def checkLogin(userEmail,userPassword):
-  query = "SELECT cu.password, co.RPM, co.company_id FROM customers cu, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
+  query = "SELECT cu.password, co.RPM, co.company_id, cu.customer_id FROM customers cu, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
   mycursor.execute(query)
   result = mycursor.fetchall()
   json_data = []
   if(result):
+    print(result)
     if(result[0][0] == userPassword):
       if(result[0][1] != "Yes"):
         json_data.append(dict(zip(["message"], ["Welcome"])))
+        json_data.append(dict(zip(["id"], [result[0][3]])))
       else:
         json_data.append(dict(zip(["message"], ["Welcome RPM"])))
         json_data.append(dict(zip(["id"], [result[0][2]])))
@@ -127,6 +129,26 @@ def getUsers(company_id):
   sql = "SELECT * FROM RPM_dataBase.customers WHERE company_id = '" + company_id + "';"
   mycursor.execute(sql)
   result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
+@app.route('/getProjects/<id>/<type>', methods=['GET', 'POST'])
+def getProjects(type, id):
+  if(type == 'user'):
+    # sql = "SELECT pr.* FROM projects pr, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
+    sql = "SELECT * FROM RPM_dataBase.projects WHERE customer_id = '" + id + "';"
+  if (type == 'admin'):
+    sql = "SELECT pr.* FROM projects pr, company co, customers cu WHERE cu.company_id = '" + id + "' and cu.company_id = co.company_id and pr.customer_id = cu.customer_id;"
+    # sql = "SELECT * FROM RPM_dataBase.projects WHERE customer_id = '" + customer_id + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  print(result)
   header = mycursor.description
   # print(header)
   row_headers = [x[0] for x in mycursor.description]

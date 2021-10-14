@@ -9,7 +9,7 @@ import { CompanyListScreenComponent } from './company-list-screen/company-list-s
 
 const routes: Routes = [{path:'', component: LoginScreenComponent},
                         {path:'app-signup-screen/:id', component: SignupScreenComponent},
-                        {path:'app-project-list', component: ProjectListComponent},
+                        {path:'app-project-list/:id/:type', component: ProjectListComponent},
                         {path:'app-password-reset-screen', component: PasswordResetScreenComponent},
                         {path:'app-user-management-screen/:id', component: UserManagementScreenComponent},
                         {path:'app-company-list-screen/:id', component: CompanyListScreenComponent}];
