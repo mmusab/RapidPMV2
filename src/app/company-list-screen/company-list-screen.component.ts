@@ -18,7 +18,7 @@ export class CompanyListScreenComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.companyId = params['id'];
    });
-    this.http.get('http://0.0.0.0:5002/getCompanies').subscribe((response)=>{
+    this.http.get('http://82.69.10.205:5002/getCompanies').subscribe((response)=>{
       this.companies = response as JSON
       this.companyHead = Object.keys(this.companies[0]);
       console.log(this.companyHead)
