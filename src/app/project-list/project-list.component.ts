@@ -3,7 +3,8 @@ import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
 import { HttpClient } from '@angular/common/http';
 import {TreeNode} from 'primeng/api';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 
 // interface FoodNode {
 //   name: string;
@@ -164,16 +165,21 @@ export class ProjectListComponent{
   id = "";
   sub: any;
   type = "";
-  constructor(private http: HttpClient, private route : ActivatedRoute) {
+  temp: any;
+  comapnyName = "";
+  companyId = "";
+  constructor(private http: HttpClient, private route : ActivatedRoute, private router : Router, private notifierService: NotifierService) {
     }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
       this.type = params['type'];
-      console.log(this.id)
+      // console.log(this.id)
+      // console.log(this.type)
    });
     this.requestUsers()
+    this.getCompanyName()
   }
 
   requestUsers(){
@@ -185,7 +191,48 @@ export class ProjectListComponent{
       console.log(this.projects)
     });
   }
+  getCompanyName(){
+    // if(this.type == "Admin"){
+    //   this.http.get('http://0.0.0.0:5002/getCompany/' + this.id).subscribe((response)=>{
+    //     this.temp = response as JSON;
+    //     this.comapnyName = this.temp[0]['name']
+    //   });
+    // }
+    // if(this.type == "user"){
+    this.http.get('http://0.0.0.0:5002/getUser/' + this.id).subscribe((response)=>{
+    this.temp = response as JSON
+    this.http.get('http://0.0.0.0:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
+      this.temp = response as JSON;
+      this.comapnyName = this.temp[0]['name']
+      this.companyId = this.temp[0]['company_id']
+    });
+    });
+    // }
+    
+  }
+  modify(index: string | number){
+    this.router.navigate(['/app-project-details', this.projects[index]['project_id'], this.id]);
+  }
   add(){
+    this.router.navigate(['/app-project-details', "id", this.id]);
+  }
 
+  administration(){
+    if(this.type == "Admin"){
+      this.router.navigate(['/app-user-management-screen', this.companyId]);
+    }
+    else{
+      console.log(this.type)
+      this.notifierService.notify('error', 'Can only be accessible by admin');
+    }
+  }
+
+  delete(index: string | number){
+    if(this.projects[index]['project_id']){
+      this.http.get('http://0.0.0.0:5002/deleteProject/' + this.projects[index]['project_id']).subscribe((response)=>{
+        console.log(response)
+    });
+    }
+    location.reload();
   }
 }

@@ -96,7 +96,7 @@ export class SignupScreenComponent{
   }
   goToProjects(){
     if(this.signupCompId != "" && this.signupCompId !="id"){
-      this.router.navigate(['/app-project-list', this.signupCompId, 'admin']);
+      this.router.navigate(['/app-project-list', this.customerInfo.cust["customer_id"], 'Admin']);
     }
     else{
       this.notifierService.notify('error', 'Please login to continue');

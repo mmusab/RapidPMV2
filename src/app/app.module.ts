@@ -19,6 +19,7 @@ import {ContextMenuModule} from 'primeng/contextmenu';
 import { NotifierModule } from 'angular-notifier';
 import { CustomerInfo } from './customer-info';
 import { CompanyInfo } from './company-info';
+import { ProjectInfo } from './project-info';
 // import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -31,6 +32,7 @@ import { UserManagementScreenComponent } from './user-management-screen/user-man
 import { DataService } from './data-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CompanyListScreenComponent } from './company-list-screen/company-list-screen.component';
+import { ProjectDetailsComponent } from './project-details/project-details.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { CompanyListScreenComponent } from './company-list-screen/company-list-s
     ProjectListComponent,
     PasswordResetScreenComponent,
     UserManagementScreenComponent,
-    CompanyListScreenComponent
+    CompanyListScreenComponent,
+    ProjectDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,7 @@ import { CompanyListScreenComponent } from './company-list-screen/company-list-s
     ContextMenuModule,
     TreeTableModule
   ],
-  providers: [CustomerInfo,CompanyInfo, DataService],
+  providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

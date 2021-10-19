@@ -15,8 +15,8 @@
         <notifier-container></notifier-container>
         <h2 style="vertical-align:auto; text-align: center; color: maroon;">Project List Screen</h2><br><br>
         <div style="margin-left: 10%; margin-right: 10%;">
-            <h3 style="float: left;">Company Name: "    "</h3>
-            <button class="btn btn-primary btn-block" style="width: 20%; float: right;">Administration</button>
+            <h3 style="float: left;">Company Name: {{comapnyName}}</h3>
+            <button class="btn btn-primary btn-block" style="width: 20%; float: right;" (click)="administration()">Administration</button>
         </div>
         <div><br><br>
             <div class="card-body">
@@ -40,11 +40,11 @@
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
                                 <mat-menu #menu="matMenu">
-                                    <button mat-menu-item>
+                                    <button (click)=modify(id) mat-menu-item>
                                     <mat-icon>update</mat-icon>
                                     <span>Modify record</span>
                                     </button>
-                                    <button mat-menu-item>
+                                    <button (click)=delete(id) mat-menu-item>
                                     <mat-icon>remove</mat-icon>
                                     <span>Delete record</span>
                                     </button>

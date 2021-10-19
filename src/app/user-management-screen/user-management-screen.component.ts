@@ -12,7 +12,9 @@ import { NotifierService } from 'angular-notifier';
 })
 export class UserManagementScreenComponent{
   customerId = "";
+  adminId = "";
   signupCompId = "";
+  temp:any;
   sub: any;
   users:any;
   userHead :any;
@@ -97,6 +99,14 @@ export class UserManagementScreenComponent{
     add() {
       this.users.push(Object.assign({}, this.cust))
       console.log(this.users)
+    }
+
+    goToProjects(){
+      this.http.get('http://0.0.0.0:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
+        this.temp = response as JSON;
+        this.adminId = this.temp[0]["customer_id"];
+        this.router.navigate(['/app-project-list', this.adminId, "Admin"]);
+      });
     }
 
     // changeValue(id: number, property: string, event: any) {

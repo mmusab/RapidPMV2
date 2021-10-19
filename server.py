@@ -26,7 +26,7 @@ mycursor = mydb.cursor()
 
 #### functions #####
 def checkLogin(userEmail,userPassword):
-  query = "SELECT cu.password, co.RPM, co.company_id, cu.customer_id FROM customers cu, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
+  query = "SELECT cu.password, co.RPM, co.company_id, cu.customer_id, cu.company_role FROM customers cu, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
   mycursor.execute(query)
   result = mycursor.fetchall()
   json_data = []
@@ -36,9 +36,11 @@ def checkLogin(userEmail,userPassword):
       if(result[0][1] != "Yes"):
         json_data.append(dict(zip(["message"], ["Welcome"])))
         json_data.append(dict(zip(["id"], [result[0][3]])))
+        json_data.append(dict(zip(["role"], [result[0][4]])))
       else:
         json_data.append(dict(zip(["message"], ["Welcome RPM"])))
         json_data.append(dict(zip(["id"], [result[0][2]])))
+        json_data.append(dict(zip(["role"], [result[0][4]])))
     else:
       json_data.append(dict(zip(["message"], ["Incorrect password"])))
   else:
@@ -123,10 +125,57 @@ def customer():
     customerId = {"message": str(custmId)}
     return jsonify(customerId)
 
+@app.route('/project', methods=['GET', 'POST'])
+def project():
+  project = request.json
+  print(project)
+  projId = project['project_id']
+  del project['project_id']
+  pairs = project.items()
+  key = []
+  value = []
+  for k, v in pairs:
+    key.append(str(k))
+    value.append(str(v))
+  key = tuple(key)
+  value = tuple(value)
+  print(value)
+  if (projId == ""):
+    sql = "INSERT INTO projects (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    mycursor.execute(sql, value)
+    mydb.commit()
+    sql = "SELECT LAST_INSERT_ID()"
+    mycursor.execute(sql)
+    projectId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
+    return jsonify(projectId)
+  else:
+    sql = "UPDATE projects SET ProjectTitle = '" + str(project[
+      'ProjectTitle']) + "', Template = '" + str(project['Template']) + "', Status = '" + str(project['Status']) + "', Owner = '" + \
+          str(project['Owner']) + "', ProjectStart = '" + str(project['ProjectStart']) + "',ProjectEnd = '" + str(project[
+            'ProjectEnd']) + "' WHERE project_id = '" + str(projId) + "';"
+    # sql = "UPDATE customers SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE customer_id = '" + str(custmId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    customerId = {"message": str(projId)}
+    return jsonify(customerId)
 
 @app.route('/getUsers/<company_id>', methods=['GET', 'POST'])
 def getUsers(company_id):
   sql = "SELECT * FROM RPM_dataBase.customers WHERE company_id = '" + company_id + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
+@app.route('/getUser/<customer_id>', methods=['GET', 'POST'])
+def getUser(customer_id):
+  sql = "SELECT * FROM RPM_dataBase.customers WHERE customer_id = '" + customer_id + "';"
   mycursor.execute(sql)
   result = mycursor.fetchall()
   header = mycursor.description
@@ -143,8 +192,11 @@ def getProjects(type, id):
   if(type == 'user'):
     # sql = "SELECT pr.* FROM projects pr, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
     sql = "SELECT * FROM RPM_dataBase.projects WHERE customer_id = '" + id + "';"
-  if (type == 'admin'):
-    sql = "SELECT pr.* FROM projects pr, company co, customers cu WHERE cu.company_id = '" + id + "' and cu.company_id = co.company_id and pr.customer_id = cu.customer_id;"
+  if (type == 'Admin'):
+    sql = "SELECT company_id FROM customers WHERE customer_id= '" + id + "';"
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    sql = "SELECT pr.* FROM projects pr, company co, customers cu WHERE cu.company_id = '" + str(result[0][0]) + "' and cu.company_id = co.company_id and pr.customer_id = cu.customer_id;"
     # sql = "SELECT * FROM RPM_dataBase.projects WHERE customer_id = '" + customer_id + "';"
   mycursor.execute(sql)
   result = mycursor.fetchall()
@@ -179,9 +231,30 @@ def deleteUser(customer_id):
   mydb.commit()
   return ({"message":"success"})
 
+@app.route('/deleteProject/<project_id>', methods=['GET', 'POST'])
+def deleteProject(project_id):
+  sql = "DELETE FROM projects WHERE project_id = '" + project_id + "';"
+  mycursor.execute(sql)
+  mydb.commit()
+  return ({"message":"success"})
+
 @app.route('/getCompany/<companyId>', methods=['GET', 'POST'])
 def getCompany(companyId):
   sql = "SELECT * FROM RPM_dataBase.company WHERE company_id = '" + companyId + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
+@app.route('/getProject/<projectId>', methods=['GET', 'POST'])
+def getProject(projectId):
+  sql = "SELECT * FROM RPM_dataBase.projects WHERE project_id = '" + projectId + "';"
   mycursor.execute(sql)
   result = mycursor.fetchall()
   header = mycursor.description

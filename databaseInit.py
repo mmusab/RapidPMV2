@@ -5,7 +5,7 @@ mydb = mysql.connector.connect(
   host="82.69.10.205",
   user="musab",
   password="RAPIDPM",
-  database = "RPM_dataBase",
+  database = "RPMnew_dataBase",
   auth_plugin='mysql_native_password'
 )
 
@@ -13,14 +13,15 @@ mycursor = mydb.cursor()
 
 mycursor.execute("CREATE TABLE IF NOT EXISTS company (company_id INT AUTO_INCREMENT PRIMARY KEY, "
                                                         "RPM VARCHAR(255) , "
-                                                        "name VARCHAR(255), "
+                                                        "company_name VARCHAR(255), "
+                                                        "contact_name VARCHAR(255), "
                                                         "address_line1 VARCHAR(255), "
                                                         "address_line2 VARCHAR(255), "
                                                         "address_line3 VARCHAR(255), "
                                                         "city VARCHAR(255), "
                                                         "country VARCHAR(255), "
                                                         "postal_code VARCHAR(255))")
-mycursor.execute("CREATE TABLE IF NOT EXISTS customers (customer_id INT AUTO_INCREMENT PRIMARY KEY, "
+mycursor.execute("CREATE TABLE IF NOT EXISTS user (user_id INT AUTO_INCREMENT PRIMARY KEY, "
                                                         "email VARCHAR(255) , "
                                                         "password VARCHAR(255), "
                                                         "company_role VARCHAR(255), "
@@ -38,50 +39,56 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS customers (customer_id INT AUTO_INC
 #                                                         "customer_id INT, "
 #                                                         "CustomerEmail VARCHAR(255), "
 #                                                         "FOREIGN KEY (customer_id) REFERENCES customers(customer_id))")
-mycursor.execute("CREATE TABLE IF NOT EXISTS projects (project_id INT AUTO_INCREMENT PRIMARY KEY, "
-                                                        "customer_id INT, "
-                                                        "ProjectTitle VARCHAR(255), "
-                                                        "Template VARCHAR(255), "
-                                                        "Status VARCHAR(255), "
-                                                        "Owner VARCHAR(255), "
-                                                        "ProjectStart VARCHAR(255), "
-                                                        "ProjectEnd VARCHAR(255), "
-                                                        "FOREIGN KEY (customer_id) REFERENCES customers(customer_id))")
-mycursor.execute("CREATE TABLE IF NOT EXISTS projects_artefactTypeDefault (artefactType_id INT AUTO_INCREMENT PRIMARY KEY, "
-                                                        "ArtefactType VARCHAR(255), "
-                                                        "TemplateUrl VARCHAR(255), "
-                                                        "LocationUrl VARCHAR(255), "
-                                                        "Manadatory VARCHAR(255), "
-                                                        "Multiples VARCHAR(255), "
+
+mycursor.execute("CREATE TABLE IF NOT EXISTS hierarchy_list (hierarchy_id INT AUTO_INCREMENT PRIMARY KEY, "
+                                                        "hierarchy_name VARCHAR(255))")
+
+mycursor.execute("CREATE TABLE IF NOT EXISTS project (project_id INT AUTO_INCREMENT PRIMARY KEY, "
+                                                        "user_id INT, "
+                                                        "project_name VARCHAR(255), "
+                                                        "template VARCHAR(255), "
+                                                        "status VARCHAR(255), "
+                                                        "owner VARCHAR(255), "
+                                                        "start VARCHAR(255), "
+                                                        "end VARCHAR(255), "
+                                                        "hierarchy_id INT, "
+                                                        "FOREIGN KEY (hierarchy_id) REFERENCES hierarchy_list(hierarchy_id), "
+                                                        "FOREIGN KEY (user_id) REFERENCES user(user_id))")
+
+# mycursor.execute("CREATE TABLE IF NOT EXISTS projects_artefactTypeDefault (artefactType_id INT AUTO_INCREMENT PRIMARY KEY, "
+#                                                         "ArtefactType VARCHAR(255), "
+#                                                         "TemplateUrl VARCHAR(255), "
+#                                                         "LocationUrl VARCHAR(255), "
+#                                                         "Manadatory VARCHAR(255), "
+#                                                         "Multiples VARCHAR(255), "
+#                                                         "project_id INT, "
+#                                                         "FOREIGN KEY (project_id) REFERENCES projects(project_id))")
+mycursor.execute("CREATE TABLE IF NOT EXISTS hierarchy_container (container_id INT AUTO_INCREMENT PRIMARY KEY, "
+                                                        "container_title VARCHAR(255), "
                                                         "project_id INT, "
-                                                        "FOREIGN KEY (project_id) REFERENCES projects(project_id))")
-mycursor.execute("CREATE TABLE IF NOT EXISTS stages (stage_id INT AUTO_INCREMENT PRIMARY KEY, "
-                                                        "StageName VARCHAR(255), "
-                                                        "StageDescription VARCHAR(255), "
-                                                        "Status VARCHAR(255), "
-                                                        "StageStart VARCHAR(255), "
-                                                        "StageEnd VARCHAR(255), "
-                                                        "project_id INT, "
-                                                        "FOREIGN KEY (project_id) REFERENCES projects(project_id))")
-mycursor.execute("CREATE TABLE IF NOT EXISTS workPackage (workPackage_id INT AUTO_INCREMENT PRIMARY KEY, "
-                                                        "WorkPackageName VARCHAR(255), "
-                                                        "Description VARCHAR(255), "
-                                                        "Status VARCHAR(255), "
-                                                        "StartDate VARCHAR(255), "
-                                                        "EndDate VARCHAR(255), "
-                                                        "stage_id INT, "
-                                                        "FOREIGN KEY (stage_id) REFERENCES stages(stage_id))")
-mycursor.execute("CREATE TABLE IF NOT EXISTS artifacts (artifact_id INT AUTO_INCREMENT PRIMARY KEY, "
-                                                        "ArtefactName VARCHAR(255), "
-                                                        "ArtefactProductType VARCHAR(255), "
-                                                        "ArtefactStatus VARCHAR(255), "
-                                                        "DateCreated VARCHAR(255), "
-                                                        "workPackage_id INT, "
-                                                        "FOREIGN KEY (workPackage_id) REFERENCES workPackage(workPackage_id), "
-                                                        "artefactType_id INT, "
-                                                        "FOREIGN KEY (artefactType_id) REFERENCES projects_artefactTypeDefault(artefactType_id), "
-                                                        "stage_id INT, "
-                                                        "FOREIGN KEY (stage_id) REFERENCES stages(stage_id))")
+                                                        "hierarchy_id INT, "
+                                                        "parent_container_id INT, "
+                                                        "FOREIGN KEY (hierarchy_id) REFERENCES hierarchy_list(hierarchy_id), "
+                                                        "FOREIGN KEY (project_id) REFERENCES project(project_id))")
+
+mycursor.execute("CREATE TABLE IF NOT EXISTS artefact (artefact_id INT AUTO_INCREMENT PRIMARY KEY, "
+                                                        "artefact_type VARCHAR(255), "
+                                                        "artefact_owner VARCHAR(255), "
+                                                        "artefact_name VARCHAR(255), "
+                                                        "discription VARCHAR(255), "
+                                                        "status VARCHAR(255), "
+                                                        "create_date VARCHAR(255), "
+                                                        "update_date VARCHAR(255), "
+                                                        "location_url VARCHAR(255), "
+                                                        "template_url VARCHAR(255), "
+                                                        "template VARCHAR(255), "
+                                                        "workPackage_id INT)")
+
+mycursor.execute("CREATE TABLE IF NOT EXISTS container_artefact_link (link_id INT AUTO_INCREMENT PRIMARY KEY, "
+                                                        "container_id INT, "
+                                                        "artefact_id INT, "
+                                                        "FOREIGN KEY (artefact_id) REFERENCES artefact(artefact_id), "
+                                                        "FOREIGN KEY (container_id) REFERENCES hierarchy_container(container_id))")
 # mycursor.execute("CREATE TABLE IF NOT EXISTS artifacts (artifact_id INT AUTO_INCREMENT PRIMARY KEY, "
 #                                                         "ArtefactName VARCHAR(255), "
 #                                                         "ArtefactType VARCHAR(255), "
@@ -98,15 +105,15 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS artifacts (artifact_id INT AUTO_INC
 #                                                         "FOREIGN KEY (stage_id) REFERENCES stages(stage_id))")
 
 
-sql = "INSERT INTO company (RPM, name, address_line1, address_line2, address_line3, city, country, postal_code) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-company = ("Yes", "RapidPM", "address_line1", "address_line2", "address_line3", "london", "uk", "00000")
-mycursor.execute(sql, company)
-
-mydb.commit()
-
-sql = "INSERT INTO customers (email, password, company_role, name, status, verified, company_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-customers = ("john@rpm.com", "admin", "Admin", "John", "Active", "Yes", "1")
-mycursor.execute(sql, customers)
+# sql = "INSERT INTO company (RPM, name, address_line1, address_line2, address_line3, city, country, postal_code) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+# company = ("Yes", "RapidPM", "address_line1", "address_line2", "address_line3", "london", "uk", "00000")
+# mycursor.execute(sql, company)
+#
+# mydb.commit()
+#
+# sql = "INSERT INTO customers (email, password, company_role, name, status, verified, company_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+# customers = ("john@rpm.com", "admin", "Admin", "John", "Active", "Yes", "1")
+# mycursor.execute(sql, customers)
 #
 # sql = "INSERT INTO projects (ProjectType, ProjectTitle, ProjectDescription, ProjectStart, ProjectEnd, customer_id, CustomerEmail) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 # projects = [("Prince2", "rapidpm", "creation of a pm tool to rapidly project controls and oversight over projects", "3/14/2021", "5/28/2021", 1, "john@john.co.uk"),

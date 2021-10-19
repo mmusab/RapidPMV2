@@ -12,6 +12,7 @@ import { UserLogin } from '../user-login';
 export class LoginScreenComponent{
   companyId = "";
   customerId = "";
+  companyRole = "";
   incorrectPassCount = 0;
   errorMessage = "";
   forgotPasswordError = "";
@@ -48,13 +49,15 @@ export class LoginScreenComponent{
         UserLogin.userEmail = this.userEmail;
         UserLogin.userPassword = this.userPassword;
         this.customerId = (message as any)[1]['id'];
+        this.companyRole = (message as any)[2]['role'];
         console.log(this.customerId);
-        this.router.navigate(['/app-project-list', this.customerId, 'user']);
+        this.router.navigate(['/app-project-list', this.customerId, this.companyRole]);
       }
       if(this.errorMessage == "Welcome RPM"){
         UserLogin.userEmail = this.userEmail;
         UserLogin.userPassword = this.userPassword;
         this.companyId = (message as any)[1]['id'];
+        this.companyRole = (message as any)[2]['role'];
         console.log(this.companyId);
         this.router.navigate(['/app-company-list-screen', this.companyId]);
       }

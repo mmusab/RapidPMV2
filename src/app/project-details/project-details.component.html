@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<title>RPM Registration Form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<style>
+	body {
+		color: #fff;
+		/* background: #63738a; */
+		font-family: 'Roboto', sans-serif;
+	}
+    .form-control{
+		height: 40px;
+		box-shadow: none;
+		color: #969fa4;
+		width: 70%;
+		margin-left: 30%;
+	}
+	.form-control:focus{
+		border-color: #5cb85c;
+	}
+    .form-control, .btn{        
+        border-radius: 3px;
+    }
+	.signup-form{
+		width: 80%;
+		margin: 0 auto;
+		padding: 30px 0;
+		position: relative;
+		background-color: white;
+	}
+	.signup-form h2{
+		color: #636363;
+        margin: 0 0 15px;
+		position: relative;
+		text-align: center;
+    }
+	.signup-form h2:before, .signup-form h2:after{
+		content: "";
+		height: 2px;
+		width: 30%;
+		background: #d4d4d4;
+		position: absolute;
+		top: 50%;
+		z-index: 2;
+	}	
+	.signup-form h2:before{
+		left: 0;
+	}
+	.signup-form h2:after{
+		right: 0;
+	}
+    .signup-form .hint-text{
+		color: #999;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+    .signup-form form{
+		color: #999;
+		border-radius: 3px;
+    	margin-bottom: 15px;
+        background: white;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+	.signup-form .form-group{
+		margin-bottom: 20px;
+	}
+	.signup-form input[type="checkbox"]{
+		margin-top: 3px;
+	}
+	.signup-form .btn{        
+        font-size: 16px;
+        font-weight: bold;		
+		min-width: 140px;
+        outline: none !important;
+    }
+	.signup-form .row div:first-child{
+		padding-right: 10px;
+	}
+	.signup-form .row div:last-child{
+		padding-left: 10px;
+	}    	
+    .signup-form a{
+		color: #fff;
+		text-decoration: underline;
+	}
+    .signup-form a:hover{
+		text-decoration: none;
+	}
+	.signup-form form a{
+		color: #5cb85c;
+		text-decoration: none;
+	}	
+	.signup-form form a:hover{
+		text-decoration: underline;
+	}  
+</style>
+</head>
+<body>
+	<notifier-container></notifier-container>
+	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Project Details</h2>
+<div class="signup-form">
+	<form #f="ngForm" (ngSubmit)="createUpdate()">
+		<div class="split left" style="background-color: white">
+			<div class="form-group">
+				<label class="inline-label" for="project_id">Project ID: {{projId}}</label>
+				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
+			</div><br><br>
+            <div class="form-group">
+				<label class="inline-label" for="customer_id">Customer ID: {{userId}}</label>
+				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
+			</div><br><br>
+            <div class="form-group">
+				<label class="inline-label" for="ProjectTitle">Title</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.ProjectTitle" type="ProjectTitle" class="form-control" name="title" placeholder="{{projectInfo.proj.ProjectTitle}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="Status">Status</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.Status" type="Status" class="form-control" name="Status" placeholder="{{projectInfo.proj.Status}}">
+			</div>
+			<!-- <div class="form-group">
+				<label class="inline-label" for="Status">Status</label>
+				<select [(ngModel)]="projectInfo.proj.Status" type="Status" name="Status" class="form-control">
+					<option selected>{{projectInfo.proj.Status}}</option>
+					<option value="Active">Active</option>
+					<option value="Inactive">Inactive</option>
+					<option value="Pending">Pending</option>
+				</select>
+			</div> -->
+            <div class="form-group">
+				<label class="inline-label" for="Template">Template</label>
+				<select [(ngModel)]="projectInfo.proj.Template" type="Template" class="form-control" name="Template">
+					<option selected>{{projectInfo.proj.Template}}</option>
+					<option value="Y">Y</option>
+					<option value="N">N</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="Owner">Owner</label>
+				<select [(ngModel)]="projectInfo.proj.Owner" type="Owner" class="form-control" name="Owner">
+					<!-- <option selected>{{projectInfo.proj.Owner}}</option> -->
+					<ng-container *ngFor="let admin of admins">
+						<option [value]="admin.name">{{admin['name']}}</option>
+					</ng-container>
+				</select>
+			</div>
+            <!-- <div class="form-group">
+				<label class="inline-label" for="Owner">Owner</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.Owner" type="Owner" class="form-control" name="Owner" placeholder="{{projectInfo.proj.Owner}}">
+			</div> -->
+            <div class="form-group">
+				<label class="inline-label" for="ProjectStart">Start</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.ProjectStart" type="date" class="form-control" name="ProjectStart" placeholder="{{projectInfo.proj.ProjectStart}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="ProjectEnd">End</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.ProjectEnd" type="date" class="form-control" name="ProjectEnd" placeholder="{{projectInfo.proj.ProjectEnd}}">
+			</div>
+		</div>
+		<div class="split right" style="background-color: white; margin-top: 200px;">
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" onclick="location.href=''" type="button">Cancel</button>
+			</div>
+		</div>
+	</form>
+</div>
+</body>
+</html>
