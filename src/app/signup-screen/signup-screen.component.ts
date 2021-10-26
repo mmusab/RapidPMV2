@@ -27,11 +27,11 @@ export class SignupScreenComponent{
         // this.signupCompIdNumber = this.signupCompIdNumber + 1;
         // this.signupCompId = String(this.signupCompIdNumber);
         console.log("id is not empty")
-        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp[0])
         this.customerInfo.cust["company_id"] = this.temp[0]["company_id"];
-        this.customerInfo.cust["customer_id"] = this.temp[0]["customer_id"];
+        this.customerInfo.cust["user_id"] = this.temp[0]["user_id"];
         this.customerInfo.cust["name"] = this.temp[0]["name"];
         this.customerInfo.cust["email"] = this.temp[0]["email"];
         this.customerInfo.cust["password"] = this.temp[0]["password"];
@@ -43,11 +43,12 @@ export class SignupScreenComponent{
         //   this.customerInfo.cust[k] = this.temp[0][k]
         // }
       });
-      this.http.get('http://82.69.10.205:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp[0])
         this.companyInfo.comp["company_id"] = this.temp[0]["company_id"];
-        this.companyInfo.comp["name"] = this.temp[0]["name"];
+        this.companyInfo.comp["company_name"] = this.temp[0]["company_name"];
+        this.companyInfo.comp["contact_name"] = this.temp[0]["contact_name"];
         this.companyInfo.comp["address_line1"] = this.temp[0]["address_line1"];
         this.companyInfo.comp["address_line2"] = this.temp[0]["address_line2"];
         this.companyInfo.comp["address_line3"] = this.temp[0]["address_line3"];
@@ -71,12 +72,12 @@ export class SignupScreenComponent{
   }
   constructor(public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
   onSignup(){
-    this.http.post('http://82.69.10.205:5002/company', this.companyInfo.comp).subscribe((response)=>{
+    this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
       this.signupCompId = (response as any)['message'];
       // this.dataService.adminId = this.signupCompId;
       this.customerInfo.cust["company_id"] = this.signupCompId;
       this.customerInfo.cust["company_role"] = "Admin";
-      this.http.post('http://82.69.10.205:5002/customer', this.customerInfo.cust).subscribe((response)=>{
+      this.http.post('http://127.0.0.1:5002/user', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
    });
    this.router.navigate(['/app-signup-screen', this.signupCompId]);
@@ -96,7 +97,7 @@ export class SignupScreenComponent{
   }
   goToProjects(){
     if(this.signupCompId != "" && this.signupCompId !="id"){
-      this.router.navigate(['/app-project-list', this.customerInfo.cust["customer_id"], 'Admin']);
+      this.router.navigate(['/app-project-list', this.customerInfo.cust["user_id"], 'Admin']);
     }
     else{
       this.notifierService.notify('error', 'Please login to continue');

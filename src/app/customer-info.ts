@@ -9,7 +9,7 @@ export class CustomerInfo {
        "status": "",
        "verified": "Yes",
        "company_id": "1",
-       "customer_id": ""
+       "user_id": ""
     };
 
 }

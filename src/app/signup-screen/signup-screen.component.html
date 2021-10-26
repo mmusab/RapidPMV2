@@ -155,7 +155,11 @@
 			</div> -->
 			<div class="form-group">
 				<label class="inline-label"  for="company_name">Company Name</label>
-				<input required ngModel [(ngModel)]="companyInfo.comp.name" type="company_name" class="form-control" name="company_name" placeholder="{{companyInfo.comp.name}}">
+				<input required ngModel [(ngModel)]="companyInfo.comp.company_name" type="company_name" class="form-control" name="company_name" placeholder="{{companyInfo.comp.company_name}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label"  for="contact_name">Contact Name</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.contact_name" type="contact_name" class="form-control" name="contact_name" placeholder="{{companyInfo.comp.contact_name}}">
 			</div>
 			<div class="form-group">
 				<label class="inline-label" for="address_line1">Address Line 1</label>

@@ -44,16 +44,15 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS hierarchy_list (hierarchy_id INT AU
                                                         "hierarchy_name VARCHAR(255))")
 
 mycursor.execute("CREATE TABLE IF NOT EXISTS project (project_id INT AUTO_INCREMENT PRIMARY KEY, "
-                                                        "user_id INT, "
+                                                        "company_id INT, "
                                                         "project_name VARCHAR(255), "
                                                         "template VARCHAR(255), "
                                                         "status VARCHAR(255), "
                                                         "owner VARCHAR(255), "
                                                         "start VARCHAR(255), "
                                                         "end VARCHAR(255), "
-                                                        "hierarchy_id INT, "
-                                                        "FOREIGN KEY (hierarchy_id) REFERENCES hierarchy_list(hierarchy_id), "
-                                                        "FOREIGN KEY (user_id) REFERENCES user(user_id))")
+                                                        "hierarchy_id_default VARCHAR(255), "
+                                                        "FOREIGN KEY (company_id) REFERENCES company(company_id))")
 
 # mycursor.execute("CREATE TABLE IF NOT EXISTS projects_artefactTypeDefault (artefactType_id INT AUTO_INCREMENT PRIMARY KEY, "
 #                                                         "ArtefactType VARCHAR(255), "
@@ -75,14 +74,15 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS artefact (artefact_id INT AUTO_INCR
                                                         "artefact_type VARCHAR(255), "
                                                         "artefact_owner VARCHAR(255), "
                                                         "artefact_name VARCHAR(255), "
-                                                        "discription VARCHAR(255), "
+                                                        "description VARCHAR(255), "
                                                         "status VARCHAR(255), "
                                                         "create_date VARCHAR(255), "
                                                         "update_date VARCHAR(255), "
                                                         "location_url VARCHAR(255), "
                                                         "template_url VARCHAR(255), "
-                                                        "template VARCHAR(255), "
-                                                        "workPackage_id INT)")
+                                                        "project_id INT, "
+                                                        "FOREIGN KEY (project_id) REFERENCES project(project_id), "
+                                                        "template VARCHAR(255)) ")
 
 mycursor.execute("CREATE TABLE IF NOT EXISTS container_artefact_link (link_id INT AUTO_INCREMENT PRIMARY KEY, "
                                                         "container_id INT, "

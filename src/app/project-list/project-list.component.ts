@@ -57,7 +57,7 @@ import { NotifierService } from 'angular-notifier';
 //   TREE_DATA:any;
 
 //   ngOnInit() {
-//    this.http.get('http://82.69.10.205:5002/getProjectsTree/1').subscribe((response)=>{
+//    this.http.get('http://127.0.0.1:5002/getProjectsTree/1').subscribe((response)=>{
 //       console.log(response as JSON)
 //       let temp = response as JSON;
 //       this.TREE_DATA = response as FoodNode[];
@@ -95,7 +95,7 @@ import { NotifierService } from 'angular-notifier';
 
 //     ngOnInit() {
 //         // this.nodeService.getFilesystem().then(files => this.files = files);
-//         this.http.get('http://82.69.10.205:5002/getProjectsTree/1').subscribe((response)=>{
+//         this.http.get('http://127.0.0.1:5002/getProjectsTree/1').subscribe((response)=>{
 //         console.log(response as JSON)
 //         let temp = response as JSON;
 //         this.files = response as TreeNode[];
@@ -183,7 +183,7 @@ export class ProjectListComponent{
   }
 
   requestUsers(){
-    this.http.get('http://82.69.10.205:5002/getProjects/' + this.id + '/' + this.type).subscribe((response)=>{
+    this.http.get('http://127.0.0.1:5002/getProjects/' + this.id + '/' + this.type).subscribe((response)=>{
       this.projects = response as JSON
       this.projectsHead = Object.keys(this.projects[0]);
       this.projectsHead = ["ProjectTitle","Owner","Status","ProjectStart","ProjectEnd"]
@@ -193,15 +193,15 @@ export class ProjectListComponent{
   }
   getCompanyName(){
     // if(this.type == "Admin"){
-    //   this.http.get('http://82.69.10.205:5002/getCompany/' + this.id).subscribe((response)=>{
+    //   this.http.get('http://127.0.0.1:5002/getCompany/' + this.id).subscribe((response)=>{
     //     this.temp = response as JSON;
     //     this.comapnyName = this.temp[0]['name']
     //   });
     // }
     // if(this.type == "user"){
-    this.http.get('http://82.69.10.205:5002/getUser/' + this.id).subscribe((response)=>{
+    this.http.get('http://127.0.0.1:5002/getUser/' + this.id).subscribe((response)=>{
     this.temp = response as JSON
-    this.http.get('http://82.69.10.205:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
+    this.http.get('http://127.0.0.1:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
       this.temp = response as JSON;
       this.comapnyName = this.temp[0]['name']
       this.companyId = this.temp[0]['company_id']
@@ -229,7 +229,7 @@ export class ProjectListComponent{
 
   delete(index: string | number){
     if(this.projects[index]['project_id']){
-      this.http.get('http://82.69.10.205:5002/deleteProject/' + this.projects[index]['project_id']).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/deleteProject/' + this.projects[index]['project_id']).subscribe((response)=>{
         console.log(response)
     });
     }
