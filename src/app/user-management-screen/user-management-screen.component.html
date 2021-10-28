@@ -29,7 +29,7 @@
 				<table class="table table-bordered table-responsive-md table-striped text-center">
 					<tr>
 						<ng-container *ngFor="let head of userHead">
-							<th class="text-center" *ngIf="!(head === 'company_id' || head === 'customer_id')">
+							<th class="text-center" *ngIf="!(head === 'company_id' || head === 'user_id')">
 								<p >{{head}}</p>
 							</th>
 						</ng-container>
@@ -37,7 +37,7 @@
 
 				<tr *ngFor="let user of users; let id = index">
 					<ng-container *ngFor="let head of userHead">
-						<td *ngIf="!(head === 'company_id' || head === 'customer_id')">    
+						<td *ngIf="!(head === 'company_id' || head === 'user_id')">    
 							<span [attr.contenteditable]="!(head === 'company_role' || head === 'verified')" (blur)="updateList(id, head, $event)" this.searchValue = ' '>{{user[head]}}</span>
 						</td>
 					</ng-container>

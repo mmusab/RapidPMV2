@@ -141,7 +141,7 @@ def project():
   value = tuple(value)
   print(value)
   if (projId == ""):
-    sql = "INSERT INTO project (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    sql = "INSERT INTO project (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     mycursor.execute(sql, value)
     mydb.commit()
     sql = "SELECT LAST_INSERT_ID()"
@@ -149,10 +149,10 @@ def project():
     projectId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
     return jsonify(projectId)
   else:
-    sql = "UPDATE project SET ProjectTitle = '" + str(project[
-      'ProjectTitle']) + "', Template = '" + str(project['Template']) + "', Status = '" + str(project['Status']) + "', Owner = '" + \
-          str(project['Owner']) + "', projecttart = '" + str(project['projecttart']) + "',ProjectEnd = '" + str(project[
-            'ProjectEnd']) + "' WHERE project_id = '" + str(projId) + "';"
+    sql = "UPDATE project SET project_name = '" + str(project[
+      'project_name']) + "', template = '" + str(project['template']) + "', status = '" + str(project['status']) + "', owner = '" + \
+          str(project['owner']) + "', start = '" + str(project['start']) + "',end = '" + str(project[
+            'end']) + "',hierarchy_id_default = '" + str(project['hierarchy_id_default']) + "' WHERE project_id = '" + str(projId) + "';"
     # sql = "UPDATE user SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE user_id = '" + str(custmId) + "';"
     mycursor.execute(sql)
     mydb.commit()
@@ -187,17 +187,9 @@ def getUser(user_id):
   print(result)
   return jsonify(result)
 
-@app.route('/getproject/<id>/<type>', methods=['GET', 'POST'])
-def getproject(type, id):
-  if(type == 'user'):
-    # sql = "SELECT pr.* FROM project pr, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
-    sql = "SELECT * FROM RPMnew_dataBase.project WHERE user_id = '" + id + "';"
-  if (type == 'Admin'):
-    sql = "SELECT company_id FROM user WHERE user_id= '" + id + "';"
-    mycursor.execute(sql)
-    result = mycursor.fetchall()
-    sql = "SELECT pr.* FROM project pr, company co, user cu WHERE cu.company_id = '" + str(result[0][0]) + "' and cu.company_id = co.company_id and pr.user_id = cu.user_id;"
-    # sql = "SELECT * FROM RPMnew_dataBase.project WHERE user_id = '" + user_id + "';"
+@app.route('/getprojects/<company_id>', methods=['GET', 'POST'])
+def getprojects(company_id):
+  sql = "SELECT * FROM RPMnew_dataBase.project WHERE company_id = '" + company_id + "';"
   mycursor.execute(sql)
   result = mycursor.fetchall()
   print(result)
@@ -280,66 +272,126 @@ def getAdmin(companyId):
   print(result)
   return jsonify(result)
 
-@app.route('/getprojectTree/<customerId>', methods=['GET', 'POST'])
-def getprojectTree(customerId):
-  sql = "SELECT * FROM RPMnew_dataBase.project WHERE user_id = '" + customerId + "';"
+@app.route('/getArtefacts/<projectId>', methods=['GET', 'POST'])
+def getArtefacts(projectId):
+  sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE project_id = '" + projectId + "';"
   mycursor.execute(sql)
-  project = mycursor.fetchall()
-  projJson = []
-  for p in project:
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
+# @app.route('/getprojectTree/<customerId>', methods=['GET', 'POST'])
+# def getprojectTree(customerId):
+#   sql = "SELECT * FROM RPMnew_dataBase.project WHERE user_id = '" + customerId + "';"
+#   mycursor.execute(sql)
+#   project = mycursor.fetchall()
+#   projJson = []
+#   for p in project:
+#     temp = {}
+#     data = {}
+#     data["1"] = p[0]
+#     data["2"] = p[1]
+#     data["3"] = p[2]
+#     data["4"] = p[3]
+#     data["5"] = p[4]
+#     data["6"] = p[5]
+#     data["7"] = p[6]
+#     data["8"] = p[7]
+#     data["node"] = "project"
+#     temp["data"] = data
+#     sql = "SELECT * FROM RPMnew_dataBase.stages WHERE project_id = '" + str(p[0]) + "';"
+#     mycursor.execute(sql)
+#     stages = mycursor.fetchall()
+#     stgJson = []
+#     for s in stages:
+#       temp2 = {}
+#       data = {}
+#       data['1'] = str(s[0])
+#       data['2'] = str(s[1])
+#       data['3'] = str(s[2])
+#       data['4'] = str(s[3])
+#       data['5'] = str(s[4])
+#       data['6'] = str(s[5])
+#       data['7'] = str(s[6])
+#       data["node"] = "stage"
+#       temp2["data"] = data
+#
+#       sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE stage_id = '" + str(s[0]) + "';"
+#       mycursor.execute(sql)
+#       artefacts = mycursor.fetchall()
+#       artJson = []
+#       for a in artefacts:
+#         temp3 = {}
+#         data = {}
+#         data['1'] = str(a[0])
+#         data['2'] = str(a[1])
+#         data['3'] = str(a[2])
+#         data['4'] = str(a[3])
+#         data['5'] = str(a[4])
+#         data['6'] = str(a[5])
+#         data['7'] = str(a[6])
+#         data['8'] = str(a[7])
+#         data["node"] = "artifact"
+#
+#         temp3["data"] = data
+#         artJson.append(temp3)
+#       temp2["children"] = artJson
+#       stgJson.append(temp2)
+#     temp["children"] = stgJson
+#     projJson.append(temp)
+#   print(projJson)
+#   return jsonify(projJson)
+
+@app.route('/getprojectTree/<projectId>', methods=['GET', 'POST'])
+def getprojectTree(projectId):
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projectId + "';"
+  mycursor.execute(sql)
+  containers = mycursor.fetchall()
+  sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE project_id = '" + projectId + "';"
+  mycursor.execute(sql)
+  artefacts = mycursor.fetchall()
+  contJson = []
+  for c in containers:
     temp = {}
     data = {}
-    data["1"] = p[0]
-    data["2"] = p[1]
-    data["3"] = p[2]
-    data["4"] = p[3]
-    data["5"] = p[4]
-    data["6"] = p[5]
-    data["7"] = p[6]
-    data["8"] = p[7]
-    data["node"] = "project"
+    data["1"] = c[0]
+    data["2"] = c[1]
+    data["3"] = c[2]
+    data["4"] = c[3]
+    data["5"] = c[4]
+    data["node"] = "container"
     temp["data"] = data
-    sql = "SELECT * FROM RPMnew_dataBase.stages WHERE project_id = '" + str(p[0]) + "';"
+    sql = "SELECT * FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(c[0]) + "';"
     mycursor.execute(sql)
-    stages = mycursor.fetchall()
-    stgJson = []
-    for s in stages:
+    arts = mycursor.fetchall()
+    artJson = []
+    for a in arts:
       temp2 = {}
       data = {}
-      data['1'] = str(s[0])
-      data['2'] = str(s[1])
-      data['3'] = str(s[2])
-      data['4'] = str(s[3])
-      data['5'] = str(s[4])
-      data['6'] = str(s[5])
-      data['7'] = str(s[6])
-      data["node"] = "stage"
+      data['1'] = str(a[0])
+      data['2'] = str(a[1])
+      data['3'] = str(a[2])
+      data['4'] = str(a[3])
+      data['5'] = str(a[4])
+      data['6'] = str(a[5])
+      data['7'] = str(a[6])
+      data['8'] = str(a[7])
+      data['9'] = str(a[8])
+      data['10'] = str(a[9])
+      data['11'] = str(a[10])
+      data['12'] = str(a[11])
+      data["node"] = "artefact"
       temp2["data"] = data
 
-      sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE stage_id = '" + str(s[0]) + "';"
-      mycursor.execute(sql)
-      artefacts = mycursor.fetchall()
-      artJson = []
-      for a in artefacts:
-        temp3 = {}
-        data = {}
-        data['1'] = str(a[0])
-        data['2'] = str(a[1])
-        data['3'] = str(a[2])
-        data['4'] = str(a[3])
-        data['5'] = str(a[4])
-        data['6'] = str(a[5])
-        data['7'] = str(a[6])
-        data['8'] = str(a[7])
-        data["node"] = "artifact"
-
-        temp3["data"] = data
-        artJson.append(temp3)
-      temp2["children"] = artJson
-      stgJson.append(temp2)
-    temp["children"] = stgJson
-    projJson.append(temp)
-  print(projJson)
-  return jsonify(projJson)
-
-# app.run(host='0.0.0.0', port=5002, debug=True)
+      artJson.append(temp2)
+    temp["children"] = artJson
+    contJson.append(temp)
+  print(contJson)
+  return jsonify(contJson)
+app.run(host='0.0.0.0', port=5002, debug=True)

@@ -24,10 +24,12 @@ export class ProjectDetailsComponent implements OnInit {
       this.projId = params['id']
     }
     this.userId = params['userid'];
-    this.projectInfo.proj["customer_id"] = this.userId;
-    this.projectInfo.proj["Template"] = 'N';
-    this.http.get('http://127.0.0.1:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
+    // this.projectInfo.proj["company_id"] = this.userId;
+    this.projectInfo.proj["template"] = 'N';
+    this.http.get('http://127.0.0.1:5002/getUser/' + this.userId).subscribe((response)=>{
       this.users = response as JSON
+      this.projectInfo.proj["company_id"] = this.users[0]["company_id"];
+      console.log("companyID: " + this.projectInfo.proj["company_id"])
         this.http.get('http://127.0.0.1:5002/getAdmin/' + this.users[0]["company_id"]).subscribe((response)=>{
             this.admins = response as JSON;
             console.log(this.admins)
@@ -41,13 +43,13 @@ export class ProjectDetailsComponent implements OnInit {
       this.temp = response as JSON;
       console.log(this.temp)
       this.projectInfo.proj["project_id"] = this.temp[0]["project_id"];
-      this.projectInfo.proj["customer_id"] = this.temp[0]["customer_id"];
-      this.projectInfo.proj["ProjectTitle"] = this.temp[0]["ProjectTitle"];
-      this.projectInfo.proj["Template"] = this.temp[0]["Template"];
-      this.projectInfo.proj["Status"] = this.temp[0]["Status"];
-      this.projectInfo.proj["Owner"] = this.temp[0]["Owner"];
-      this.projectInfo.proj["ProjectStart"] = this.temp[0]["ProjectStart"];
-      this.projectInfo.proj["ProjectEnd"] = this.temp[0]["ProjectEnd"];
+      this.projectInfo.proj["company_id"] = this.temp[0]["company_id"];
+      this.projectInfo.proj["project_name"] = this.temp[0]["project_name"];
+      this.projectInfo.proj["template"] = this.temp[0]["template"];
+      this.projectInfo.proj["status"] = this.temp[0]["status"];
+      this.projectInfo.proj["owner"] = this.temp[0]["owner"];
+      this.projectInfo.proj["start"] = this.temp[0]["start"];
+      this.projectInfo.proj["end"] = this.temp[0]["end"];
     });
     }
   });

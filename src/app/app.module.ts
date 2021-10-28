@@ -33,6 +33,7 @@ import { DataService } from './data-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CompanyListScreenComponent } from './company-list-screen/company-list-screen.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { ProjectContentComponent } from './project-content/project-content.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
     PasswordResetScreenComponent,
     UserManagementScreenComponent,
     CompanyListScreenComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
+    ProjectContentComponent
   ],
   imports: [
     BrowserModule,

@@ -178,19 +178,19 @@ export class ProjectListComponent{
       // console.log(this.id)
       // console.log(this.type)
    });
-    this.requestUsers()
     this.getCompanyName()
+    // this.requestUsers()
   }
 
-  requestUsers(){
-    this.http.get('http://127.0.0.1:5002/getProjects/' + this.id + '/' + this.type).subscribe((response)=>{
-      this.projects = response as JSON
-      this.projectsHead = Object.keys(this.projects[0]);
-      this.projectsHead = ["ProjectTitle","Owner","Status","ProjectStart","ProjectEnd"]
-      console.log(this.projectsHead)
-      console.log(this.projects)
-    });
-  }
+  // requestUsers(){
+  //   this.http.get('http://127.0.0.1:5002/getprojects/' + this.companyId).subscribe((response)=>{
+  //     this.projects = response as JSON
+  //     this.projectsHead = Object.keys(this.projects[0]);
+  //     this.projectsHead = ["ProjectTitle","Owner","Status","ProjectStart","ProjectEnd"]
+  //     console.log(this.projectsHead)
+  //     console.log(this.projects)
+  //   });
+  // }
   getCompanyName(){
     // if(this.type == "Admin"){
     //   this.http.get('http://127.0.0.1:5002/getCompany/' + this.id).subscribe((response)=>{
@@ -205,6 +205,13 @@ export class ProjectListComponent{
       this.temp = response as JSON;
       this.comapnyName = this.temp[0]['name']
       this.companyId = this.temp[0]['company_id']
+      this.http.get('http://127.0.0.1:5002/getprojects/' + this.companyId).subscribe((response)=>{
+        this.projects = response as JSON
+        this.projectsHead = Object.keys(this.projects[0]);
+        this.projectsHead = ["project_name","owner","status","start","end"]
+        console.log(this.projectsHead)
+        console.log(this.projects)
+      });
     });
     });
     // }

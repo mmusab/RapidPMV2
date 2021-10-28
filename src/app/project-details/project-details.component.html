@@ -115,54 +115,54 @@
 				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
 			</div><br><br>
             <div class="form-group">
-				<label class="inline-label" for="customer_id">Customer ID: {{userId}}</label>
+				<label class="inline-label" for="company_id">Company ID: {{projectInfo.proj.company_id}}</label>
 				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
 			</div><br><br>
             <div class="form-group">
-				<label class="inline-label" for="ProjectTitle">Title</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.ProjectTitle" type="ProjectTitle" class="form-control" name="title" placeholder="{{projectInfo.proj.ProjectTitle}}">
+				<label class="inline-label" for="project_name">Title</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.project_name" type="project_name" class="form-control" name="title" placeholder="{{projectInfo.proj.project_name}}">
 			</div>
 			<div class="form-group">
-				<label class="inline-label" for="Status">Status</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.Status" type="Status" class="form-control" name="Status" placeholder="{{projectInfo.proj.Status}}">
+				<label class="inline-label" for="status">status</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.status" type="status" class="form-control" name="status" placeholder="{{projectInfo.proj.status}}">
 			</div>
 			<!-- <div class="form-group">
-				<label class="inline-label" for="Status">Status</label>
-				<select [(ngModel)]="projectInfo.proj.Status" type="Status" name="Status" class="form-control">
-					<option selected>{{projectInfo.proj.Status}}</option>
+				<label class="inline-label" for="status">status</label>
+				<select [(ngModel)]="projectInfo.proj.status" type="status" name="status" class="form-control">
+					<option selected>{{projectInfo.proj.status}}</option>
 					<option value="Active">Active</option>
 					<option value="Inactive">Inactive</option>
 					<option value="Pending">Pending</option>
 				</select>
 			</div> -->
             <div class="form-group">
-				<label class="inline-label" for="Template">Template</label>
-				<select [(ngModel)]="projectInfo.proj.Template" type="Template" class="form-control" name="Template">
-					<option selected>{{projectInfo.proj.Template}}</option>
+				<label class="inline-label" for="template">template</label>
+				<select [(ngModel)]="projectInfo.proj.template" type="template" class="form-control" name="template">
+					<option selected>{{projectInfo.proj.template}}</option>
 					<option value="Y">Y</option>
 					<option value="N">N</option>
 				</select>
 			</div>
 			<div class="form-group">
-				<label class="inline-label" for="Owner">Owner</label>
-				<select [(ngModel)]="projectInfo.proj.Owner" type="Owner" class="form-control" name="Owner">
-					<!-- <option selected>{{projectInfo.proj.Owner}}</option> -->
+				<label class="inline-label" for="owner">owner</label>
+				<select [(ngModel)]="projectInfo.proj.owner" type="owner" class="form-control" name="owner">
+					<!-- <option selected>{{projectInfo.proj.owner}}</option> -->
 					<ng-container *ngFor="let admin of admins">
 						<option [value]="admin.name">{{admin['name']}}</option>
 					</ng-container>
 				</select>
 			</div>
             <!-- <div class="form-group">
-				<label class="inline-label" for="Owner">Owner</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.Owner" type="Owner" class="form-control" name="Owner" placeholder="{{projectInfo.proj.Owner}}">
+				<label class="inline-label" for="owner">owner</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.owner" type="owner" class="form-control" name="owner" placeholder="{{projectInfo.proj.owner}}">
 			</div> -->
             <div class="form-group">
-				<label class="inline-label" for="ProjectStart">Start</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.ProjectStart" type="date" class="form-control" name="ProjectStart" placeholder="{{projectInfo.proj.ProjectStart}}">
+				<label class="inline-label" for="start">Start</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.start" type="date" class="form-control" name="start" placeholder="{{projectInfo.proj.start}}">
 			</div>
             <div class="form-group">
-				<label class="inline-label" for="ProjectEnd">End</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.ProjectEnd" type="date" class="form-control" name="ProjectEnd" placeholder="{{projectInfo.proj.ProjectEnd}}">
+				<label class="inline-label" for="end">End</label>
+				<input required ngModel [(ngModel)]="projectInfo.proj.end" type="date" class="form-control" name="end" placeholder="{{projectInfo.proj.end}}">
 			</div>
 		</div>
 		<div class="split right" style="background-color: white; margin-top: 200px;">

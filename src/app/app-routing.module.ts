@@ -7,6 +7,7 @@ import { PasswordResetScreenComponent } from './password-reset-screen/password-r
 import { UserManagementScreenComponent } from './user-management-screen/user-management-screen.component';
 import { CompanyListScreenComponent } from './company-list-screen/company-list-screen.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { ProjectContentComponent } from './project-content/project-content.component';
 
 const routes: Routes = [{path:'', component: LoginScreenComponent},
                         {path:'app-signup-screen/:id', component: SignupScreenComponent},
@@ -14,7 +15,8 @@ const routes: Routes = [{path:'', component: LoginScreenComponent},
                         {path:'app-password-reset-screen', component: PasswordResetScreenComponent},
                         {path:'app-user-management-screen/:id', component: UserManagementScreenComponent},
                         {path:'app-company-list-screen/:id', component: CompanyListScreenComponent},
-                        {path:'app-project-details/:id/:userid', component: ProjectDetailsComponent}];
+                        {path:'app-project-details/:id/:userid', component: ProjectDetailsComponent},
+                        {path:'app-project-content/:id', component: ProjectContentComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

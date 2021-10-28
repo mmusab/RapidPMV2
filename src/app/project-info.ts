@@ -3,13 +3,14 @@ export class ProjectInfo {
     public proj = 
                      {
                         "project_id":"",
-                        "customer_id":"",
-                        "ProjectTitle":"",
-                        "Template":"",
-                        "Status":"",
-                        "Owner":"",
-                        "ProjectStart":"",
-                        "ProjectEnd":""
+                        "company_id":"",
+                        "project_name":"",
+                        "template":"",
+                        "status":"",
+                        "owner":"",
+                        "start":"",
+                        "end":"",
+                        "hierarchy_id_default":""
                      };
 
 }

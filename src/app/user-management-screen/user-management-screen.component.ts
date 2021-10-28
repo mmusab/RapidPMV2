@@ -24,7 +24,7 @@ export class UserManagementScreenComponent{
     {
       "company_id": "",
       "company_role": "user",
-      "customer_id": "",
+      "user_id": "",
       "email": "-",
       "name": "-",
       "password": "-",
@@ -58,7 +58,7 @@ export class UserManagementScreenComponent{
     // console.log(this.uCustomerInfo.cust);
     this.uCustomerInfo.cust["company_id"] = this.signupCompId;
     this.users[index]["company_id"] = this.signupCompId;
-    this.http.post('http://127.0.0.1:5002/customer', this.users[index]).subscribe((response)=>{
+    this.http.post('http://127.0.0.1:5002/user', this.users[index]).subscribe((response)=>{
       console.log(response)
       this.customerId = (response as any)['message'];
       this.notifierService.notify('success', 'New user has been created/updated');
@@ -104,7 +104,7 @@ export class UserManagementScreenComponent{
     goToProjects(){
       this.http.get('http://127.0.0.1:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
-        this.adminId = this.temp[0]["customer_id"];
+        this.adminId = this.temp[0]["user_id"];
         this.router.navigate(['/app-project-list', this.adminId, "Admin"]);
       });
     }
