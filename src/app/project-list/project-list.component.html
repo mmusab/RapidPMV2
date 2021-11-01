@@ -51,7 +51,10 @@
                                 </mat-menu> 
                             </td>
                             <ng-container *ngFor="let head of projectsHead">
-                                <td>    
+                                <td *ngIf="head === 'project_name'">    
+                                    <a [routerLink]=projectContent(id)>{{project[head]}}</a>
+                                </td>
+                                <td *ngIf="head !== 'project_name'">    
                                     <span>{{project[head]}}</span>
                                 </td>
                             </ng-container>

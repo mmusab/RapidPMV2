@@ -36,26 +36,10 @@ export class ProjectContentComponent implements OnInit {
   
           this.cols = [
             [
-              { field: "Item", header: "Item" },
-              { field: "project_id", header: "project_id" },
-              { field: "ProjectType", header: "ProjectType" },
-              { field: "ProjectTitle", header: "ProjectTitle" },
-              { field: "ProjectDescription", header: "ProjectDescription" },
-              { field: "ProjectStart", header: "ProjectStart" },
-              { field: "ProjectEnd", header: "ProjectEnd" },
-              { field: "customer_id", header: "customer_id" },
-              { field: "CustomerEmail", header: "CustomerEmail" }
+              { field: "Item", header: "Item" }
             ],
             [
-              { field: "node", header: "node" },
-              { field: "1", header: "1" },
-              { field: "2", header: "2" },
-              { field: "3", header: "3" },
-              { field: "4", header: "4" },
-              { field: "5", header: "5" },
-              { field: "6", header: "6" },
-              { field: "7", header: "7" },
-              { field: "8", header: "8" }
+              { field: "node", header: "node" }
             ],
             [
               { field: "node", header: "node" },
@@ -80,5 +64,8 @@ export class ProjectContentComponent implements OnInit {
             ]
           ];
       }
+      // getChildren():any {
+      //   console.log("inside get children")
+      // }
 
 }
