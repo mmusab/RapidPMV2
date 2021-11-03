@@ -243,6 +243,6 @@ export class ProjectListComponent{
     location.reload();
   }
   projectContent(index: string | number){
-    return "/app-project-content/" + this.projects[index]['project_id']
+    return "/app-project-content/" + this.projects[index]['project_id'] + '/' + this.id
   }
 }

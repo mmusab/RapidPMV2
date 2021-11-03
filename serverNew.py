@@ -287,222 +287,71 @@ def getArtefacts(projectId):
   print(result)
   return jsonify(result)
 
-# @app.route('/getprojectTree/<customerId>', methods=['GET', 'POST'])
-# def getprojectTree(customerId):
-#   sql = "SELECT * FROM RPMnew_dataBase.project WHERE user_id = '" + customerId + "';"
-#   mycursor.execute(sql)
-#   project = mycursor.fetchall()
-#   projJson = []
-#   for p in project:
-#     temp = {}
-#     data = {}
-#     data["1"] = p[0]
-#     data["2"] = p[1]
-#     data["3"] = p[2]
-#     data["4"] = p[3]
-#     data["5"] = p[4]
-#     data["6"] = p[5]
-#     data["7"] = p[6]
-#     data["8"] = p[7]
-#     data["node"] = "project"
-#     temp["data"] = data
-#     sql = "SELECT * FROM RPMnew_dataBase.stages WHERE project_id = '" + str(p[0]) + "';"
-#     mycursor.execute(sql)
-#     stages = mycursor.fetchall()
-#     stgJson = []
-#     for s in stages:
-#       temp2 = {}
-#       data = {}
-#       data['1'] = str(s[0])
-#       data['2'] = str(s[1])
-#       data['3'] = str(s[2])
-#       data['4'] = str(s[3])
-#       data['5'] = str(s[4])
-#       data['6'] = str(s[5])
-#       data['7'] = str(s[6])
-#       data["node"] = "stage"
-#       temp2["data"] = data
-#
-#       sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE stage_id = '" + str(s[0]) + "';"
-#       mycursor.execute(sql)
-#       artefacts = mycursor.fetchall()
-#       artJson = []
-#       for a in artefacts:
-#         temp3 = {}
-#         data = {}
-#         data['1'] = str(a[0])
-#         data['2'] = str(a[1])
-#         data['3'] = str(a[2])
-#         data['4'] = str(a[3])
-#         data['5'] = str(a[4])
-#         data['6'] = str(a[5])
-#         data['7'] = str(a[6])
-#         data['8'] = str(a[7])
-#         data["node"] = "artifact"
-#
-#         temp3["data"] = data
-#         artJson.append(temp3)
-#       temp2["children"] = artJson
-#       stgJson.append(temp2)
-#     temp["children"] = stgJson
-#     projJson.append(temp)
-#   print(projJson)
-#   return jsonify(projJson)
-
+def recursive(projId,c):
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projId + "' and parent_container_id = '" + str(c) + "';"
+  mycursor.execute(sql)
+  containers = mycursor.fetchall()
+  jsn = []
+  if(containers):
+    for cont in containers:
+      temp = {}
+      childJson = []
+      data = {}
+      data['id'] = cont[0]
+      data['node'] = cont[1]
+      temp["data"] = data
+      sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(cont[0]) + "';"
+      mycursor.execute(sql)
+      artefacts = mycursor.fetchall()
+      for a in artefacts:
+        temp2 = {}
+        data = {}
+        data['id'] = str(a[0])
+        data['node'] = str(a[3])
+        temp2["data"] = data
+        childJson.append(temp2)
+      result = recursive(projId,cont[0])
+      if (result):
+        for r in result:
+          childJson.append(r)
+        temp["children"] = childJson
+      elif (childJson):
+        temp["children"] = childJson
+      jsn.append(temp)
+    return jsn
+  else:
+    return jsn
 @app.route('/getprojectTree/<projectId>', methods=['GET', 'POST'])
 def getprojectTree(projectId):
   sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projectId + "' and parent_container_id IS NULL;"
   mycursor.execute(sql)
   pcontainers = mycursor.fetchall()
   contJson = []
-  parentList = []
-  childrenList = [0, 1]
-  tempc = []
-  tempParent = []
-  children = []
-  # tp = tempParent.copy()
-  tempParent.append([])
-  tp = tempParent[0]
   for idx, pc in enumerate(pcontainers):
-    sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projectId + "' and parent_container_id = '" + str(
-      pc[0]) + "';"
-    mycursor.execute(sql)
-    containers = mycursor.fetchall()
-    children.append(containers.copy())
-    sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(
-      pc[0]) + "';"
+    temp = {}
+    childJson = []
+    data = {}
+    data['id'] = pc[0]
+    data['node'] = pc[1]
+    temp["data"] = data
+    sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(pc[0]) + "';"
     mycursor.execute(sql)
     artefacts = mycursor.fetchall()
-    temp = {}
-    data = {}
-    data["1"] = pc[0]
-    data["2"] = pc[1]
-    data["3"] = pc[2]
-    data["4"] = pc[3]
-    data["5"] = pc[4]
-    data["node"] = "container"
-    temp["data"] = data
-    childJson = []
     for a in artefacts:
       temp2 = {}
       data = {}
-      data['1'] = str(a[0])
-      data['2'] = str(a[1])
-      data['3'] = str(a[2])
-      data['4'] = str(a[3])
-      data['5'] = str(a[4])
-      data['6'] = str(a[5])
-      data['7'] = str(a[6])
-      data['8'] = str(a[7])
-      data['9'] = str(a[8])
-      data['10'] = str(a[9])
-      data['11'] = str(a[10])
-      data['12'] = str(a[11])
-      data["node"] = "artefact"
+      data['id'] = str(a[0])
+      data['node'] = str(a[3])
       temp2["data"] = data
       childJson.append(temp2)
-    for c in containers:
-      # temp2 = {}
-      tempc.append({})
-      tempc[-1]
-      data = {}
-      data["container_id"] = c[0]
-      data["container_title"] = c[1]
-      data["project_id"] = c[2]
-      data["heirarchy_id"] = c[3]
-      data["parent_container_id"] = c[4]
-      data["node"] = "container"
-      tempc[-1]["data"] = data
-      tempc[-1]["children"] = []
-      tempParent[0].append(tempc[-1]["children"])
-      childJson.append(tempc[-1])
-    temp["children"] = childJson
+    result = recursive(projectId, pc[0])
+    if(result):
+      for r in result:
+        childJson.append(r)
+      temp["children"] = childJson
+    elif(childJson):
+      temp["children"] = childJson
     contJson.append(temp)
-    # tp[idx].append(temp)
-    # normalized = pd.DataFrame(contJson)
-    # normalized = pd.Index(normalized)
-    # inexes = normalized.get_loc('children')
-    # .json_normalize(contJson, record_path=['children'])
-    # print(normalized)
-  pcontainers = children.copy()
-
-
-
-
-  # sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projectId + "' and parent_container_id IS NULL;"
-  # mycursor.execute(sql)
-  # pcontainers = mycursor.fetchall()
-  # contJson = []
-  # parentList = []
-  # childrenList = [0,1]
-  # tempc = []
-  # tempParent = []
-  while(pcontainers[0]):
-    children = []
-    # tp = tempParent.copy()
-    tempParent.append([])
-    tp = tempParent[-2]
-    for idx,pc in enumerate(pcontainers):
-      pc=pc[0]
-      sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projectId + "' and parent_container_id = '" + str(pc[0]) + "';"
-      mycursor.execute(sql)
-      containers = mycursor.fetchall()
-      children.append(containers.copy())
-      sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(pc[0]) + "';"
-      mycursor.execute(sql)
-      artefacts = mycursor.fetchall()
-      temp = {}
-      # data = {}
-      # data["1"] = pc[0]
-      # data["2"] = pc[1]
-      # data["3"] = pc[2]
-      # data["4"] = pc[3]
-      # data["5"] = pc[4]
-      # data["node"] = "container"
-      # temp["data"] = data
-      childJson = []
-      for a in artefacts:
-        temp2 = {}
-        data = {}
-        data['1'] = str(a[0])
-        data['2'] = str(a[1])
-        data['3'] = str(a[2])
-        data['4'] = str(a[3])
-        data['5'] = str(a[4])
-        data['6'] = str(a[5])
-        data['7'] = str(a[6])
-        data['8'] = str(a[7])
-        data['9'] = str(a[8])
-        data['10'] = str(a[9])
-        data['11'] = str(a[10])
-        data['12'] = str(a[11])
-        data["node"] = "artefact"
-        temp2["data"] = data
-        childJson.append(temp2)
-      for c in containers:
-        # temp2 = {}
-        tempc.append({})
-        tempc[-1]
-        data = {}
-        data["container_id"] = c[0]
-        data["container_title"] = c[1]
-        data["project_id"] = c[2]
-        data["heirarchy_id"] = c[3]
-        data["parent_container_id"] = c[4]
-        data["node"] = "container"
-        tempc[-1]["data"] = data
-        tempc[-1]["children"] = []
-        tempParent[-1].append(tempc[-1]["children"])
-        childJson.append(tempc[-1])
-      # temp["children"] = childJson
-      # contJson.append(temp)
-      tp[idx].append(childJson)
-      # normalized = pd.DataFrame(contJson)
-      # normalized = pd.Index(normalized)
-      # inexes = normalized.get_loc('children')
-      # .json_normalize(contJson, record_path=['children'])
-      # print(normalized)
-    pcontainers = children.copy()
   return jsonify(contJson)
 
-app.run(host='0.0.0.0', port=5002, debug=True)
+# app.run(host='0.0.0.0', port=5002, debug=True)

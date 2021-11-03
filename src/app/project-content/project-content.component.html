@@ -1,17 +1,147 @@
-<p-treeTable [value]="files" [columns]="cols[0]">
-    <ng-template pTemplate="header" let-columns>
-         <tr>
-             <th style="background-color:gainsboro" *ngFor="let col of columns">
-                 {{col.header}}
-             </th>
-         </tr>
-     </ng-template>
-     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-         <tr>
-               <td style="background-color:beige;" icon="pi pi-search" *ngFor="let col of cols[1]; let i = index">
-                   <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                   {{rowData[col.field]}}
-               </td>
-         </tr>            
-     </ng-template>
-   </p-treeTable>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<title>RPM Registration Form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<style>
+	body {
+		color: #fff;
+		/* background: #63738a; */
+		font-family: 'Roboto', sans-serif;
+	}
+    .form-control{
+		height: 40px;
+		box-shadow: none;
+		color: #969fa4;
+		width: 70%;
+		margin-left: 30%;
+	}
+	.form-control:focus{
+		border-color: #5cb85c;
+	}
+    .form-control, .btn{        
+        border-radius: 3px;
+    }
+	.signup-form{
+		width: 80%;
+		margin: 0 auto;
+		padding: 30px 0;
+		position: relative;
+		background-color: white;
+	}
+	.signup-form h2{
+		color: #636363;
+        margin: 0 0 15px;
+		position: relative;
+		text-align: center;
+    }
+	.signup-form h2:before, .signup-form h2:after{
+		content: "";
+		height: 2px;
+		width: 30%;
+		background: #d4d4d4;
+		position: absolute;
+		top: 50%;
+		z-index: 2;
+	}	
+	.signup-form h2:before{
+		left: 0;
+	}
+	.signup-form h2:after{
+		right: 0;
+	}
+    .signup-form .hint-text{
+		color: #999;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+    .signup-form form{
+		color: #999;
+		border-radius: 3px;
+    	margin-bottom: 15px;
+        background: white;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+	.signup-form .form-group{
+		margin-bottom: 20px;
+	}
+	.signup-form input[type="checkbox"]{
+		margin-top: 3px;
+	}
+	.signup-form .btn{        
+        font-size: 16px;
+        font-weight: bold;		
+		min-width: 140px;
+        outline: none !important;
+    }
+	.signup-form .row div:first-child{
+		padding-right: 10px;
+	}
+	.signup-form .row div:last-child{
+		padding-left: 10px;
+	}    	
+    .signup-form a{
+		color: #fff;
+		text-decoration: underline;
+	}
+    .signup-form a:hover{
+		text-decoration: none;
+	}
+	.signup-form form a{
+		color: #5cb85c;
+		text-decoration: none;
+	}	
+	.signup-form form a:hover{
+		text-decoration: underline;
+	}  
+</style>
+</head>
+<body>
+    <notifier-container></notifier-container>
+    <h2 style="vertical-align:auto; text-align: center; color: maroon;">Project Contents</h2>
+    <div style="margin-left: 10%; margin-right: 10%;">
+        <div style="float: left;">
+            <h3 style="color: black;">Company: {{companyName}}</h3><br>
+            <h3 style="color: black;">Project: {{projectName}}</h3><br>
+            <h3 style="color: black;">Structure: </h3>
+        </div>
+        <div style="float: right;">
+            <button class="btn btn-secondary btn-block">Cancel</button>
+            <form style="margin-top: 40%;" id="form"> 
+                <input style="color: black;" type="search" id="query" name="q" placeholder="Search...">
+                <button style="color: black;">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="split" id="c1" style="overflow: auto; max-height: 400px; margin-top: 20%;">
+        <div style="width: 50%;">
+            <p-treeTable [value]="files" [columns]="cols[0]">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="background-color:gainsboro" *ngFor="let col of columns">
+                            {{col.header}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                    <tr>
+                        <td style="background-color:beige;" icon="pi pi-search" *ngFor="let col of cols[1]; let i = index">
+                            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                            {{rowData[col.field]}}
+                        </td>
+                    </tr>            
+                </ng-template>
+            </p-treeTable>
+        </div>
+    </div>
+    
+</body>
+</html>
