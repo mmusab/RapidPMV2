@@ -18,25 +18,25 @@ export class ProjectContentComponent implements OnInit {
       companyName = ""
       temp:any;
       // map = {"project":0,"container":1,"artefact":2}
-  
+
       constructor(private http: HttpClient, private route : ActivatedRoute) {
        }
-  
+
       ngOnInit() {
           this.sub = this.route.params.subscribe(params => {
           this.projectId = params['id'];
           this.userId = params['uid'];
-          this.http.get('http://127.0.0.1:5002/getProject/' + this.projectId).subscribe((response)=>{
+          this.http.get('http://82.69.10.205:5002/getProject/' + this.projectId).subscribe((response)=>{
             this.temp = response as JSON
             this.projectName = this.temp[0]['project_name']
-            this.http.get('http://127.0.0.1:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
+            this.http.get('http://82.69.10.205:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
               this.temp = response as JSON;
               this.companyName = this.temp[0]['company_name']
             });
           });
        });
           // this.nodeService.getFilesystem().then(files => this.files = files);
-          this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId).subscribe((response)=>{
+          this.http.get('http://82.69.10.205:5002/getprojectTree/' + this.projectId).subscribe((response)=>{
           // console.log(response as JSON)
           // let temp = response as JSON;
           this.files = response as TreeNode[];
@@ -46,7 +46,7 @@ export class ProjectContentComponent implements OnInit {
           // console.log(hello)
           // this.dataSource.data = this.files;
           });
-  
+
           this.cols = [
             [
               // { field: "ID", header: "ID" },
