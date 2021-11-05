@@ -7,7 +7,6 @@ from flask_restful import Resource, Api
 from json import dumps
 from flask_jsonpify import jsonify
 import json
-import pandas as pd
 app = Flask(__name__)
 # api = Api(app)
 CORS(app)
