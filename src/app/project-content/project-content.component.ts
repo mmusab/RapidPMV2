@@ -16,6 +16,9 @@ export class ProjectContentComponent implements OnInit {
       userId = ""
       projectName = ""
       companyName = ""
+      projectDefaultHeirarchy = ""
+      selectedHeirarchy = ""
+      heirarchyList:any
       temp:any;
       // map = {"project":0,"container":1,"artefact":2}
 
@@ -26,17 +29,27 @@ export class ProjectContentComponent implements OnInit {
           this.sub = this.route.params.subscribe(params => {
           this.projectId = params['id'];
           this.userId = params['uid'];
-          this.http.get('http://82.69.10.205:5002/getProject/' + this.projectId).subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/getProject/' + this.projectId).subscribe((response)=>{
             this.temp = response as JSON
             this.projectName = this.temp[0]['project_name']
-            this.http.get('http://82.69.10.205:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
+            this.projectDefaultHeirarchy = this.temp[0]['hierarchy_id_default']
+            this.http.get('http://127.0.0.1:5002/getHeirarchyList').subscribe((response)=>{
+              this.heirarchyList = response as JSON;
+              for(let h of this.heirarchyList){
+                if(h['hierarchy_id'] == this.projectDefaultHeirarchy){
+                  this.projectDefaultHeirarchy = h['hierarchy_name']
+                  this.selectedHeirarchy = h['hierarchy_name']
+                }
+              }
+            });
+            this.http.get('http://127.0.0.1:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
               this.temp = response as JSON;
               this.companyName = this.temp[0]['company_name']
             });
           });
        });
           // this.nodeService.getFilesystem().then(files => this.files = files);
-          this.http.get('http://82.69.10.205:5002/getprojectTree/' + this.projectId).subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId).subscribe((response)=>{
           // console.log(response as JSON)
           // let temp = response as JSON;
           this.files = response as TreeNode[];
@@ -50,11 +63,17 @@ export class ProjectContentComponent implements OnInit {
           this.cols = [
             [
               // { field: "ID", header: "ID" },
-              { field: "Item", header: "Item" }
+              { field: "Project Item", header: "Project Item" },
+              { field: "ArtefactType", header: "Project Item" },
+              { field: "Status", header: "Status" },
+              { field: "Owner", header: "Owner" }
             ],
             [
               // { field: "id", header: "id" },
-              { field: "node", header: "node" }
+              { field: "node", header: "node" },
+              { field: "artefact_type", header: "artefact_typee" },
+              { field: "status", header: "status" },
+              { field: "artefact_owner", header: "artefact_owner" }
             ],
             [
               { field: "node", header: "node" },

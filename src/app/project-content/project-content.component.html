@@ -111,18 +111,32 @@
         <div style="float: left;">
             <h3 style="color: black;">Company: {{companyName}}</h3><br>
             <h3 style="color: black;">Project: {{projectName}}</h3><br>
-            <h3 style="color: black;">Structure: </h3>
+            <!-- <h3 style="color: black;">Heirarchy: {{projectDefaultHeirarchy}}</h3> -->
+			<!-- <form style="color: black;"> -->
+				<mat-label class="inline-label" style="color: black;">Heirarchy</mat-label>
+				<mat-form-field appearance="fill">
+				  <mat-select placeholder={{selectedHeirarchy}} [(ngModel)]="selectedHeirarchy" name="heirarchy">
+					<mat-option *ngFor="let h of heirarchyList" [value]="h.hierarchy_id">
+					  {{h.hierarchy_name}}
+					</mat-option>
+				  </mat-select>
+				</mat-form-field>
+			<!-- </form> -->
         </div>
         <div style="float: right;">
             <button class="btn btn-secondary btn-block">Cancel</button>
-            <form style="margin-top: 40%;" id="form"> 
+            <form style="margin-top: 38%;" id="form">
+				<button style="size: 5px;">
+					<mat-icon class="text-success">add</mat-icon>
+				</button>
+				<div class="divider"></div>
                 <input style="color: black;" type="search" id="query" name="q" placeholder="Search...">
                 <button style="color: black;">Search</button>
             </form>
         </div>
     </div>
-    <div class="split" id="c1" style="overflow: auto; max-height: 400px; margin-top: 20%;">
-        <div style="width: 50%;">
+    <div id="c1" style="overflow: auto; max-height: 400px; margin-top: 12%; margin-left: 10%; margin-right: 10%;">
+        <div>
             <p-treeTable [value]="files" [columns]="cols[0]">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
@@ -135,7 +149,31 @@
                     <tr>
                         <td style="background-color:beige;" icon="pi pi-search" *ngFor="let col of cols[1]; let i = index">
                             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                            {{rowData[col.field]}}
+							<button *ngIf="i == 0" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+								<mat-icon>more_vert</mat-icon>
+							</button>
+							<mat-menu #menu="matMenu">
+								<button mat-menu-item>
+									<mat-icon>update</mat-icon>
+									<span>record details update screen</span>
+								</button>
+								<button mat-menu-item>
+									<mat-icon>file_copy</mat-icon>
+									<span>copy</span>
+									</button>
+								<button mat-menu-item>
+									<mat-icon>move_to_inbox</mat-icon>
+									<span>move</span>
+								</button>
+								<button mat-menu-item>
+									<mat-icon>remove</mat-icon>
+									<span>delete</span>
+								</button>
+							</mat-menu>
+							<a *ngIf="i == 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</a>
+							<span *ngIf="i == 0 && rowData[cols[1][2].field] == ''">{{rowData[col.field]}}</span>
+							<span *ngIf="i != 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</span>
+                            <!-- {{rowData[col.field]}} -->
                         </td>
                     </tr>            
                 </ng-template>

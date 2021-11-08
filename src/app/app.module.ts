@@ -8,6 +8,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTreeModule} from '@angular/material/tree';
+import {MatSelectModule} from '@angular/material/select';
 import {TreeTableModule} from 'primeng/treetable';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
@@ -66,7 +67,8 @@ import { ProjectContentComponent } from './project-content/project-content.compo
     InputTextModule,
     ToastModule,
     ContextMenuModule,
-    TreeTableModule
+    TreeTableModule,
+    MatSelectModule
   ],
   providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo],
   bootstrap: [AppComponent]

@@ -286,6 +286,16 @@ def getArtefacts(projectId):
   print(result)
   return jsonify(result)
 
+@app.route('/getHeirarchyList', methods=['GET', 'POST'])
+def getHeirarchyList():
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_list;"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  row_headers = [x[0] for x in mycursor.description]
+  result = [dict(zip(row_headers, res)) for res in result]
+  print(result)
+  return jsonify(result)
+
 def recursive(projId,c):
   sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projId + "' and parent_container_id = '" + str(c) + "';"
   mycursor.execute(sql)
@@ -298,6 +308,9 @@ def recursive(projId,c):
       data = {}
       data['id'] = cont[0]
       data['node'] = cont[1]
+      data['artefact_type'] = ""
+      data['status'] = ""
+      data['artefact_owner'] = ""
       temp["data"] = data
       sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(cont[0]) + "';"
       mycursor.execute(sql)
@@ -307,6 +320,9 @@ def recursive(projId,c):
         data = {}
         data['id'] = str(a[0])
         data['node'] = str(a[3])
+        data['artefact_type'] = str(a[1])
+        data['status'] = str(a[5])
+        data['artefact_owner'] = str(a[2])
         temp2["data"] = data
         childJson.append(temp2)
       result = recursive(projId,cont[0])
@@ -332,6 +348,9 @@ def getprojectTree(projectId):
     data = {}
     data['id'] = pc[0]
     data['node'] = pc[1]
+    data['artefact_type'] = ""
+    data['status'] = ""
+    data['artefact_owner'] = ""
     temp["data"] = data
     sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(pc[0]) + "';"
     mycursor.execute(sql)
@@ -341,6 +360,9 @@ def getprojectTree(projectId):
       data = {}
       data['id'] = str(a[0])
       data['node'] = str(a[3])
+      data['artefact_type'] = str(a[1])
+      data['status'] = str(a[5])
+      data['artefact_owner'] = str(a[2])
       temp2["data"] = data
       childJson.append(temp2)
     result = recursive(projectId, pc[0])
