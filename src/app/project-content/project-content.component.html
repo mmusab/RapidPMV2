@@ -135,7 +135,7 @@
             </form>
         </div>
     </div>
-    <div id="c1" style="overflow: auto; max-height: 400px; margin-top: 12%; margin-left: 10%; margin-right: 10%;">
+    <div id="c1" style="overflow: auto; max-height: 400px; margin-top: 18%; margin-left: 10%; margin-right: 10%;">
         <div>
             <p-treeTable [value]="files" [columns]="cols[0]">
                 <ng-template pTemplate="header" let-columns>
@@ -149,7 +149,7 @@
                     <tr>
                         <td style="background-color:beige;" icon="pi pi-search" *ngFor="let col of cols[1]; let i = index">
                             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-							<button *ngIf="i == 0" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+							<button *ngIf="i == 0 && rowData[cols[1][2].field] == ''" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
 								<mat-icon>more_vert</mat-icon>
 							</button>
 							<mat-menu #menu="matMenu">
@@ -157,19 +157,38 @@
 									<mat-icon>update</mat-icon>
 									<span>record details update screen</span>
 								</button>
-								<button mat-menu-item>
+								<button [matMenuTriggerFor]="menu3" mat-menu-item>
 									<mat-icon>file_copy</mat-icon>
 									<span>copy</span>
-									</button>
-								<button mat-menu-item>
+								</button>
+								<button [matMenuTriggerFor]="menu2" mat-menu-item>
 									<mat-icon>move_to_inbox</mat-icon>
 									<span>move</span>
 								</button>
-								<button mat-menu-item>
+								<button (click)=delete(rowData) mat-menu-item>
 									<mat-icon>remove</mat-icon>
 									<span>delete</span>
 								</button>
 							</mat-menu>
+
+							<mat-menu #menu2="matMenu">
+								<ng-container *ngFor="let con of containerList; let c = index">
+								<button mat-menu-item (click)=move(con,rowData)>
+									<!-- <mat-icon>{{con}}</mat-icon> -->
+									<span>{{con}}</span>
+								</button>
+								</ng-container>
+							</mat-menu>
+
+							<mat-menu #menu3="matMenu">
+								<ng-container *ngFor="let con of containerList; let c = index">
+								<button mat-menu-item (click)=copy(con,rowData)>
+									<!-- <mat-icon>{{con}}</mat-icon> -->
+									<span>{{con}}</span>
+								</button>
+								</ng-container>
+							</mat-menu>
+
 							<a *ngIf="i == 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</a>
 							<span *ngIf="i == 0 && rowData[cols[1][2].field] == ''">{{rowData[col.field]}}</span>
 							<span *ngIf="i != 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</span>

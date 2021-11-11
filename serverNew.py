@@ -296,6 +296,104 @@ def getHeirarchyList():
   print(result)
   return jsonify(result)
 
+@app.route('/getContainers/<heirarchyId>', methods=['GET', 'POST'])
+def getContainers(heirarchyId):
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container where hierarchy_id = '" + heirarchyId + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  row_headers = [x[0] for x in mycursor.description]
+  result = [dict(zip(row_headers, res)) for res in result]
+  print(result)
+  return jsonify(result)
+
+@app.route('/moveContainer/<contId>/<pContId>', methods=['GET', 'POST'])
+def moveContainer(contId,pContId):
+  sql = "UPDATE hierarchy_container SET parent_container_id = '" + str(pContId) + "' WHERE container_id = '" + str(contId) + "';"
+  mycursor.execute(sql)
+  mydb.commit()
+  customerId = {"message": "success"}
+  return jsonify(customerId)
+
+def copyRecursive(hostId,destId):
+  sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(hostId) + "';"
+  mycursor.execute(sql)
+  artefacts = mycursor.fetchall()
+  for a in artefacts:
+    sql = "INSERT INTO artefact (artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template) SELECT artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template FROM artefact WHERE artefact_id = '" + str(
+      a[0]) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    artId = mycursor.lastrowid
+    val = (destId, artId)
+    sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
+    mycursor.execute(sql, val)
+    mydb.commit()
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container where parent_container_id = '" + str(hostId) + "';"
+  mycursor.execute(sql)
+  containers = mycursor.fetchall()
+  for c in containers:
+    sql = "INSERT INTO hierarchy_container (container_title, project_id, hierarchy_id, parent_container_id) SELECT container_title, project_id, hierarchy_id, '" + str(
+      destId) + "' FROM hierarchy_container WHERE container_id = '" + str(c[0]) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    destId = mycursor.lastrowid
+    hostId = c[0]
+    copyRecursive(hostId, destId)
+
+
+@app.route('/copyContainer/<contId>/<pContId>', methods=['GET', 'POST'])
+def copyContainer(contId,pContId):
+  sql = "INSERT INTO hierarchy_container (container_title, project_id, hierarchy_id, parent_container_id) SELECT container_title, project_id, hierarchy_id, '" + str(pContId) + "' FROM hierarchy_container WHERE container_id = '" + str(contId) + "';"
+  mycursor.execute(sql)
+  mydb.commit()
+  destId = mycursor.lastrowid
+  hostId = contId
+
+  copyRecursive(hostId, destId)
+  # sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(contId) + "';"
+  # mycursor.execute(sql)
+  # artefacts = mycursor.fetchall()
+  # for a in artefacts:
+  #   sql = "INSERT INTO artefact (artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template) SELECT artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template FROM artefact WHERE artefact_id = '" + str(a[0]) + "';"
+  #   mycursor.execute(sql)
+  #   mydb.commit()
+  #   artId = mycursor.lastrowid
+  #   val = (destId, artId)
+  #   sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
+  #   mycursor.execute(sql, val)
+  #   mydb.commit()
+  # copyRecursive(hostId,destId)
+  customerId = {"message": "success"}
+  return jsonify(customerId)
+
+def deleteRecursive(contId):
+  sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(
+    contId) + "';"
+  mycursor.execute(sql)
+  artefacts = mycursor.fetchall()
+  for a in artefacts:
+    sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(a[0]) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    sql = "DELETE FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + str(a[0]) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container where parent_container_id = '" + str(contId) + "';"
+  mycursor.execute(sql)
+  containers = mycursor.fetchall()
+  if(containers):
+    for c in containers:
+      deleteRecursive(c[0])
+  sql = "DELETE FROM RPMnew_dataBase.hierarchy_container WHERE container_id = '" + str(contId) + "';"
+  mycursor.execute(sql)
+  mydb.commit()
+
+@app.route('/deleteContainer/<contId>', methods=['GET', 'POST'])
+def deleteContainer(contId):
+  deleteRecursive(contId)
+  customerId = {"message": "success"}
+  return jsonify(customerId)
+
 def recursive(projId,c):
   sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projId + "' and parent_container_id = '" + str(c) + "';"
   mycursor.execute(sql)

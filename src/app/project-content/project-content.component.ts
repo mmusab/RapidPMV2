@@ -18,8 +18,10 @@ export class ProjectContentComponent implements OnInit {
       companyName = ""
       projectDefaultHeirarchy = ""
       selectedHeirarchy = ""
+      selectedHeirarchyId = ""
       heirarchyList:any
       temp:any;
+      containerList: any[] = []
       // map = {"project":0,"container":1,"artefact":2}
 
       constructor(private http: HttpClient, private route : ActivatedRoute) {
@@ -39,8 +41,15 @@ export class ProjectContentComponent implements OnInit {
                 if(h['hierarchy_id'] == this.projectDefaultHeirarchy){
                   this.projectDefaultHeirarchy = h['hierarchy_name']
                   this.selectedHeirarchy = h['hierarchy_name']
+                  this.selectedHeirarchyId = h['hierarchy_id']
                 }
               }
+              this.http.get('http://127.0.0.1:5002/getContainers/' + this.selectedHeirarchyId).subscribe((response)=>{
+                this.temp = response as JSON;
+                for(let c of this.temp){
+                  this.containerList.push(c['container_id'] + "-" + c['container_title'])
+                }
+              });
             });
             this.http.get('http://127.0.0.1:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
               this.temp = response as JSON;
@@ -98,8 +107,19 @@ export class ProjectContentComponent implements OnInit {
             ]
           ];
       }
-      // getChildren():any {
-      //   console.log("inside get children")
-      // }
-
+    move(pCont: string,cont: any){
+      this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/" + pCont.split('-')[0]).subscribe((response)=>{
+        location.reload()
+      });
+    }
+    copy(pCont: string,cont: any){
+      this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/" + pCont.split('-')[0]).subscribe((response)=>{
+        location.reload()
+      });
+    }
+    delete(cont: any){
+      this.http.get('http://127.0.0.1:5002/deleteContainer/' + cont['id']).subscribe((response)=>{
+        location.reload()
+      });
+    }
 }
