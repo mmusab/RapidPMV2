@@ -149,7 +149,7 @@
                     <tr>
                         <td style="background-color:beige;" icon="pi pi-search" *ngFor="let col of cols[1]; let i = index">
                             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-							<button *ngIf="i == 0 && rowData[cols[1][2].field] == ''" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+							<button *ngIf="i == 1" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
 								<mat-icon>more_vert</mat-icon>
 							</button>
 							<mat-menu #menu="matMenu">

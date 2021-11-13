@@ -73,14 +73,16 @@ export class ProjectContentComponent implements OnInit {
             [
               // { field: "ID", header: "ID" },
               { field: "Project Item", header: "Project Item" },
-              { field: "ArtefactType", header: "Project Item" },
+              { field: " ", header: " " },
+              { field: "ArtefactType", header: "ArtefactType" },
               { field: "Status", header: "Status" },
               { field: "Owner", header: "Owner" }
             ],
             [
               // { field: "id", header: "id" },
               { field: "node", header: "node" },
-              { field: "artefact_type", header: "artefact_typee" },
+              { field: " ", header: " " },
+              { field: "artefact_type", header: "artefact_type" },
               { field: "status", header: "status" },
               { field: "artefact_owner", header: "artefact_owner" }
             ],
@@ -108,17 +110,31 @@ export class ProjectContentComponent implements OnInit {
           ];
       }
     move(pCont: string,cont: any){
-      this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/" + pCont.split('-')[0]).subscribe((response)=>{
+      if(cont['artefact_type'] == ""){
+        this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
       });
+      }
+      else{
+        this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
+        location.reload()
+        });
+      }
     }
     copy(pCont: string,cont: any){
-      this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/" + pCont.split('-')[0]).subscribe((response)=>{
+      if(cont['artefact_type'] == ""){
+        this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
       });
+      }
+      else{
+        this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
+        location.reload()
+        });
+      }
     }
     delete(cont: any){
-      this.http.get('http://127.0.0.1:5002/deleteContainer/' + cont['id']).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/deleteContainer/' + cont['id'] + "/artefact").subscribe((response)=>{
         location.reload()
       });
     }

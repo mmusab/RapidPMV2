@@ -306,11 +306,17 @@ def getContainers(heirarchyId):
   print(result)
   return jsonify(result)
 
-@app.route('/moveContainer/<contId>/<pContId>', methods=['GET', 'POST'])
-def moveContainer(contId,pContId):
-  sql = "UPDATE hierarchy_container SET parent_container_id = '" + str(pContId) + "' WHERE container_id = '" + str(contId) + "';"
-  mycursor.execute(sql)
-  mydb.commit()
+@app.route('/moveContainer/<contId>/<type>/<pContId>', methods=['GET', 'POST'])
+def moveContainer(contId,type,pContId):
+  if(type == "container"):
+    sql = "UPDATE hierarchy_container SET parent_container_id = '" + str(pContId) + "' WHERE container_id = '" + str(contId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+  else:
+    sql = "UPDATE container_artefact_link SET container_id = '" + str(pContId) + "' WHERE artefact_id = '" + str(
+      contId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
   customerId = {"message": "success"}
   return jsonify(customerId)
 
@@ -341,28 +347,26 @@ def copyRecursive(hostId,destId):
     copyRecursive(hostId, destId)
 
 
-@app.route('/copyContainer/<contId>/<pContId>', methods=['GET', 'POST'])
-def copyContainer(contId,pContId):
-  sql = "INSERT INTO hierarchy_container (container_title, project_id, hierarchy_id, parent_container_id) SELECT container_title, project_id, hierarchy_id, '" + str(pContId) + "' FROM hierarchy_container WHERE container_id = '" + str(contId) + "';"
-  mycursor.execute(sql)
-  mydb.commit()
-  destId = mycursor.lastrowid
-  hostId = contId
+@app.route('/copyContainer/<contId>/<type>/<pContId>', methods=['GET', 'POST'])
+def copyContainer(contId,type,pContId):
+  if(type == "container"):
+    sql = "INSERT INTO hierarchy_container (container_title, project_id, hierarchy_id, parent_container_id) SELECT container_title, project_id, hierarchy_id, '" + str(pContId) + "' FROM hierarchy_container WHERE container_id = '" + str(contId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    destId = mycursor.lastrowid
+    hostId = contId
 
-  copyRecursive(hostId, destId)
-  # sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(contId) + "';"
-  # mycursor.execute(sql)
-  # artefacts = mycursor.fetchall()
-  # for a in artefacts:
-  #   sql = "INSERT INTO artefact (artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template) SELECT artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template FROM artefact WHERE artefact_id = '" + str(a[0]) + "';"
-  #   mycursor.execute(sql)
-  #   mydb.commit()
-  #   artId = mycursor.lastrowid
-  #   val = (destId, artId)
-  #   sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
-  #   mycursor.execute(sql, val)
-  #   mydb.commit()
-  # copyRecursive(hostId,destId)
+    copyRecursive(hostId, destId)
+  else:
+    sql = "INSERT INTO artefact (artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template) SELECT artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template FROM artefact WHERE artefact_id = '" + str(
+      contId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    artId = mycursor.lastrowid
+    val = (pContId, artId)
+    sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
+    mycursor.execute(sql, val)
+    mydb.commit()
   customerId = {"message": "success"}
   return jsonify(customerId)
 
@@ -388,9 +392,17 @@ def deleteRecursive(contId):
   mycursor.execute(sql)
   mydb.commit()
 
-@app.route('/deleteContainer/<contId>', methods=['GET', 'POST'])
-def deleteContainer(contId):
-  deleteRecursive(contId)
+@app.route('/deleteContainer/<contId>/<type>', methods=['GET', 'POST'])
+def deleteContainer(contId, type):
+  if(type == "container"):
+    deleteRecursive(contId)
+  else:
+    sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(contId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    sql = "DELETE FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + str(contId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
   customerId = {"message": "success"}
   return jsonify(customerId)
 
