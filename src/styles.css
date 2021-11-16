@@ -89,3 +89,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height:auto;
     display:inline-block;
 }
+.mydivoutermulti:hover .buttonoverlapmulti{ 
+	display:block;
+}

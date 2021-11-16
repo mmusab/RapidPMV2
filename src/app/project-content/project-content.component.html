@@ -126,9 +126,24 @@
         <div style="float: right;">
             <button class="btn btn-secondary btn-block">Cancel</button>
             <form style="margin-top: 38%;" id="form">
-				<button style="size: 5px;">
-					<mat-icon class="text-success">add</mat-icon>
-				</button>
+				<!-- <div > -->
+					<!-- <button (mouseenter)="changeText = true" (mouseout)="changeText = false" mat-icon-button [matMenuTriggerFor]="menuAdd" aria-label="Example icon-button with a menu" style="color: green;"> -->
+						<button mat-icon-button [matMenuTriggerFor]="menuAdd" color="warn">
+							<mat-icon>
+								add_box
+							</mat-icon>
+						</button>
+						<!-- <span *ngIf="!changeText"></span> -->
+					<!-- </button> -->
+				<!-- </div> -->
+				<mat-menu #menuAdd="matMenu">
+					<button mat-menu-item (click)=addArtefact(parent,parent)>
+						<span>Add Artefact</span>
+					</button>
+					<button mat-menu-item>
+						<span>Add Container</span>
+					</button>
+				</mat-menu>
 				<div class="divider"></div>
                 <input style="color: black;" type="search" id="query" name="q" placeholder="Search...">
                 <button style="color: black;">Search</button>
@@ -151,6 +166,9 @@
                             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
 							<button *ngIf="i == 1" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
 								<mat-icon>more_vert</mat-icon>
+							</button>
+							<button *ngIf="i == 1 && rowData[cols[1][2].field] == ''" mat-icon-button [matMenuTriggerFor]="menuAddTable" aria-label="Example icon-button with a menu">
+								<mat-icon>add_box</mat-icon>
 							</button>
 							<mat-menu #menu="matMenu">
 								<button mat-menu-item>
@@ -187,6 +205,15 @@
 									<span>{{con}}</span>
 								</button>
 								</ng-container>
+							</mat-menu>
+
+							<mat-menu #menuAddTable="matMenu">
+								<button mat-menu-item (click)=addArtefact(child,rowData)>
+									<span>Add Artefact</span>
+								</button>
+								<button mat-menu-item (click)=addContainer(child,rowData)>
+									<span>Add Container</span>
+								</button>
 							</mat-menu>
 
 							<a *ngIf="i == 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</a>

@@ -22,6 +22,9 @@ export class ProjectContentComponent implements OnInit {
       heirarchyList:any
       temp:any;
       containerList: any[] = []
+      child = "child";
+      parent = "parent";
+      changeText=true;
       // map = {"project":0,"container":1,"artefact":2}
 
       constructor(private http: HttpClient, private route : ActivatedRoute) {
@@ -137,5 +140,11 @@ export class ProjectContentComponent implements OnInit {
       this.http.get('http://82.69.10.205:5002/deleteContainer/' + cont['id'] + "/artefact").subscribe((response)=>{
         location.reload()
       });
+    }
+    addArtefact(pCont: string,cont:any){
+
+    }
+    addContainer(pCont: string,cont:any){
+
     }
 }
