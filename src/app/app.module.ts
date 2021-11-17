@@ -35,6 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CompanyListScreenComponent } from './company-list-screen/company-list-screen.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { ProjectContentComponent } from './project-content/project-content.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ProjectContentComponent } from './project-content/project-content.compo
     ToastModule,
     ContextMenuModule,
     TreeTableModule,
-    MatSelectModule
+    MatSelectModule,
+    NgbModule
   ],
   providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo],
   bootstrap: [AppComponent]

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {TreeNode} from 'primeng/api';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-project-content',
@@ -25,9 +26,10 @@ export class ProjectContentComponent implements OnInit {
       child = "child";
       parent = "parent";
       changeText=true;
+      closeResult = '';
       // map = {"project":0,"container":1,"artefact":2}
 
-      constructor(private http: HttpClient, private route : ActivatedRoute) {
+      constructor(private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
        }
 
       ngOnInit() {
@@ -141,10 +143,31 @@ export class ProjectContentComponent implements OnInit {
         location.reload()
       });
     }
-    addArtefact(pCont: string,cont:any){
-
+    addArtefact(level: string,row:any){
+      this.http.get('http://82.69.10.205:5002/addArtefact/' + row['id'] + "/" + level).subscribe((response)=>{
+        location.reload()
+      });
     }
     addContainer(pCont: string,cont:any){
 
     }
+    open(content:any) {
+      console.log("in open content")
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    }
+  
+    private getDismissReason(reason: any): string {
+      if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+      } else {
+        return `with: ${reason}`;
+      }
+    }
+  
 }

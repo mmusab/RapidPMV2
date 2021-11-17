@@ -286,6 +286,25 @@ def getArtefacts(projectId):
   print(result)
   return jsonify(result)
 
+# @app.route('/addArtefact/<artId>/<level>', methods=['GET', 'POST'])
+# def getArtefacts(artId, level):
+#   if(level == "child"):
+#     sql = "INSERT INTO artefact (artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template) SELECT artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template FROM artefact WHERE artefact_id = '" + str(
+#       a[0]) + "';"
+#     mycursor.execute(sql)
+#     mydb.commit()
+#   sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE project_id = '" + projectId + "';"
+#   mycursor.execute(sql)
+#   result = mycursor.fetchall()
+#   header = mycursor.description
+#   # print(header)
+#   row_headers = [x[0] for x in mycursor.description]
+#   # print(row_headers)
+#   result = [dict(zip(row_headers, res)) for res in result]
+#   # users = {"message": result};
+#   print(result)
+#   return jsonify(result)
+
 @app.route('/getHeirarchyList', methods=['GET', 'POST'])
 def getHeirarchyList():
   sql = "SELECT * FROM RPMnew_dataBase.hierarchy_list;"
