@@ -8,6 +8,7 @@ import { UserManagementScreenComponent } from './user-management-screen/user-man
 import { CompanyListScreenComponent } from './company-list-screen/company-list-screen.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { ProjectContentComponent } from './project-content/project-content.component';
+import { ArtefactDetailsComponent } from './artefact-details/artefact-details.component';
 
 const routes: Routes = [{path:'', component: LoginScreenComponent},
                         {path:'app-signup-screen/:id', component: SignupScreenComponent},
@@ -16,7 +17,8 @@ const routes: Routes = [{path:'', component: LoginScreenComponent},
                         {path:'app-user-management-screen/:id', component: UserManagementScreenComponent},
                         {path:'app-company-list-screen/:id', component: CompanyListScreenComponent},
                         {path:'app-project-details/:id/:userid', component: ProjectDetailsComponent},
-                        {path:'app-project-content/:id/:uid', component: ProjectContentComponent}];
+                        {path:'app-project-content/:id/:uid', component: ProjectContentComponent},
+                        {path:'app-artefact-details/:id/:contId/:projId/:userId', component: ArtefactDetailsComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

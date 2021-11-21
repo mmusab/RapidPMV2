@@ -137,10 +137,10 @@
 					<!-- </button> -->
 				<!-- </div> -->
 				<mat-menu #menuAdd="matMenu">
-					<button mat-menu-item (click)=addArtefact(parent,parent)>
+					<button mat-menu-item (click)=addArtefact(root)>
 						<span>Add Artefact</span>
 					</button>
-					<button mat-menu-item>
+					<button mat-menu-item (click)=open(mymodal,root)>
 						<span>Add Container</span>
 					</button>
 				</mat-menu>
@@ -208,10 +208,10 @@
 							</mat-menu>
 
 							<mat-menu #menuAddTable="matMenu">
-								<button mat-menu-item (click)=open(mymodal)>
+								<button mat-menu-item (click)=addArtefact(rowData.id)>
 									<span>Add Artefact</span>
 								</button>
-								<button mat-menu-item (click)=addContainer(child,rowData)>
+								<button mat-menu-item (click)=open(mymodal,rowData.id)>
 									<span>Add Container</span>
 								</button>
 							</mat-menu>
@@ -231,13 +231,14 @@
 </html>
 <ng-template #mymodal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Bootstrap Modal</h4>
+    <h4 class="modal-title" id="modal-basic-title">Add Container</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">×</span>
     </button>
   </div>
-  <div class="modal-body">
-    This is example from ItSolutionStuff.com
+  <div>
+	<label class="inline-label" for="address_line2">Container name</label>
+	<input required ngModel [(ngModel)]="newContainerName" type="newContainerName" name="newContainerName" placeholder="enter container name ...">
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>

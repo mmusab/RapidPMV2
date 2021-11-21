@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<title>RPM Registration Form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<style>
+	body {
+		color: #fff;
+		/* background: #63738a; */
+		font-family: 'Roboto', sans-serif;
+	}
+    .form-control{
+		height: 40px;
+		box-shadow: none;
+		color: #969fa4;
+		width: 70%;
+		margin-left: 30%;
+	}
+	.form-control:focus{
+		border-color: #5cb85c;
+	}
+    .form-control, .btn{        
+        border-radius: 3px;
+    }
+	.signup-form{
+		width: 80%;
+		margin: 0 auto;
+		padding: 30px 0;
+		position: relative;
+		background-color: white;
+	}
+	.signup-form h2{
+		color: #636363;
+        margin: 0 0 15px;
+		position: relative;
+		text-align: center;
+    }
+	.signup-form h2:before, .signup-form h2:after{
+		content: "";
+		height: 2px;
+		width: 30%;
+		background: #d4d4d4;
+		position: absolute;
+		top: 50%;
+		z-index: 2;
+	}	
+	.signup-form h2:before{
+		left: 0;
+	}
+	.signup-form h2:after{
+		right: 0;
+	}
+    .signup-form .hint-text{
+		color: #999;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+    .signup-form form{
+		color: #999;
+		border-radius: 3px;
+    	margin-bottom: 15px;
+        background: white;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+	.signup-form .form-group{
+		margin-bottom: 20px;
+	}
+	.signup-form input[type="checkbox"]{
+		margin-top: 3px;
+	}
+	.signup-form .btn{        
+        font-size: 16px;
+        font-weight: bold;		
+		min-width: 140px;
+        outline: none !important;
+    }
+	.signup-form .row div:first-child{
+		padding-right: 10px;
+	}
+	.signup-form .row div:last-child{
+		padding-left: 10px;
+	}    	
+    .signup-form a{
+		color: #fff;
+		text-decoration: underline;
+	}
+    .signup-form a:hover{
+		text-decoration: none;
+	}
+	.signup-form form a{
+		color: #5cb85c;
+		text-decoration: none;
+	}	
+	.signup-form form a:hover{
+		text-decoration: underline;
+	}  
+</style>
+</head>
+<body>
+	<notifier-container></notifier-container>
+	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Artefact Details</h2>
+<div class="signup-form">
+	<form #f="ngForm" (ngSubmit)="createUpdate()">
+		<div class="split left" style="background-color: white">
+			<div class="form-group">
+				<label class="inline-label" for="project_id">Project ID: {{projId}}</label>
+				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
+			</div><br><br>
+            <div class="form-group">
+				<label class="inline-label" for="company_id">Company ID: {{companyId}}</label>
+				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
+			</div><br><br>
+            <div class="form-group">
+				<label class="inline-label" for="artefact_id">Artefact ID: {{artefactId}}</label>
+				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
+			</div><br><br>
+            <div class="form-group">
+				<label class="inline-label" for="artefact_type">Artefact type</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.artefact_type" type="artefact_type" class="form-control" name="artefact_type" placeholder="{{artefactInfo.art.artefact_type}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="owner">Owner</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.artefact_owner" type="owner" class="form-control" name="owner" placeholder="{{artefactInfo.art.artefact_owner}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="artefact_name">Artefact name</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.artefact_name" type="artefact_name" class="form-control" name="artefact_name" placeholder="{{artefactInfo.art.artefact_name}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="description">Description</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.description" type="description" class="form-control" name="description" placeholder="{{artefactInfo.art.description}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="status">status</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.status" type="status" class="form-control" name="status" placeholder="{{artefactInfo.art.status}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="template">Template</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.template" type="template" class="form-control" name="template" placeholder="{{artefactInfo.art.template}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="created_date">create date</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.create_date" type="created_date" class="form-control" name="created_date" placeholder="{{artefactInfo.art.create_date}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="updated_date">Update date</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.update_date" type="updated_date" class="form-control" name="updated_date" placeholder="{{artefactInfo.art.update_date}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="location_url">Location url</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.location_url" type="location_url" class="form-control" name="location_url" placeholder="{{artefactInfo.art.location_url}}">
+			</div>
+            <div class="form-group">
+				<label class="inline-label" for="template_url">Template url</label>
+				<input required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
+			</div>
+		</div>
+        <div class="split right" style="background-color: white; margin-top: 200px;">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" onclick="location.href=''" type="button">Cancel</button>
+            </div>
+        </div>
+	</form>
+</div>
+</body>
+</html>

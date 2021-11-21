@@ -21,6 +21,7 @@ import { NotifierModule } from 'angular-notifier';
 import { CustomerInfo } from './customer-info';
 import { CompanyInfo } from './company-info';
 import { ProjectInfo } from './project-info';
+import { ArtefactInfo } from './artefactinfo';
 // import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -36,6 +37,7 @@ import { CompanyListScreenComponent } from './company-list-screen/company-list-s
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { ProjectContentComponent } from './project-content/project-content.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ArtefactDetailsComponent } from './artefact-details/artefact-details.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     UserManagementScreenComponent,
     CompanyListScreenComponent,
     ProjectDetailsComponent,
-    ProjectContentComponent
+    ProjectContentComponent,
+    ArtefactDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +75,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatSelectModule,
     NgbModule
   ],
-  providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo],
+  providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo,ArtefactInfo],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {TreeNode} from 'primeng/api';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,20 +27,22 @@ export class ProjectContentComponent implements OnInit {
       parent = "parent";
       changeText=true;
       closeResult = '';
+      newContainerName = ""
+      root = "root"
       // map = {"project":0,"container":1,"artefact":2}
 
-      constructor(private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
+      constructor(private router : Router, private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
        }
 
       ngOnInit() {
           this.sub = this.route.params.subscribe(params => {
           this.projectId = params['id'];
           this.userId = params['uid'];
-          this.http.get('http://82.69.10.205:5002/getProject/' + this.projectId).subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/getProject/' + this.projectId).subscribe((response)=>{
             this.temp = response as JSON
             this.projectName = this.temp[0]['project_name']
             this.projectDefaultHeirarchy = this.temp[0]['hierarchy_id_default']
-            this.http.get('http://82.69.10.205:5002/getHeirarchyList').subscribe((response)=>{
+            this.http.get('http://127.0.0.1:5002/getHeirarchyList').subscribe((response)=>{
               this.heirarchyList = response as JSON;
               for(let h of this.heirarchyList){
                 if(h['hierarchy_id'] == this.projectDefaultHeirarchy){
@@ -49,21 +51,21 @@ export class ProjectContentComponent implements OnInit {
                   this.selectedHeirarchyId = h['hierarchy_id']
                 }
               }
-              this.http.get('http://82.69.10.205:5002/getContainers/' + this.selectedHeirarchyId).subscribe((response)=>{
+              this.http.get('http://127.0.0.1:5002/getContainers/' + this.selectedHeirarchyId).subscribe((response)=>{
                 this.temp = response as JSON;
                 for(let c of this.temp){
                   this.containerList.push(c['container_id'] + "-" + c['container_title'])
                 }
               });
             });
-            this.http.get('http://82.69.10.205:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
+            this.http.get('http://127.0.0.1:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
               this.temp = response as JSON;
               this.companyName = this.temp[0]['company_name']
             });
           });
        });
           // this.nodeService.getFilesystem().then(files => this.files = files);
-          this.http.get('http://82.69.10.205:5002/getprojectTree/' + this.projectId).subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId).subscribe((response)=>{
           // console.log(response as JSON)
           // let temp = response as JSON;
           this.files = response as TreeNode[];
@@ -116,50 +118,61 @@ export class ProjectContentComponent implements OnInit {
       }
     move(pCont: string,cont: any){
       if(cont['artefact_type'] == ""){
-        this.http.get('http://82.69.10.205:5002/moveContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
       });
       }
       else{
-        this.http.get('http://82.69.10.205:5002/moveContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
         });
       }
     }
     copy(pCont: string,cont: any){
       if(cont['artefact_type'] == ""){
-        this.http.get('http://82.69.10.205:5002/copyContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
       });
       }
       else{
-        this.http.get('http://82.69.10.205:5002/copyContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
         });
       }
     }
     delete(cont: any){
-      this.http.get('http://82.69.10.205:5002/deleteContainer/' + cont['id'] + "/artefact").subscribe((response)=>{
+      if(cont['artefact_type'] == ""){
+        this.http.get('http://127.0.0.1:5002/deleteContainer/' + cont['id'] + "/container").subscribe((response)=>{
         location.reload()
       });
-    }
-    addArtefact(level: string,row:any){
-      this.http.get('http://82.69.10.205:5002/addArtefact/' + row['id'] + "/" + level).subscribe((response)=>{
+      }
+      else{
+        this.http.get('http://127.0.0.1:5002/deleteContainer/' + cont['id'] + "/artefact").subscribe((response)=>{
         location.reload()
-      });
+        });
+      }
     }
-    addContainer(pCont: string,cont:any){
-
+    addArtefact(row:any){
+      this.router.navigate(['/app-artefact-details', 'id', row, this.projectId, this.userId]);
     }
-    open(content:any) {
+    // addContainer(pCont: string,cont:any){
+      
+    // }
+    open(content:any, row:any) {
       console.log("in open content")
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
+        console.log("new container name: " + this.newContainerName)
+        console.log("parent container id: ")
+        console.log(row)
+        this.http.get('http://127.0.0.1:5002/addContainer/' + this.newContainerName + "/" + row + "/" + this.projectId + "/" + this.selectedHeirarchyId).subscribe((response)=>{
+        location.reload()
+      });
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
     }
-  
+
     private getDismissReason(reason: any): string {
       if (reason === ModalDismissReasons.ESC) {
         return 'by pressing ESC';
@@ -169,5 +182,5 @@ export class ProjectContentComponent implements OnInit {
         return `with: ${reason}`;
       }
     }
-  
+
 }

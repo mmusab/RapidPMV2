@@ -159,6 +159,45 @@ def project():
     customerId = {"message": str(projId)}
     return jsonify(customerId)
 
+@app.route('/artefact/<contId>', methods=['GET', 'POST'])
+def artefact(contId):
+  artefact = request.json
+  print(artefact)
+  artId = artefact['artefact_id']
+  del artefact['artefact_id']
+  pairs = artefact.items()
+  key = []
+  value = []
+  for k, v in pairs:
+    key.append(str(k))
+    value.append(str(v))
+  key = tuple(key)
+  value = tuple(value)
+  print(value)
+  if (artId == ""):
+    sql = "INSERT INTO artefact (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    mycursor.execute(sql, value)
+    mydb.commit()
+    sql = "SELECT LAST_INSERT_ID()"
+    mycursor.execute(sql)
+    artefactId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
+    # print(artefactId)
+    value = (contId,artefactId['message'])
+    sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
+    mycursor.execute(sql, value)
+    mydb.commit()
+
+    return jsonify(artefactId)
+  else:
+    sql = "UPDATE artefact SET artefact_type = '" + str(artefact[
+      'artefact_type']) + "', artefact_owner = '" + str(artefact['artefact_owner']) + "', artefact_name = '" + str(artefact['artefact_name']) + "', description = '" + \
+          str(artefact['description']) + "', status = '" + str(artefact['status']) + "',create_date = '" + str(artefact[
+            'create_date']) + "',update_date = '" + str(artefact['update_date']) + "',location_url = '" + str(artefact['location_url']) + "',template_url = '" + str(artefact['template_url']) + "',project_id = '" + str(artefact['project_id']) + "',template = '" + str(artefact['template']) + "' WHERE artefactId = '" + str(artId) + "';"
+    # sql = "UPDATE user SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE user_id = '" + str(custmId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    customerId = {"message": str(artId)}
+    return jsonify(customerId)
 @app.route('/getUsers/<company_id>', methods=['GET', 'POST'])
 def getUsers(company_id):
   sql = "SELECT * FROM RPMnew_dataBase.user WHERE company_id = '" + company_id + "';"
@@ -286,6 +325,20 @@ def getArtefacts(projectId):
   print(result)
   return jsonify(result)
 
+@app.route('/getArtefact/<artId>', methods=['GET', 'POST'])
+def getArtefact(artId):
+  sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + artId + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
 # @app.route('/addArtefact/<artId>/<level>', methods=['GET', 'POST'])
 # def getArtefacts(artId, level):
 #   if(level == "child"):
@@ -304,6 +357,19 @@ def getArtefacts(projectId):
 #   # users = {"message": result};
 #   print(result)
 #   return jsonify(result)
+
+@app.route('/addContainer/<containerName>/<root>/<projId>/<herId>', methods=['GET', 'POST'])
+def addContainer(containerName,root,projId,herId):
+  if(root == "root"):
+    value = (containerName, projId, herId)
+    sql = "INSERT INTO hierarchy_container (container_title, project_id, hierarchy_id) VALUES (%s, %s, %s)"
+  if (root != "root"):
+    value = (containerName, projId, herId, root)
+    sql = "INSERT INTO hierarchy_container (container_title, project_id, hierarchy_id, parent_container_id) VALUES (%s, %s, %s, %s)"
+  mycursor.execute(sql, value)
+  mydb.commit()
+  message = {"message": "success"}
+  return jsonify(message)
 
 @app.route('/getHeirarchyList', methods=['GET', 'POST'])
 def getHeirarchyList():
@@ -417,6 +483,7 @@ def deleteContainer(contId, type):
     deleteRecursive(contId)
   else:
     sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(contId) + "';"
+    mycursor.execute(sql)
     mycursor.execute(sql)
     mydb.commit()
     sql = "DELETE FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + str(contId) + "';"
