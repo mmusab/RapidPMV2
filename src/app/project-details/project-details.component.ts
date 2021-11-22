@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { ProjectInfo } from '../project-info';
+import { Location } from '@angular/common'
 
 @Component({
   selector: '[app-project-details]',
@@ -60,7 +61,7 @@ export class ProjectDetailsComponent implements OnInit {
     localStorage.removeItem('foo')
   }
 }
-  constructor(public projectInfo: ProjectInfo, private route : ActivatedRoute, private http: HttpClient, private router : Router, private notifierService: NotifierService) { }
+  constructor(private location: Location, public projectInfo: ProjectInfo, private route : ActivatedRoute, private http: HttpClient, private router : Router, private notifierService: NotifierService) { }
 
   createUpdate(){
     this.http.post('http://127.0.0.1:5002/project', this.projectInfo.proj).subscribe((response)=>{
@@ -79,6 +80,11 @@ export class ProjectDetailsComponent implements OnInit {
   //     this.notifierService.notify('success', 'project details updated');
   //  });
    });
+  }
+
+  back(){
+    console.log('in back')
+    this.location.back()
   }
 
 }

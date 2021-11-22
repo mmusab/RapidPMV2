@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { DataService } from '../data-service';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common'
+
 
 @Component({
   selector: '[app-signup-screen]',
@@ -70,7 +72,7 @@ export class SignupScreenComponent{
     localStorage.removeItem('foo')
   }
   }
-  constructor(public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
+  constructor(private location: Location, public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
   onSignup(){
     this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
       this.signupCompId = (response as any)['message'];
@@ -102,5 +104,10 @@ export class SignupScreenComponent{
     else{
       this.notifierService.notify('error', 'Please login to continue');
     }
+  }
+
+  back(){
+    console.log('in back')
+    this.location.back()
   }
 }

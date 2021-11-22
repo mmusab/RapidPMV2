@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import {TreeNode} from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
+import { Location } from '@angular/common'
 
 // interface FoodNode {
 //   name: string;
@@ -168,7 +169,7 @@ export class ProjectListComponent{
   temp: any;
   comapnyName = "";
   companyId = "";
-  constructor(private http: HttpClient, private route : ActivatedRoute, private router : Router, private notifierService: NotifierService) {
+  constructor(private location: Location, private http: HttpClient, private route : ActivatedRoute, private router : Router, private notifierService: NotifierService) {
     }
 
   ngOnInit() {
@@ -244,5 +245,10 @@ export class ProjectListComponent{
   }
   projectContent(index: string | number){
     return "/app-project-content/" + this.projects[index]['project_id'] + '/' + this.id
+  }
+
+  back(){
+    console.log('in back')
+    this.location.back()
   }
 }

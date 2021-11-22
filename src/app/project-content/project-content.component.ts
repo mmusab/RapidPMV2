@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {TreeNode} from 'primeng/api';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-project-content',
@@ -31,7 +32,7 @@ export class ProjectContentComponent implements OnInit {
       root = "root"
       // map = {"project":0,"container":1,"artefact":2}
 
-      constructor(private router : Router, private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
+      constructor(private location: Location, private router : Router, private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
        }
 
       ngOnInit() {
@@ -181,6 +182,11 @@ export class ProjectContentComponent implements OnInit {
       } else {
         return `with: ${reason}`;
       }
+    }
+
+    back(){
+      console.log('in back')
+      this.location.back()
     }
 
 }

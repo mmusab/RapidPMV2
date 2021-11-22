@@ -127,8 +127,13 @@
 				<input required ngModel [(ngModel)]="artefactInfo.art.artefact_type" type="artefact_type" class="form-control" name="artefact_type" placeholder="{{artefactInfo.art.artefact_type}}">
 			</div>
 			<div class="form-group">
-				<label class="inline-label" for="owner">Owner</label>
-				<input required ngModel [(ngModel)]="artefactInfo.art.artefact_owner" type="owner" class="form-control" name="owner" placeholder="{{artefactInfo.art.artefact_owner}}">
+				<label class="inline-label" for="owner">owner</label>
+				<select [(ngModel)]="artefactInfo.art.artefact_owner" type="owner" class="form-control" name="owner">
+					<!-- <option selected>{{projectInfo.proj.owner}}</option> -->
+					<ng-container *ngFor="let admin of admins">
+						<option [value]="admin.name">{{admin['name']}}</option>
+					</ng-container>
+				</select>
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="artefact_name">Artefact name</label>
@@ -143,16 +148,20 @@
 				<input required ngModel [(ngModel)]="artefactInfo.art.status" type="status" class="form-control" name="status" placeholder="{{artefactInfo.art.status}}">
 			</div>
             <div class="form-group">
-				<label class="inline-label" for="template">Template</label>
-				<input required ngModel [(ngModel)]="artefactInfo.art.template" type="template" class="form-control" name="template" placeholder="{{artefactInfo.art.template}}">
+				<label class="inline-label" for="template">template</label>
+				<select [(ngModel)]="artefactInfo.art.template" type="template" class="form-control" name="template">
+					<option selected>{{artefactInfo.art.template}}</option>
+					<option value="Y">Y</option>
+					<option value="N">N</option>
+				</select>
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="created_date">create date</label>
-				<input required ngModel [(ngModel)]="artefactInfo.art.create_date" type="created_date" class="form-control" name="created_date" placeholder="{{artefactInfo.art.create_date}}">
+				<input required ngModel [(ngModel)]="artefactInfo.art.create_date" type="date" class="form-control" name="created_date" placeholder="{{artefactInfo.art.create_date}}">
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="updated_date">Update date</label>
-				<input required ngModel [(ngModel)]="artefactInfo.art.update_date" type="updated_date" class="form-control" name="updated_date" placeholder="{{artefactInfo.art.update_date}}">
+				<input required ngModel [(ngModel)]="artefactInfo.art.update_date" type="date" class="form-control" name="updated_date" placeholder="{{artefactInfo.art.update_date}}">
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="location_url">Location url</label>
@@ -168,7 +177,7 @@
                 <button type="submit" class="btn btn-primary btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
             </div>
             <div class="form-group">
-                <button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" onclick="location.href=''" type="button">Cancel</button>
+                <button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" (click)=back() type="button">Cancel</button>
             </div>
         </div>
 	</form>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: '[app-company-list-screen]',
@@ -12,7 +13,7 @@ export class CompanyListScreenComponent implements OnInit {
   companyHead: any;
   sub: any;
   companyId = "";
-  constructor(private http: HttpClient, private router : Router, private route : ActivatedRoute) { }
+  constructor(private location: Location, private http: HttpClient, private router : Router, private route : ActivatedRoute) { }
 
   ngOnInit(){
     this.sub = this.route.params.subscribe(params => {
@@ -36,6 +37,11 @@ export class CompanyListScreenComponent implements OnInit {
     console.log("company id: " + this.companies[index]['company_id'])
     this.router.navigate(['/app-signup-screen', this.companies[index]['company_id']]);
     console.log("in companyDetail")
+  }
+
+  back(){
+    console.log('in back')
+    this.location.back()
   }
 
 }

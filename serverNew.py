@@ -7,6 +7,8 @@ from flask_restful import Resource, Api
 from json import dumps
 from flask_jsonpify import jsonify
 import json
+import jwt
+
 app = Flask(__name__)
 # api = Api(app)
 CORS(app)
@@ -29,27 +31,37 @@ def checkLogin(userEmail,userPassword):
   query = "SELECT cu.password, co.RPM, co.company_id, cu.user_id, cu.company_role FROM user cu, company co WHERE cu.email = '" + userEmail + "' and cu.company_id = co.company_id;"
   mycursor.execute(query)
   result = mycursor.fetchall()
-  json_data = []
+  json_data = {}
   if(result):
     print(result)
     if(result[0][0] == userPassword):
       if(result[0][1] != "Yes"):
-        json_data.append(dict(zip(["message"], ["Welcome"])))
-        json_data.append(dict(zip(["id"], [result[0][3]])))
-        json_data.append(dict(zip(["role"], [result[0][4]])))
+        json_data["authorized"] = "True"
+        json_data["message"] = ["Welcome"]
+        json_data["id"] = [result[0][3]]
+        json_data["role"] = [result[0][4]]
       else:
-        json_data.append(dict(zip(["message"], ["Welcome RPM"])))
-        json_data.append(dict(zip(["id"], [result[0][2]])))
-        json_data.append(dict(zip(["role"], [result[0][4]])))
+        json_data["authorized"] = "True"
+        json_data["message"] = ["Welcome RPM"]
+        json_data["id"] = [result[0][2]]
+        json_data["role"] = [result[0][4]]
     else:
-      json_data.append(dict(zip(["message"], ["Incorrect password"])))
+      json_data["authorized"] = "False"
+      json_data["message"] = ["Incorrect password"]
   else:
-    json_data.append(dict(zip(["message"], ["Email address not found"])))
-  return json.dumps(json_data)
+    json_data["authorized"] = "False"
+    json_data["message"] = ["Email address not found"]
+  return (json.dumps(json_data),json_data)
 
 @app.route('/login/<userEmail>/<userPassword>', methods=['GET', 'POST'])
 def login(userEmail,userPassword):
-  ret = checkLogin(userEmail,userPassword)
+  ret, json_data = checkLogin(userEmail,userPassword)
+  print(ret)
+  if(json_data["authorized"] == "True"):
+    encoded_jwt = jwt.encode({"email": userEmail, "password": userPassword}, "secret", algorithm="HS256")
+    print(encoded_jwt)
+    json_data["jwt"] =  str(encoded_jwt)
+    ret = json.dumps(json_data)
   return (ret)
 
 @app.route('/company', methods=['GET', 'POST'])
@@ -182,10 +194,11 @@ def artefact(contId):
     mycursor.execute(sql)
     artefactId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
     # print(artefactId)
-    value = (contId,artefactId['message'])
-    sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
-    mycursor.execute(sql, value)
-    mydb.commit()
+    if(contId != "root"):
+      value = (contId,artefactId['message'])
+      sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
+      mycursor.execute(sql, value)
+      mydb.commit()
 
     return jsonify(artefactId)
   else:
@@ -534,6 +547,9 @@ def recursive(projId,c):
     return jsn
 @app.route('/getprojectTree/<projectId>', methods=['GET', 'POST'])
 def getprojectTree(projectId):
+  sql = "SELECT a.* FROM RPMnew_dataBase.artefact a WHERE a.project_id = '" + projectId + "' and a.artefact_id NOT IN (SELECT artefact_id FROM RPMnew_dataBase.container_artefact_link);"
+  mycursor.execute(sql)
+  pArtefacts = mycursor.fetchall()
   sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projectId + "' and parent_container_id IS NULL;"
   mycursor.execute(sql)
   pcontainers = mycursor.fetchall()
@@ -569,6 +585,18 @@ def getprojectTree(projectId):
     elif(childJson):
       temp["children"] = childJson
     contJson.append(temp)
+  print("p artefacts: ")
+  print(pArtefacts)
+  for pa in pArtefacts:
+    tempa = {}
+    data = {}
+    data['id'] = str(pa[0])
+    data['node'] = str(pa[3])
+    data['artefact_type'] = str(pa[1])
+    data['status'] = str(pa[5])
+    data['artefact_owner'] = str(pa[2])
+    tempa["data"] = data
+    contJson.append(tempa)
   return jsonify(contJson)
 
 # app.run(host='0.0.0.0', port=5002, debug=True)

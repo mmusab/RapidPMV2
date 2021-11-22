@@ -4,6 +4,8 @@ import { CustomerInfo } from '../customer-info';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data-service';
 import { NotifierService } from 'angular-notifier';
+import { Location } from '@angular/common'
+
 
 @Component({
   selector: '[app-user-management-screen]',
@@ -51,7 +53,7 @@ export class UserManagementScreenComponent{
       localStorage.removeItem('foo')
     }
   }
-  constructor(public uCustomerInfo: CustomerInfo, private http: HttpClient, public dataService: DataService, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService) { }
+  constructor(private location: Location, public uCustomerInfo: CustomerInfo, private http: HttpClient, public dataService: DataService, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService) { }
 
   onAddUser(index: string | number){
     // console.log(this.dataService.adminId);
@@ -109,6 +111,10 @@ export class UserManagementScreenComponent{
       });
     }
 
+    back(){
+      console.log('in back')
+      this.location.back()
+    }
     // changeValue(id: number, property: string, event: any) {
     //   this.editField = event.target.textContent;
     // }

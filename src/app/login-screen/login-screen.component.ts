@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { UserLogin } from '../user-login';
+import { Location } from '@angular/common'
 
 @Component({
   selector: '[app-login-screen]',
@@ -30,7 +31,7 @@ export class LoginScreenComponent{
   //  });
   // }
 
-  constructor(private httpClient: HttpClient, private router : Router, private route : ActivatedRoute,  private notifierService: NotifierService) { }
+  constructor(private location: Location, private httpClient: HttpClient, private router : Router, private route : ActivatedRoute,  private notifierService: NotifierService) { }
 
   resetErrors(){
     this.errorMessage = "";
@@ -43,23 +44,24 @@ export class LoginScreenComponent{
     if(this.userEmail == ""){
     }
     this.httpClient.get('http://127.0.0.1:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
-      this.errorMessage = (message as any)[0]['message'];
+      console.log(message as JSON)
+      this.errorMessage = (message as any)['message'];
       console.log(this.errorMessage);
       if(this.errorMessage == "Welcome"){
         UserLogin.userEmail = this.userEmail;
         UserLogin.userPassword = this.userPassword;
-        this.customerId = (message as any)[1]['id'];
-        this.companyRole = (message as any)[2]['role'];
+        this.customerId = (message as any)['id'];
+        this.companyRole = (message as any)['role'];
         console.log(this.customerId);
         this.router.navigate(['/app-project-list', this.customerId, this.companyRole]);
       }
       if(this.errorMessage == "Welcome RPM"){
         UserLogin.userEmail = this.userEmail;
         UserLogin.userPassword = this.userPassword;
-        this.companyId = (message as any)[1]['id'];
-        this.companyRole = (message as any)[2]['role'];
+        this.companyId = (message as any)['id'];
+        this.companyRole = (message as any)['role'];
         console.log(this.companyId);
-        this.router.navigate(['/app-company-list-screen', this.companyId]);
+        this.router.navigate(['/app-company-list-screen', this.companyId[0]]);
       }
       if(this.errorMessage == "Incorrect password"){
         this.incorrectPassCount += 1;
@@ -78,7 +80,8 @@ export class LoginScreenComponent{
     if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
     else{url = 'http://127.0.0.1:5002/login/none/none'}
     this.httpClient.get(url).toPromise().then(message => {
-      this.errorMessage = (message as any)[0]['message'];
+      console.log(message as JSON)
+      this.errorMessage = (message as any)['message'];
       if(this.errorMessage == "Email address not found" || this.userEmail == ""){
         this.router.navigate(['/app-signup-screen', "id"]);
       }
@@ -98,7 +101,8 @@ export class LoginScreenComponent{
       if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
       else{url = 'http://127.0.0.1:5002/login/none/none'}
       this.httpClient.get(url).toPromise().then(message => {
-        this.errorMessage = (message as any)[0]['message'];
+        console.log(message as JSON)
+        this.errorMessage = (message as any)['message'];
         if(this.errorMessage == "Email address not found" || this.userEmail == ""){
           this.forgotPasswordError = "Email does not exist"
         }
@@ -109,5 +113,9 @@ export class LoginScreenComponent{
         }
       });
     }
+  }
+  back(){
+    console.log('in back')
+    this.location.back()
   }
 }
