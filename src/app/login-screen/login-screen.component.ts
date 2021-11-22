@@ -43,7 +43,7 @@ export class LoginScreenComponent{
     // this.resetErrors();
     if(this.userEmail == ""){
     }
-    this.httpClient.get('http://127.0.0.1:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
+    this.httpClient.get('http://82.69.10.205:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
       console.log(message as JSON)
       this.errorMessage = (message as any)['message'];
       console.log(this.errorMessage);
@@ -53,7 +53,7 @@ export class LoginScreenComponent{
         this.customerId = (message as any)['id'];
         this.companyRole = (message as any)['role'];
         console.log(this.customerId);
-        this.router.navigate(['/app-project-list', this.customerId, this.companyRole]);
+        this.router.navigate(['/app-project-list', this.customerId[0], this.companyRole[0]]);
       }
       if(this.errorMessage == "Welcome RPM"){
         UserLogin.userEmail = this.userEmail;
@@ -77,8 +77,8 @@ export class LoginScreenComponent{
   onregister(){
     // this.resetErrors();
     var url = "";
-    if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
-    else{url = 'http://127.0.0.1:5002/login/none/none'}
+    if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
+    else{url = 'http://82.69.10.205:5002/login/none/none'}
     this.httpClient.get(url).toPromise().then(message => {
       console.log(message as JSON)
       this.errorMessage = (message as any)['message'];
@@ -98,8 +98,8 @@ export class LoginScreenComponent{
     else{
       this.forgotPasswordError = ""
       var url = "";
-      if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
-      else{url = 'http://127.0.0.1:5002/login/none/none'}
+      if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
+      else{url = 'http://82.69.10.205:5002/login/none/none'}
       this.httpClient.get(url).toPromise().then(message => {
         console.log(message as JSON)
         this.errorMessage = (message as any)['message'];
