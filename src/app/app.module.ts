@@ -38,6 +38,7 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
 import { ProjectContentComponent } from './project-content/project-content.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArtefactDetailsComponent } from './artefact-details/artefact-details.component';
+import { AuthServiceService } from './auth-service.service';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,7 @@ import { ArtefactDetailsComponent } from './artefact-details/artefact-details.co
     MatSelectModule,
     NgbModule
   ],
-  providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo,ArtefactInfo],
+  providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo,ArtefactInfo, AuthServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

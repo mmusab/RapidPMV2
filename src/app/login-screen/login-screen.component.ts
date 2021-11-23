@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { UserLogin } from '../user-login';
 import { Location } from '@angular/common'
+import { AuthServiceService } from '../auth-service.service';
 
 @Component({
   selector: '[app-login-screen]',
@@ -21,6 +22,7 @@ export class LoginScreenComponent{
   userPassword = UserLogin.userPassword;
   mess: Array<JSON> | undefined;
   g = "";
+  authorized:any
 
   // signupCompId = "";
   // sub: any;
@@ -31,7 +33,7 @@ export class LoginScreenComponent{
   //  });
   // }
 
-  constructor(private location: Location, private httpClient: HttpClient, private router : Router, private route : ActivatedRoute,  private notifierService: NotifierService) { }
+  constructor(public auth: AuthServiceService, private location: Location, private httpClient: HttpClient, private router : Router, private route : ActivatedRoute,  private notifierService: NotifierService) { }
 
   resetErrors(){
     this.errorMessage = "";
@@ -41,44 +43,47 @@ export class LoginScreenComponent{
   }
   onLogin(){
     // this.resetErrors();
+    this.authorized = this.auth.login({'userEmail':this.userEmail, 'userPassword':this.userPassword})
     if(this.userEmail == ""){
     }
-    this.httpClient.get('http://82.69.10.205:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
-      console.log(message as JSON)
-      this.errorMessage = (message as any)['message'];
-      console.log(this.errorMessage);
-      if(this.errorMessage == "Welcome"){
-        UserLogin.userEmail = this.userEmail;
-        UserLogin.userPassword = this.userPassword;
-        this.customerId = (message as any)['id'];
-        this.companyRole = (message as any)['role'];
-        console.log(this.customerId);
-        this.router.navigate(['/app-project-list', this.customerId[0], this.companyRole[0]]);
-      }
-      if(this.errorMessage == "Welcome RPM"){
-        UserLogin.userEmail = this.userEmail;
-        UserLogin.userPassword = this.userPassword;
-        this.companyId = (message as any)['id'];
-        this.companyRole = (message as any)['role'];
-        console.log(this.companyId);
-        this.router.navigate(['/app-company-list-screen', this.companyId[0]]);
-      }
-      if(this.errorMessage == "Incorrect password"){
-        this.incorrectPassCount += 1;
-        if(this.incorrectPassCount > 2){
-          this.errorMessage = "Incorrect password exceeded please reset"
+    if(this.authorized['authorized']){
+      // this.httpClient.get('http://127.0.0.1:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
+      //   console.log(message as JSON)
+      //   this.errorMessage = (message as any)['message'];
+      //   console.log(this.errorMessage);
+        if(this.authorized['msg'] == "Welcome"){
+          UserLogin.userEmail = this.userEmail;
+          UserLogin.userPassword = this.userPassword;
+          // this.customerId = (message as any)['id'];
+          // this.companyRole = (message as any)['role'];
+          // console.log(this.customerId);
+          this.router.navigate(['/app-project-list', this.authorized['id'], this.authorized['role']]);
         }
-      }
-      else{
-        this.incorrectPassCount = 0;
-      }
-    });
+        if(this.authorized['msg'] == "Welcome RPM"){
+          UserLogin.userEmail = this.userEmail;
+          UserLogin.userPassword = this.userPassword;
+          // this.companyId = (message as any)['id'];
+          // this.companyRole = (message as any)['role'];
+          // console.log(this.companyId);
+          this.router.navigate(['/app-company-list-screen', this.authorized['id']]);
+        }
+        if(this.authorized['msg'] == "Incorrect password"){
+          this.incorrectPassCount += 1;
+          if(this.incorrectPassCount > 2){
+            this.errorMessage = "Incorrect password exceeded please reset"
+          }
+        }
+        else{
+          this.incorrectPassCount = 0;
+        }
+      // });
+    }
   }
   onregister(){
     // this.resetErrors();
     var url = "";
-    if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
-    else{url = 'http://82.69.10.205:5002/login/none/none'}
+    if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
+    else{url = 'http://127.0.0.1:5002/login/none/none'}
     this.httpClient.get(url).toPromise().then(message => {
       console.log(message as JSON)
       this.errorMessage = (message as any)['message'];
@@ -98,8 +103,8 @@ export class LoginScreenComponent{
     else{
       this.forgotPasswordError = ""
       var url = "";
-      if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
-      else{url = 'http://82.69.10.205:5002/login/none/none'}
+      if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
+      else{url = 'http://127.0.0.1:5002/login/none/none'}
       this.httpClient.get(url).toPromise().then(message => {
         console.log(message as JSON)
         this.errorMessage = (message as any)['message'];
