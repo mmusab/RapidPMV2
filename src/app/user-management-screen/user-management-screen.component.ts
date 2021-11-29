@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data-service';
 import { NotifierService } from 'angular-notifier';
 import { Location } from '@angular/common'
+import { LogoutService } from '../logout.service';
+import jwt_decode from "jwt-decode";
 
 
 @Component({
@@ -33,8 +35,22 @@ export class UserManagementScreenComponent{
       "status": "-",
       "verified": "Yes",
     };
+  userEmail = "";
+  userPassword = "";
+  usr:any;
 
   ngOnInit() {
+    let token = localStorage.getItem('token');
+    if (token) {
+      console.log("token exists")
+      this.usr = jwt_decode(token);
+      this.userEmail = this.usr['email']
+      this.userPassword = this.usr['password']
+      // this.onLogin()
+    }
+    else{
+      this.logout.logout()
+    }
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
    });
@@ -53,7 +69,7 @@ export class UserManagementScreenComponent{
       localStorage.removeItem('foo')
     }
   }
-  constructor(private location: Location, public uCustomerInfo: CustomerInfo, private http: HttpClient, public dataService: DataService, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService) { }
+  constructor(public logout : LogoutService, private location: Location, public uCustomerInfo: CustomerInfo, private http: HttpClient, public dataService: DataService, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService) { }
 
   onAddUser(index: string | number){
     // console.log(this.dataService.adminId);

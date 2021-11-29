@@ -14,6 +14,9 @@
 </head>
 <body>
 	<notifier-container></notifier-container>
+  <div>
+    <button style="float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
+  </div><br><br>
 	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Company List screen</h2>
 	<!-- Editable table -->
 <div class="card">
@@ -27,6 +30,7 @@
               <!-- <th *ngFor="let head of companyHead">{{head}}</th> -->
               <th>ID</th>
               <th>Company Name</th>
+              <th>Name</th>
               <th>Address</th>
             </tr>
             <!-- <tr *ngFor="let adm of admins">
@@ -36,7 +40,15 @@
             <tr *ngFor="let comp of companies; let id = index">
                 <!-- <td *ngFor="let head of companyHead">{{comp[head]}}</td> -->
                 <td>{{comp['company_id']}}</td>
-                <td>{{comp['name']}}</td>
+                <td>
+                  <a role="button" (click)="updateCompany(id)">
+                    <div style="color: blue; height:100%;width:100%">
+                      {{comp['company_name']}}
+                    </div>
+                  </a>
+                </td>
+                <!-- <td>{{comp['company_name']}}</td> -->
+                <td>{{comp['contact_name']}}</td>
                 <td>{{comp['address_line1']}} {{comp['address_line2']}} {{comp['address_line3']}} {{comp['city']}} {{comp['country']}} {{comp['postal_code']}}</td>
                 <td>
                   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">

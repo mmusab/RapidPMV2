@@ -7,6 +7,8 @@ import { NotifierService } from 'angular-notifier';
 import { DataService } from '../data-service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common'
+import { LogoutService } from '../logout.service';
+// import jwt_decode from "jwt-decode";
 
 
 @Component({
@@ -21,7 +23,21 @@ export class SignupScreenComponent{
   sub: any;
   temp:any;
   temp2!: string[];
+  // userEmail = "";
+  // userPassword = "";
+  // usr:any;
   ngOnInit() {
+    // let token = localStorage.getItem('token');
+    // if (token) {
+    //   console.log("token exists")
+    //   this.usr = jwt_decode(token);
+    //   this.userEmail = this.usr['email']
+    //   this.userPassword = this.usr['password']
+    //   // this.onLogin()
+    // }
+    // else{
+    //   this.logout.logout()
+    // }
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
       if(this.signupCompId != ""){
@@ -72,7 +88,7 @@ export class SignupScreenComponent{
     localStorage.removeItem('foo')
   }
   }
-  constructor(private location: Location, public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
+  constructor(public logout : LogoutService, private location: Location, public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
   onSignup(){
     this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
       this.signupCompId = (response as any)['message'];

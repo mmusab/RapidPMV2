@@ -37,17 +37,25 @@ def checkLogin(userEmail,userPassword):
     if(result[0][0] == userPassword):
       if(result[0][1] != "Yes"):
         json_data["authorized"] = "True"
+        json_data["RPM"] = "False"
         json_data["message"] = ["Welcome"]
+        json_data["compId"] = [result[0][2]]
         json_data["id"] = [result[0][3]]
         json_data["role"] = [result[0][4]]
       else:
         json_data["authorized"] = "True"
+        json_data["RPM"] = "True"
         json_data["message"] = ["Welcome RPM"]
-        json_data["id"] = [result[0][2]]
+        json_data["compId"] = [result[0][2]]
+        json_data["id"] = [result[0][3]]
         json_data["role"] = [result[0][4]]
     else:
       json_data["authorized"] = "False"
+      json_data["RPM"] = "RPM"
       json_data["message"] = ["Incorrect password"]
+      json_data["compId"] = ["compId"]
+      json_data["id"] = ["id"]
+      json_data["role"] = ["role"]
   else:
     json_data["authorized"] = "False"
     json_data["message"] = ["Email address not found"]
@@ -58,7 +66,7 @@ def login(userEmail,userPassword):
   ret, json_data = checkLogin(userEmail,userPassword)
   print(ret)
   if(json_data["authorized"] == "True"):
-    encoded_jwt = jwt.encode({"email": userEmail, "password": userPassword}, "secret", algorithm="HS256")
+    encoded_jwt = jwt.encode({"email": userEmail, "password": userPassword, "usrId": json_data["id"], "compId": json_data["compId"]}, "secret", algorithm="HS256")
     print(encoded_jwt)
     json_data["jwt"] =  str(encoded_jwt)
     ret = json.dumps(json_data)

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { ProjectInfo } from '../project-info';
 import { Location } from '@angular/common'
+import { LogoutService } from '../logout.service';
+import jwt_decode from "jwt-decode";
 
 @Component({
   selector: '[app-project-details]',
@@ -17,8 +19,22 @@ export class ProjectDetailsComponent implements OnInit {
   temp:any;
   admins:any;
   users:any;
+  userEmail = "";
+  userPassword = "";
+  usr:any;
 
   ngOnInit(){
+    let token = localStorage.getItem('token');
+    if (token) {
+      console.log("token exists")
+      this.usr = jwt_decode(token);
+      this.userEmail = this.usr['email']
+      this.userPassword = this.usr['password']
+      // this.onLogin()
+    }
+    else{
+      this.logout.logout()
+    }
     this.sub = this.route.params.subscribe(params => {
     // this.projId = params['id'];
     if(params['id'] != 'id'){
@@ -61,7 +77,7 @@ export class ProjectDetailsComponent implements OnInit {
     localStorage.removeItem('foo')
   }
 }
-  constructor(private location: Location, public projectInfo: ProjectInfo, private route : ActivatedRoute, private http: HttpClient, private router : Router, private notifierService: NotifierService) { }
+  constructor(public logout : LogoutService, private location: Location, public projectInfo: ProjectInfo, private route : ActivatedRoute, private http: HttpClient, private router : Router, private notifierService: NotifierService) { }
 
   createUpdate(){
     this.http.post('http://127.0.0.1:5002/project', this.projectInfo.proj).subscribe((response)=>{

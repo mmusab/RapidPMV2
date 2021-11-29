@@ -106,11 +106,14 @@
 </head>
 <body>
 	<notifier-container></notifier-container>
+	<div>
+		<button style="color: black; float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
+	</div><br><br>
 	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Company Account Management</h2>
 <!-- <div class="split left" style="background-color: whitesmoke;"> -->
 <div class="signup-form">
 	<form #f="ngForm" (ngSubmit)="onSignup()">
-		<div class="split left" style="background-color: white">
+		<div class="split left" style="overflow-y: auto; max-height: 500px; background-color: white">
 			<!-- <p class="hint-text">Create and Update your account.</p> -->
 			<h4 style="color: maroon;">Company Administrator Account</h4>
 			<div class="form-group">

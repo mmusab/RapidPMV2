@@ -6,6 +6,8 @@ import {TreeNode} from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { Location } from '@angular/common'
+import { LogoutService } from '../logout.service';
+import jwt_decode from "jwt-decode";
 
 // interface FoodNode {
 //   name: string;
@@ -169,10 +171,24 @@ export class ProjectListComponent{
   temp: any;
   comapnyName = "";
   companyId = "";
-  constructor(private location: Location, private http: HttpClient, private route : ActivatedRoute, private router : Router, private notifierService: NotifierService) {
+  userEmail = "";
+  userPassword = "";
+  usr:any;
+  constructor(public logout : LogoutService, private location: Location, private http: HttpClient, private route : ActivatedRoute, private router : Router, private notifierService: NotifierService) {
     }
 
   ngOnInit() {
+    let token = localStorage.getItem('token');
+    if (token) {
+      console.log("token exists")
+      this.usr = jwt_decode(token);
+      this.userEmail = this.usr['email']
+      this.userPassword = this.usr['password']
+      // this.onLogin()
+    }
+    else{
+      this.logout.logout()
+    }
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
       this.type = params['type'];
@@ -204,7 +220,8 @@ export class ProjectListComponent{
     this.temp = response as JSON
     this.http.get('http://127.0.0.1:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
       this.temp = response as JSON;
-      this.comapnyName = this.temp[0]['name']
+      console.log(this.temp)
+      this.comapnyName = this.temp[0]['company_name']
       this.companyId = this.temp[0]['company_id']
       this.http.get('http://127.0.0.1:5002/getprojects/' + this.companyId).subscribe((response)=>{
         this.projects = response as JSON

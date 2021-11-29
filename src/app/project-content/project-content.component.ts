@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {TreeNode} from 'primeng/api';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common'
+import { LogoutService } from '../logout.service';
+import jwt_decode from "jwt-decode";
 
 @Component({
   selector: 'app-project-content',
@@ -30,12 +32,26 @@ export class ProjectContentComponent implements OnInit {
       closeResult = '';
       newContainerName = ""
       root = "root"
+      userEmail = "";
+      userPassword = "";
+      usr:any;
       // map = {"project":0,"container":1,"artefact":2}
 
-      constructor(private location: Location, private router : Router, private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
+      constructor(public logout : LogoutService, private location: Location, private router : Router, private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
        }
 
       ngOnInit() {
+          let token = localStorage.getItem('token');
+          if (token) {
+            console.log("token exists")
+            this.usr = jwt_decode(token);
+            this.userEmail = this.usr['email']
+            this.userPassword = this.usr['password']
+            // this.onLogin()
+          }
+          else{
+            this.logout.logout()
+          }
           this.sub = this.route.params.subscribe(params => {
           this.projectId = params['id'];
           this.userId = params['uid'];

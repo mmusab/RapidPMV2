@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { ArtefactInfo } from '../artefactinfo';
 import { Location } from '@angular/common'
+import { LogoutService } from '../logout.service';
+import jwt_decode from "jwt-decode";
 
 @Component({
   selector: 'app-artefact-details',
@@ -20,8 +22,22 @@ export class ArtefactDetailsComponent implements OnInit {
   temp:any;
   admins:any;
   users:any;
+  userEmail = "";
+  userPassword = "";
+  usr:any;
 
   ngOnInit(){
+    let token = localStorage.getItem('token');
+    if (token) {
+      console.log("token exists")
+      this.usr = jwt_decode(token);
+      this.userEmail = this.usr['email']
+      this.userPassword = this.usr['password']
+      // this.onLogin()
+    }
+    else{
+      this.logout.logout()
+    }
     this.sub = this.route.params.subscribe(params => {
     // this.projId = params['id'];
     this.containerId = params['contId']
@@ -64,7 +80,7 @@ export class ArtefactDetailsComponent implements OnInit {
     localStorage.removeItem('foo')
   }
 }
-  constructor(private location: Location,public artefactInfo: ArtefactInfo, private route : ActivatedRoute, private http: HttpClient, private router : Router, private notifierService: NotifierService) { }
+  constructor(public logout : LogoutService, private location: Location,public artefactInfo: ArtefactInfo, private route : ActivatedRoute, private http: HttpClient, private router : Router, private notifierService: NotifierService) { }
 
   createUpdate(){
     this.artefactInfo.art["project_id"] = this.projId

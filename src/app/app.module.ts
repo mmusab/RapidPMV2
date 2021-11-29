@@ -39,6 +39,7 @@ import { ProjectContentComponent } from './project-content/project-content.compo
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArtefactDetailsComponent } from './artefact-details/artefact-details.component';
 import { AuthServiceService } from './auth-service.service';
+import { LogoutService } from './logout.service';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,7 @@ import { AuthServiceService } from './auth-service.service';
     MatSelectModule,
     NgbModule
   ],
-  providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo,ArtefactInfo, AuthServiceService],
+  providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo,ArtefactInfo, AuthServiceService, LogoutService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

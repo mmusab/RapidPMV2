@@ -5,6 +5,7 @@ import { NotifierService } from 'angular-notifier';
 import { UserLogin } from '../user-login';
 import { Location } from '@angular/common'
 import { AuthServiceService } from '../auth-service.service';
+import jwt_decode from "jwt-decode";
 
 @Component({
   selector: '[app-login-screen]',
@@ -23,6 +24,7 @@ export class LoginScreenComponent{
   mess: Array<JSON> | undefined;
   g = "";
   authorized:any
+  usr:any
 
   // signupCompId = "";
   // sub: any;
@@ -35,46 +37,68 @@ export class LoginScreenComponent{
 
   constructor(public auth: AuthServiceService, private location: Location, private httpClient: HttpClient, private router : Router, private route : ActivatedRoute,  private notifierService: NotifierService) { }
 
+  ngOnInit(){
+    let token = localStorage.getItem('token');
+    if (token) {
+      console.log("token exists")
+      this.usr = jwt_decode(token);
+      this.userEmail = this.usr['email']
+      this.userPassword = this.usr['password']
+      this.onLogin()
+    }
+  }
+  
   resetErrors(){
     this.errorMessage = "";
     this.forgotPasswordError = "";
     this.userEmail = "";
     this.userPassword = "";
   }
-  onLogin(){
+  async onLogin(){
+    await this.auth.login({'userEmail':this.userEmail, 'userPassword':this.userPassword})
+    this.rerouting()
+  }
+  rerouting(){
+    console.log(this.incorrectPassCount)
     // this.resetErrors();
-    this.authorized = this.auth.login({'userEmail':this.userEmail, 'userPassword':this.userPassword})
+    // await this.auth.login({'userEmail':this.userEmail, 'userPassword':this.userPassword})
+    console.log(this.auth.currentUser)
+    console.log(this.auth.currentUser.authorized)
+    // console.log(this.authorized)
+    // console.log(this.authorized['ZoneAwarePromise'])
     if(this.userEmail == ""){
     }
-    if(this.authorized['authorized']){
+    if(this.auth.currentUser.authorized == "True"){
+      console.log("is authorized")
       // this.httpClient.get('http://127.0.0.1:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
       //   console.log(message as JSON)
       //   this.errorMessage = (message as any)['message'];
       //   console.log(this.errorMessage);
-        if(this.authorized['msg'] == "Welcome"){
-          UserLogin.userEmail = this.userEmail;
-          UserLogin.userPassword = this.userPassword;
+        if(this.auth.currentUser.RPM == "False"){
+          // this.auth.currentUser.userEmail = this.userEmail;
+          // this.auth.currentUser.userPassword = this.userPassword;
           // this.customerId = (message as any)['id'];
           // this.companyRole = (message as any)['role'];
           // console.log(this.customerId);
-          this.router.navigate(['/app-project-list', this.authorized['id'], this.authorized['role']]);
+          this.router.navigate(['/app-project-list', this.auth.currentUser.id, this.auth.currentUser.role]);
         }
-        if(this.authorized['msg'] == "Welcome RPM"){
-          UserLogin.userEmail = this.userEmail;
-          UserLogin.userPassword = this.userPassword;
+        if(this.auth.currentUser.RPM == "True"){
+          // this.auth.userEmail = this.userEmail;
+          // this.auth.userPassword = this.userPassword;
           // this.companyId = (message as any)['id'];
           // this.companyRole = (message as any)['role'];
           // console.log(this.companyId);
-          this.router.navigate(['/app-company-list-screen', this.authorized['id']]);
+          this.router.navigate(['/app-company-list-screen', this.auth.currentUser.id]);
         }
-        if(this.authorized['msg'] == "Incorrect password"){
-          this.incorrectPassCount += 1;
-          if(this.incorrectPassCount > 2){
-            this.errorMessage = "Incorrect password exceeded please reset"
-          }
         }
         else{
-          this.incorrectPassCount = 0;
+          if(this.auth.currentUser.message == "Incorrect password"){
+            this.errorMessage = "Incorrect password"
+            this.incorrectPassCount += 1;
+            if(this.incorrectPassCount > 2){
+              this.errorMessage = "Incorrect password exceeded please reset"
+              this.incorrectPassCount = 0;
+            }
         }
       // });
     }
