@@ -39,14 +39,14 @@ export class CompanyListScreenComponent implements OnInit {
   //   this.sub = this.route.params.subscribe(params => {
   //     this.companyId = params['id'];
   //  });
-    this.http.get('http://127.0.0.1:5002/getCompanies').subscribe((response)=>{
+    this.http.get('http://82.69.10.205:5002/getCompanies').subscribe((response)=>{
       this.companies = response as JSON
       this.companyHead = Object.keys(this.companies[0]);
       console.log(this.companyHead)
       console.log(this.companies)
       console.log(this.companyId)
     });
-    // this.http.get('http://127.0.0.1:5002/getUser/' + this.userId).subscribe((response)=>{
+    // this.http.get('http://82.69.10.205:5002/getUser/' + this.userId).subscribe((response)=>{
     //   this.user = response as JSON
     // });
   }
