@@ -56,7 +56,7 @@ export class UserManagementScreenComponent{
    });
    this.http.get('http://82.69.10.205:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
       this.company = response as JSON
-      this.companyName = this.company[0]["name"]
+      this.companyName = this.company[0]["company_name"]
       console.log(this.companyName)
     });
    this.requestUsers();

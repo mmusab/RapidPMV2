@@ -14,7 +14,7 @@
     overflow-x: hidden;
     padding-top: 20px;
     margin-top: 100px;
-    margin-left: 10%;
+    margin-left: 5%;
   }
   
   /* Control the left side */
@@ -48,7 +48,7 @@
   }
   
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 12px; }
 
 .example-tree-invisible {
   display: none;
@@ -91,4 +91,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .mydivoutermulti:hover .buttonoverlapmulti{ 
 	display:block;
+}
+.p-treetable table {
+  font-size: 12px;
 }

@@ -68,13 +68,13 @@
     	margin-bottom: 15px;
         background: white;
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 30px;
+        padding: 0;
     }
 	.signup-form .form-group{
-		margin-bottom: 20px;
+		margin-bottom: 5px;
 	}
 	.signup-form input[type="checkbox"]{
-		margin-top: 3px;
+		margin-top: 1px;
 	}
 	.signup-form .btn{        
         font-size: 16px;
@@ -113,7 +113,7 @@
 <!-- <div class="split left" style="background-color: whitesmoke;"> -->
 <div class="signup-form">
 	<form #f="ngForm" (ngSubmit)="onSignup()">
-		<div class="split left" style="overflow-y: auto; max-height: 500px; background-color: white">
+		<div class="split left" style="margin-top: 10px; overflow-y: auto; max-height: 500px; background-color: white">
 			<!-- <p class="hint-text">Create and Update your account.</p> -->
 			<h4 style="color: maroon;">Company Administrator Account</h4>
 			<div class="form-group">
@@ -195,7 +195,7 @@
 				<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
 			</div> -->
 		</div>
-		<div class="split right" style="background-color: white; margin-top: 200px;">
+		<div class="split right" style="background-color: white; margin-top: 10px;">
 			<div class="form-group">
 				<button type="submit" class="btn btn-success btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
 			</div>
