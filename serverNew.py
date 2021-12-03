@@ -213,7 +213,7 @@ def artefact(contId):
     sql = "UPDATE artefact SET artefact_type = '" + str(artefact[
       'artefact_type']) + "', artefact_owner = '" + str(artefact['artefact_owner']) + "', artefact_name = '" + str(artefact['artefact_name']) + "', description = '" + \
           str(artefact['description']) + "', status = '" + str(artefact['status']) + "',create_date = '" + str(artefact[
-            'create_date']) + "',update_date = '" + str(artefact['update_date']) + "',location_url = '" + str(artefact['location_url']) + "',template_url = '" + str(artefact['template_url']) + "',project_id = '" + str(artefact['project_id']) + "',template = '" + str(artefact['template']) + "' WHERE artefactId = '" + str(artId) + "';"
+            'create_date']) + "',update_date = '" + str(artefact['update_date']) + "',location_url = '" + str(artefact['location_url']) + "',template_url = '" + str(artefact['template_url']) + "',project_id = '" + str(artefact['project_id']) + "',template = '" + str(artefact['template']) + "' WHERE artefact_id = '" + str(artId) + "';"
     # sql = "UPDATE user SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE user_id = '" + str(custmId) + "';"
     mycursor.execute(sql)
     mydb.commit()
@@ -360,6 +360,27 @@ def getArtefact(artId):
   print(result)
   return jsonify(result)
 
+@app.route('/getContainer/<contId>', methods=['GET', 'POST'])
+def getContainer(contId):
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE container_id = '" + contId + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
+@app.route('/updateContainer/<contTitle>/<contId>', methods=['GET', 'POST'])
+def updateContainer(contTitle,contId):
+  sql = "UPDATE hierarchy_container SET container_title = '" + str(contTitle) + "' WHERE container_id = '" + str(contId) + "';"
+  mycursor.execute(sql)
+  mydb.commit()
+  return ({"message":"success"})
+
 # @app.route('/addArtefact/<artId>/<level>', methods=['GET', 'POST'])
 # def getArtefacts(artId, level):
 #   if(level == "child"):
@@ -481,13 +502,15 @@ def deleteRecursive(contId):
     contId) + "';"
   mycursor.execute(sql)
   artefacts = mycursor.fetchall()
-  for a in artefacts:
-    sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(a[0]) + "';"
-    mycursor.execute(sql)
-    mydb.commit()
-    sql = "DELETE FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + str(a[0]) + "';"
-    mycursor.execute(sql)
-    mydb.commit()
+  if(artefacts):
+    return("error")
+  # for a in artefacts:
+  #   sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(a[0]) + "';"
+  #   mycursor.execute(sql)
+  #   mydb.commit()
+  #   sql = "DELETE FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + str(a[0]) + "';"
+  #   mycursor.execute(sql)
+  #   mydb.commit()
   sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container where parent_container_id = '" + str(contId) + "';"
   mycursor.execute(sql)
   containers = mycursor.fetchall()
@@ -497,11 +520,12 @@ def deleteRecursive(contId):
   sql = "DELETE FROM RPMnew_dataBase.hierarchy_container WHERE container_id = '" + str(contId) + "';"
   mycursor.execute(sql)
   mydb.commit()
+  return "done"
 
 @app.route('/deleteContainer/<contId>/<type>', methods=['GET', 'POST'])
 def deleteContainer(contId, type):
   if(type == "container"):
-    deleteRecursive(contId)
+    msg = deleteRecursive(contId)
   else:
     sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(contId) + "';"
     mycursor.execute(sql)
@@ -510,7 +534,8 @@ def deleteContainer(contId, type):
     sql = "DELETE FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + str(contId) + "';"
     mycursor.execute(sql)
     mydb.commit()
-  customerId = {"message": "success"}
+    msg = "done"
+  customerId = {"message": msg}
   return jsonify(customerId)
 
 def recursive(projId,c):

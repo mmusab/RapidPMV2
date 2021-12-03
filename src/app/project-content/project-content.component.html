@@ -124,6 +124,12 @@
 					<mat-option *ngFor="let h of heirarchyList" [value]="h.hierarchy_id">
 					  {{h.hierarchy_name}}
 					</mat-option>
+					<button mat-icon-button color="warn">
+						<mat-icon>
+							add_box
+						</mat-icon>
+						add heirarchy
+					</button>
 				  </mat-select>
 				</mat-form-field>
 			<!-- </form> -->
@@ -169,17 +175,20 @@
                     <tr>
                         <td style="padding: 0;" icon="pi pi-search" *ngFor="let col of cols[1]; let i = index">
                             <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-							<button *ngIf="i == 1" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+							<button *ngIf="i == 1 && rowData[cols[1][2].field] == ''" mat-icon-button [matMenuTriggerFor]="mmenu" aria-label="Example icon-button with a menu">
+								<mat-icon>more_vert</mat-icon>
+							</button>
+							<button *ngIf="i == 1 && rowData[cols[1][2].field] != ''" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
 								<mat-icon>more_vert</mat-icon>
 							</button>
 							<button *ngIf="i == 1 && rowData[cols[1][2].field] == ''" mat-icon-button [matMenuTriggerFor]="menuAddTable" aria-label="Example icon-button with a menu">
 								<mat-icon>add_box</mat-icon>
 							</button>
 							<mat-menu #menu="matMenu">
-								<button mat-menu-item>
-									<mat-icon>update</mat-icon>
-									<span>record details update screen</span>
-								</button>
+								<button [routerLink]=editDetail(rowData.id) mat-menu-item>
+										<mat-icon>update</mat-icon>
+										<span>Modify record</span>
+									</button>
 								<button [matMenuTriggerFor]="menu3" mat-menu-item>
 									<mat-icon>file_copy</mat-icon>
 									<span>copy</span>
@@ -190,7 +199,25 @@
 								</button>
 								<button (click)=delete(rowData) mat-menu-item>
 									<mat-icon>remove</mat-icon>
-									<span>delete</span>
+									<span>delete record</span>
+								</button>
+							</mat-menu>
+							<mat-menu #mmenu="matMenu">
+								<button (click)=editContainer(mymodal,rowData.id) mat-menu-item>
+										<mat-icon>update</mat-icon>
+										<span>Modify record</span>
+									</button>
+								<button [matMenuTriggerFor]="menu3" mat-menu-item>
+									<mat-icon>file_copy</mat-icon>
+									<span>copy</span>
+								</button>
+								<button [matMenuTriggerFor]="menu2" mat-menu-item>
+									<mat-icon>move_to_inbox</mat-icon>
+									<span>move</span>
+								</button>
+								<button (click)=delete(rowData) mat-menu-item>
+									<mat-icon>remove</mat-icon>
+									<span>delete record</span>
 								</button>
 							</mat-menu>
 
@@ -221,7 +248,7 @@
 								</button>
 							</mat-menu>
 
-							<a *ngIf="i == 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</a>
+							<a [routerLink]=editDetail(rowData.id) *ngIf="i == 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</a>
 							<span *ngIf="i == 0 && rowData[cols[1][2].field] == ''">{{rowData[col.field]}}</span>
 							<span *ngIf="i != 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</span>
                             <!-- {{rowData[col.field]}} -->
@@ -243,7 +270,7 @@
   </div>
   <div>
 	<label class="inline-label" for="address_line2">Container name</label>
-	<input required ngModel [(ngModel)]="newContainerName" type="newContainerName" name="newContainerName" placeholder="enter container name ...">
+	<input required ngModel [(ngModel)]="newContainerName" type="newContainerName" name="newContainerName" placeholder="{{editContainerName}}">
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>

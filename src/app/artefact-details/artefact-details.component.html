@@ -68,13 +68,13 @@
     	margin-bottom: 15px;
         background: white;
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 30px;
+        padding: 0;
     }
 	.signup-form .form-group{
-		margin-bottom: 20px;
+		margin-bottom: 5px;
 	}
 	.signup-form input[type="checkbox"]{
-		margin-top: 3px;
+		margin-top: 1px;
 	}
 	.signup-form .btn{        
         font-size: 16px;
@@ -112,7 +112,7 @@
 	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Artefact Details</h2>
 <div class="signup-form">
 	<form #f="ngForm" (ngSubmit)="createUpdate()">
-		<div class="split left" style="background-color: white">
+		<div class="split left" style="margin-top: 10px; overflow-y: auto; max-height: 500px; background-color: white">
 			<div class="form-group">
 				<label class="inline-label" for="project_id">Project ID: {{projId}}</label>
 				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
@@ -175,7 +175,7 @@
 				<input required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
 			</div>
 		</div>
-        <div class="split right" style="background-color: white; margin-top: 200px;">
+        <div class="split right" style="background-color: white; margin-top: 10px;">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
             </div>
