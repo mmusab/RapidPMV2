@@ -219,6 +219,19 @@ def artefact(contId):
     mydb.commit()
     customerId = {"message": str(artId)}
     return jsonify(customerId)
+
+@app.route('/addHeirarchy/<heirName>', methods=['GET', 'POST'])
+def addHeirarchy(heirName):
+  sql = "INSERT INTO hierarchy_list (hierarchy_name) VALUES (%s)"
+  # value=(str(heirName))
+  # print("value is: " + value)
+  mycursor.execute(sql, (heirName,))
+  mydb.commit()
+  sql = "SELECT LAST_INSERT_ID()"
+  mycursor.execute(sql)
+  heirarchyId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
+  return jsonify(heirarchyId)
+
 @app.route('/getUsers/<company_id>', methods=['GET', 'POST'])
 def getUsers(company_id):
   sql = "SELECT * FROM RPMnew_dataBase.user WHERE company_id = '" + company_id + "';"
@@ -402,6 +415,7 @@ def updateContainer(contTitle,contId):
 
 @app.route('/addContainer/<containerName>/<root>/<projId>/<herId>', methods=['GET', 'POST'])
 def addContainer(containerName,root,projId,herId):
+  print("heirarchyid: " + herId)
   if(root == "root"):
     value = (containerName, projId, herId)
     sql = "INSERT INTO hierarchy_container (container_title, project_id, hierarchy_id) VALUES (%s, %s, %s)"
@@ -578,12 +592,12 @@ def recursive(projId,c):
     return jsn
   else:
     return jsn
-@app.route('/getprojectTree/<projectId>', methods=['GET', 'POST'])
-def getprojectTree(projectId):
-  sql = "SELECT a.* FROM RPMnew_dataBase.artefact a WHERE a.project_id = '" + projectId + "' and a.artefact_id NOT IN (SELECT artefact_id FROM RPMnew_dataBase.container_artefact_link);"
+@app.route('/getprojectTree/<projectId>/<heirId>', methods=['GET', 'POST'])
+def getprojectTree(projectId, heirId):
+  sql = "SELECT a.* FROM RPMnew_dataBase.artefact a WHERE a.project_id = '" + projectId + "' and a.artefact_id NOT IN (SELECT cal.artefact_id FROM RPMnew_dataBase.container_artefact_link cal, RPMnew_dataBase.hierarchy_container hc where cal.container_id=hc.container_id and hc.hierarchy_id = '" + heirId + "');"
   mycursor.execute(sql)
   pArtefacts = mycursor.fetchall()
-  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projectId + "' and parent_container_id IS NULL;"
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container WHERE project_id = '" + projectId + "' and hierarchy_id = '" + heirId + "' and parent_container_id IS NULL;"
   mycursor.execute(sql)
   pcontainers = mycursor.fetchall()
   contJson = []

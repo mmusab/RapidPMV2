@@ -121,15 +121,17 @@
 				<mat-label class="inline-label" style="color: black;">Heirarchy</mat-label>
 				<mat-form-field appearance="fill">
 				  <mat-select placeholder={{selectedHeirarchy}} [(ngModel)]="selectedHeirarchy" name="heirarchy">
-					<mat-option *ngFor="let h of heirarchyList" [value]="h.hierarchy_id">
+					<mat-option *ngFor="let h of heirarchyList" (click)=refreshList() [value]="h.hierarchy_id">
 					  {{h.hierarchy_name}}
 					</mat-option>
-					<button mat-icon-button color="warn">
-						<mat-icon>
-							add_box
-						</mat-icon>
-						add heirarchy
-					</button>
+					<mat-option>
+						<button mat-icon-button (click)=heirarchy(heirarchyModel) color="warn">
+							<mat-icon>
+								add_box
+							</mat-icon>
+							add heirarchy
+						</button>
+					</mat-option>
 				  </mat-select>
 				</mat-form-field>
 			<!-- </form> -->
@@ -276,3 +278,18 @@
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
   </div>
 </ng-template>
+<ng-template #heirarchyModel let-modal>
+	<div class="modal-header">
+	  <h4 class="modal-title" id="modal-basic-title">Add Heirarchy</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+		<span aria-hidden="true">×</span>
+	  </button>
+	</div>
+	<div>
+	  <label class="inline-label" for="address_line2">Heirarchy name</label>
+	  <input required ngModel [(ngModel)]="newHeirarchyName" type="newHeirarchyName" name="newHeirarchyName" placeholder="{{newHeirarchyName}}">
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+	</div>
+  </ng-template>
