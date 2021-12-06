@@ -9,8 +9,10 @@ import { CompanyListScreenComponent } from './company-list-screen/company-list-s
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { ProjectContentComponent } from './project-content/project-content.component';
 import { ArtefactDetailsComponent } from './artefact-details/artefact-details.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
-const routes: Routes = [{path:'', component: LoginScreenComponent},
+const routes: Routes = [{path:'', component: LandingPageComponent},
+                        {path:'app-login-screen', component: LoginScreenComponent},
                         {path:'app-signup-screen/:id', component: SignupScreenComponent},
                         {path:'app-project-list/:id/:type', component: ProjectListComponent},
                         {path:'app-password-reset-screen', component: PasswordResetScreenComponent},

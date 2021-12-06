@@ -40,6 +40,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArtefactDetailsComponent } from './artefact-details/artefact-details.component';
 import { AuthServiceService } from './auth-service.service';
 import { LogoutService } from './logout.service';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { LogoutService } from './logout.service';
     CompanyListScreenComponent,
     ProjectDetailsComponent,
     ProjectContentComponent,
-    ArtefactDetailsComponent
+    ArtefactDetailsComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
