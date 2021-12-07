@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<title>RPM Registration Form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<style>
+	body {
+		color: #fff;
+		/* background: #63738a; */
+		font-family: 'Roboto', sans-serif;
+	}
+    .form-control{
+		height: 40px;
+		box-shadow: none;
+		color: #969fa4;
+		width: 70%;
+		margin-left: 30%;
+	}
+	.form-control:focus{
+		border-color: #5cb85c;
+	}
+    .form-control, .btn{        
+        border-radius: 3px;
+    }
+	.signup-form{
+		width: 80%;
+		margin: 0 auto;
+		padding: 30px 0;
+		position: relative;
+		background-color: white;
+	}
+	.signup-form h2{
+		color: #636363;
+        margin: 0 0 15px;
+		position: relative;
+		text-align: center;
+    }
+	.signup-form h2:before, .signup-form h2:after{
+		content: "";
+		height: 2px;
+		width: 30%;
+		background: #d4d4d4;
+		position: absolute;
+		top: 50%;
+		z-index: 2;
+	}	
+	.signup-form h2:before{
+		left: 0;
+	}
+	.signup-form h2:after{
+		right: 0;
+	}
+    .signup-form .hint-text{
+		color: #999;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+    .signup-form form{
+		color: #999;
+		border-radius: 3px;
+    	margin-bottom: 15px;
+        background: white;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 0;
+    }
+	.signup-form .form-group{
+		margin-bottom: 5px;
+	}
+	.signup-form input[type="checkbox"]{
+		margin-top: 1px;
+	}
+	.signup-form .btn{        
+        font-size: 16px;
+        font-weight: bold;		
+		min-width: 140px;
+        outline: none !important;
+    }
+	.signup-form .row div:first-child{
+		padding-right: 10px;
+	}
+	.signup-form .row div:last-child{
+		padding-left: 10px;
+	}    	
+    .signup-form a{
+		color: #fff;
+		text-decoration: underline;
+	}
+    .signup-form a:hover{
+		text-decoration: none;
+	}
+	.signup-form form a{
+		color: #5cb85c;
+		text-decoration: none;
+	}	
+	.signup-form form a:hover{
+		text-decoration: underline;
+	}  
+</style>
+</head>
+<body>
+	<notifier-container></notifier-container>
+	<div>
+		<button style="color: black; float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
+	</div><br><br>
+	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Company Account Management</h2>
+<!-- <div class="split left" style="background-color: whitesmoke;"> -->
+<div class="signup-form">
+	<form #f="ngForm" (ngSubmit)="onSignup()">
+		<div class="split left" style="margin-top: 10px; overflow-y: auto; max-height: 500px; background-color: white">
+			<!-- <p class="hint-text">Create and Update your account.</p> -->
+			<h4 style="color: maroon;">Company Administrator Account</h4>
+			<div class="form-group">
+				<label class="inline-label" for="name">Name</label>
+				<input required ngModel [(ngModel)]="customerInfo.cust.name" type="name" class="form-control" name="name" placeholder="{{customerInfo.cust.name}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="email">Email</label>
+				<input required ngModel #Email="ngModel" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" [(ngModel)]="customerInfo.cust.email" type="email" class="form-control" name="email" placeholder="{{customerInfo.cust.email}}">
+				<div *ngIf="Email.errors && Email.touched" class ="alert alert-danger">
+					<div [hidden]="!Email.errors?.pattern">
+					Invalid pattern
+					</div> 
+				</div> 
+				<!-- <div class="alert alert-danger" *ngIf="Email.touched && !Email.valid">Email is required</div> -->
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="comapny_role">Company Role</label>
+				<input readonly ngModel [(ngModel)]="customerInfo.cust.company_role" type="comapny_role" class="form-control" name="comapny_role" value="Admin" placeholder="Admin">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="status">Status</label>
+				<select [(ngModel)]="customerInfo.cust.status" type="status" name="status" class="form-control">
+					<option selected>{{customerInfo.cust.status}}</option>
+					<option value="Active">Active</option>
+					<option value="Inactive">Inactive</option>
+					<option value="Pending">Pending</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="password">Password</label>
+				<input required ngModel [(ngModel)]="customerInfo.cust.password" type="password" class="form-control" name="password" placeholder="{{customerInfo.cust.password}}">
+			</div>
+			<h4 style="color: maroon;">Company Information</h4>
+			<!-- <div hidden class="form-group">
+				<label for="rpm">RPM</label>
+				<select [(ngModel)]="companyInfo.comp.RPM" type="rpm" class="form-control" name="rpm">
+					<option selected>{{companyInfo.comp.RPM}}</option>
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+				</select>
+			</div> -->
+			<div class="form-group">
+				<label class="inline-label"  for="company_name">Company Name</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.company_name" type="company_name" class="form-control" name="company_name" placeholder="{{companyInfo.comp.company_name}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label"  for="contact_name">Contact Name</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.contact_name" type="contact_name" class="form-control" name="contact_name" placeholder="{{companyInfo.comp.contact_name}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="address_line1">Address Line 1</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.address_line1" type="address_line1" class="form-control" name="address_line1" placeholder="{{companyInfo.comp.address_line1}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="address_line2">Address Line 2</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.address_line2" type="address_line2" class="form-control" name="address_line2" placeholder="{{companyInfo.comp.address_line2}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="address_line3">Address Line 3</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.address_line3" type="address_line3" class="form-control" name="address_line3" placeholder="{{companyInfo.comp.address_line3}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="city">City</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.city" type="city" class="form-control" name="city" placeholder="{{companyInfo.comp.city}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="country">Country</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.country" type="country" class="form-control" name="country" placeholder="{{companyInfo.comp.country}}">
+			</div>
+			<div class="form-group">
+				<label class="inline-label" for="postalCode">Postal Code</label>
+				<input required ngModel [(ngModel)]="companyInfo.comp.postal_code" type="postalCode" class="form-control" name="postalCode" placeholder="{{companyInfo.comp.postal_code}}" >
+			</div>
+			<!-- <div class="form-group">
+				<input required ngModel type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" required="required">
+			</div>       -->
+			<!-- <div class="form-group">
+				<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
+			</div> -->
+		</div>
+		<div class="split right" style="background-color: white; margin-top: 10px;">
+			<div class="form-group">
+				<button type="submit" class="btn btn-success btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary btn-lg btn-block" style="width: 30%;" (click)="goToUsers()" type="button">Users</button>
+				<button class="btn btn-primary btn-lg btn-block" style="width: 30%;" (click)="goToProjects()" type="button">Projects</button>
+				<button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" (click)=back() type="button">Cancel</button>
+				<!-- <a href="#">Manage Users</a><br>
+				<a href="#">Cancel</a> -->
+			</div>
+		</div>
+	</form>
+	<!-- <div class="text-center" style="color: blue;">Already have an account? <a style="color: blue;" href="#">Sign in</a></div> -->
+</div>
+<!-- </div> -->
+</body>
+</html>
+<!-- <h1 style="text-align: center;">This is new user screen</h1><br> -->

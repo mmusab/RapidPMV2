@@ -21,14 +21,14 @@
   .left {
     left: 0;
     background-color: #111;
-    width: 40%;
+    width: 25%;
   }
   
   /* Control the right side */
   .right {
     right: 0;
     background-color: red;
-    width: 40%;
+    width: 25%;
     /* margin-right: 100px; */
   }
   
@@ -94,4 +94,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 
 }
 .p-treetable table {
   font-size: 12px;
+}
+.modal {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+.modal-content  {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px; 
 }

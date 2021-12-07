@@ -1,121 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<title>RPM Registration Form</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-<style>
-	body {
-		color: #fff;
-		/* background: #63738a; */
-		font-family: 'Roboto', sans-serif;
+    <head>
+        <style>
+            html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, caption {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+/* body { 
+  background-image: url('/assets/Assets/LandingPageGraphic.svg');
+  background-repeat: no-repeat;
+  background-position: 115% 40%;
+  background-size: 60%;
+} */
+.login-form {
+		width: 340px;
+    	margin: 50px auto;
 	}
-    .form-control{
-		height: 40px;
-		box-shadow: none;
-		color: #969fa4;
-		width: 70%;
-		margin-left: 30%;
-	}
-	.form-control:focus{
-		border-color: #5cb85c;
-	}
-    .form-control, .btn{        
-        border-radius: 3px;
-    }
-	.signup-form{
-		width: 80%;
-		margin: 0 auto;
-		padding: 30px 0;
-		position: relative;
-		background-color: white;
-	}
-	.signup-form h2{
-		color: #636363;
-        margin: 0 0 15px;
-		position: relative;
-		text-align: center;
-    }
-	.signup-form h2:before, .signup-form h2:after{
-		content: "";
-		height: 2px;
-		width: 30%;
-		background: #d4d4d4;
-		position: absolute;
-		top: 50%;
-		z-index: 2;
-	}	
-	.signup-form h2:before{
-		left: 0;
-	}
-	.signup-form h2:after{
-		right: 0;
-	}
-    .signup-form .hint-text{
-		color: #999;
-		margin-bottom: 30px;
-		text-align: center;
-	}
-    .signup-form form{
-		color: #999;
-		border-radius: 3px;
+    .login-form form {
     	margin-bottom: 15px;
-        background: white;
+        background: #f7f7f7;
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 0;
+        padding: 30px;
     }
-	.signup-form .form-group{
-		margin-bottom: 5px;
-	}
-	.signup-form input[type="checkbox"]{
-		margin-top: 1px;
-	}
-	.signup-form .btn{        
-        font-size: 16px;
-        font-weight: bold;		
-		min-width: 140px;
-        outline: none !important;
+    .login-form h2 {
+        margin: 0 0 15px;
     }
-	.signup-form .row div:first-child{
-		padding-right: 10px;
+    .form-control, .btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .btn {        
+        font-size: 15px;
+        font-weight: bold;
+    }
+	.input{
+		background: white;
 	}
-	.signup-form .row div:last-child{
-		padding-left: 10px;
-	}    	
-    .signup-form a{
-		color: #fff;
-		text-decoration: underline;
-	}
-    .signup-form a:hover{
-		text-decoration: none;
-	}
-	.signup-form form a{
-		color: #5cb85c;
-		text-decoration: none;
-	}	
-	.signup-form form a:hover{
-		text-decoration: underline;
-	}  
-</style>
-</head>
+        </style>
+    </head>
 <body>
-	<notifier-container></notifier-container>
-	<div>
-		<button style="color: black; float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
-	</div><br><br>
-	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Company Account Management</h2>
-<!-- <div class="split left" style="background-color: whitesmoke;"> -->
-<div class="signup-form">
+    <img src="/assets/RPMLOGO/rpmlogoNARROWTHUMBNAIL.png" height="11.78%" width="5.96%" style="margin-left: 3.22%;">
+    <button mat-button style="margin-left: 9.76%;font-size: 12px; color: #292E35; opacity: 100%;">Account</button>
+    <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Projects</button>
+    <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Users</button>
+	<button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button>
+	<button mat-flat-button style="margin-left: 35%; margin-top: 6.12%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
+	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><b>Company Account Management</b></div>
 	<form #f="ngForm" (ngSubmit)="onSignup()">
-		<div class="split left" style="margin-top: 10px; overflow-y: auto; max-height: 500px; background-color: white">
-			<!-- <p class="hint-text">Create and Update your account.</p> -->
-			<h4 style="color: maroon;">Company Administrator Account</h4>
+		<div class="split left" style="margin-left: 20%; margin-right: 20%;margin-top: 15%;font-size: 12px;">
+			<h4 style="color: #14ABDD; font-weight: bold;">Company Administrator Account</h4>
 			<div class="form-group">
 				<label class="inline-label" for="name">Name</label>
 				<input required ngModel [(ngModel)]="customerInfo.cust.name" type="name" class="form-control" name="name" placeholder="{{customerInfo.cust.name}}">
@@ -128,7 +66,6 @@
 					Invalid pattern
 					</div> 
 				</div> 
-				<!-- <div class="alert alert-danger" *ngIf="Email.touched && !Email.valid">Email is required</div> -->
 			</div>
 			<div class="form-group">
 				<label class="inline-label" for="comapny_role">Company Role</label>
@@ -147,15 +84,9 @@
 				<label class="inline-label" for="password">Password</label>
 				<input required ngModel [(ngModel)]="customerInfo.cust.password" type="password" class="form-control" name="password" placeholder="{{customerInfo.cust.password}}">
 			</div>
-			<h4 style="color: maroon;">Company Information</h4>
-			<!-- <div hidden class="form-group">
-				<label for="rpm">RPM</label>
-				<select [(ngModel)]="companyInfo.comp.RPM" type="rpm" class="form-control" name="rpm">
-					<option selected>{{companyInfo.comp.RPM}}</option>
-					<option value="Yes">Yes</option>
-					<option value="No">No</option>
-				</select>
-			</div> -->
+		</div>
+		<div class="split right" style="margin-left: 20%; margin-right: 20%;margin-top: 15%;font-size: 12px;">
+			<h4 style="color: #6F6FFF; font-weight: bold;">Company Information</h4>
 			<div class="form-group">
 				<label class="inline-label"  for="company_name">Company Name</label>
 				<input required ngModel [(ngModel)]="companyInfo.comp.company_name" type="company_name" class="form-control" name="company_name" placeholder="{{companyInfo.comp.company_name}}">
@@ -176,7 +107,7 @@
 				<label class="inline-label" for="address_line3">Address Line 3</label>
 				<input required ngModel [(ngModel)]="companyInfo.comp.address_line3" type="address_line3" class="form-control" name="address_line3" placeholder="{{companyInfo.comp.address_line3}}">
 			</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="inline-label" for="city">City</label>
 				<input required ngModel [(ngModel)]="companyInfo.comp.city" type="city" class="form-control" name="city" placeholder="{{companyInfo.comp.city}}">
 			</div>
@@ -187,30 +118,12 @@
 			<div class="form-group">
 				<label class="inline-label" for="postalCode">Postal Code</label>
 				<input required ngModel [(ngModel)]="companyInfo.comp.postal_code" type="postalCode" class="form-control" name="postalCode" placeholder="{{companyInfo.comp.postal_code}}" >
-			</div>
-			<!-- <div class="form-group">
-				<input required ngModel type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" required="required">
-			</div>       -->
-			<!-- <div class="form-group">
-				<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
 			</div> -->
 		</div>
-		<div class="split right" style="background-color: white; margin-top: 10px;">
-			<div class="form-group">
-				<button type="submit" class="btn btn-success btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
-			</div>
-			<div class="form-group">
-				<button class="btn btn-primary btn-lg btn-block" style="width: 30%;" (click)="goToUsers()" type="button">Users</button>
-				<button class="btn btn-primary btn-lg btn-block" style="width: 30%;" (click)="goToProjects()" type="button">Projects</button>
-				<button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" (click)=back() type="button">Cancel</button>
-				<!-- <a href="#">Manage Users</a><br>
-				<a href="#">Cancel</a> -->
-			</div>
+		<div class="form-group">
+			<button type="submit" [disabled]="!f.valid"><img style="margin-left: 240%; margin-top: 155%; width: 65%;height: 65%;" src="/assets/Assets/CreateUpdate.svg"></button>
 		</div>
+		<button mat-button (click)=back() style="margin-left: 47%; font-size: 12px; color: #292E35;opacity: 100%;">Cancel</button>
 	</form>
-	<!-- <div class="text-center" style="color: blue;">Already have an account? <a style="color: blue;" href="#">Sign in</a></div> -->
-</div>
-<!-- </div> -->
 </body>
 </html>
-<!-- <h1 style="text-align: center;">This is new user screen</h1><br> -->
