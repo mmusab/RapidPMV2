@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<title>RPM Registration Form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
+</head>
+<body>
+	<notifier-container></notifier-container>
+  <div>
+    <button style="float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
+  </div><br><br>
+	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Company List screen</h2>
+	<!-- Editable table -->
+<div class="card">
+	<!-- <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Editable table</h3> -->
+	<div class="card-body">
+        <button class="text-success" (click)="addCompany()">
+			<mat-icon>add</mat-icon>
+		</button>
+		<table class="mat-elevation-z8" style="width: 100%;">
+            <tr>
+              <!-- <th *ngFor="let head of companyHead">{{head}}</th> -->
+              <th>ID</th>
+              <th>Company Name</th>
+              <th>Name</th>
+              <th>Address</th>
+            </tr>
+            <!-- <tr *ngFor="let adm of admins">
+              <mat-radio-button></mat-radio-button>
+              <td *ngFor="let head of adminHead">{{adm[head]}}</td>
+            </tr> -->
+            <tr *ngFor="let comp of companies; let id = index">
+                <!-- <td *ngFor="let head of companyHead">{{comp[head]}}</td> -->
+                <td>{{comp['company_id']}}</td>
+                <td>
+                  <a role="button" (click)="updateCompany(id)">
+                    <div style="color: blue; height:100%;width:100%">
+                      {{comp['company_name']}}
+                    </div>
+                  </a>
+                </td>
+                <!-- <td>{{comp['company_name']}}</td> -->
+                <td>{{comp['contact_name']}}</td>
+                <td>{{comp['address_line1']}} {{comp['address_line2']}} {{comp['address_line3']}} {{comp['city']}} {{comp['country']}} {{comp['postal_code']}}</td>
+                <td>
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button (click)=updateCompany(id) mat-menu-item>
+                      <mat-icon>details</mat-icon>
+                      <span>details</span>
+                    </button>
+                    <button mat-menu-item>
+                      <mat-icon>remove</mat-icon>
+                      <span>Delete</span>
+                    </button>
+                  </mat-menu>
+                  
+                </td>
+              </tr>
+          </table>
+	</div>
+  </div>
+  <!-- Editable table -->
+</body>
+</html>
+<!-- <h1 style="text-align: center;">This is new user screen</h1><br> -->
+

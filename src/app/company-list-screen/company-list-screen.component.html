@@ -1,76 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<title>RPM Registration Form</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-
-</head>
+    <head>
+        <style>
+            html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, caption {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+/* body { 
+  background-image: url('/assets/Assets/LandingPageGraphic.svg');
+  background-repeat: no-repeat;
+  background-position: 115% 40%;
+  background-size: 60%;
+} */
+.login-form {
+		width: 340px;
+    	margin: 50px auto;
+	}
+    .login-form form {
+    	margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    .form-control, .btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .btn {        
+        font-size: 15px;
+        font-weight: bold;
+    }
+	.input{
+		background: white;
+	}
+  table {
+    font-size: 12px;
+  /* width: 100%; */
+  /* border: 1px solid #000; */
+  }
+  th{
+    /* text-align: center; */
+    padding: 5px;
+  width: 20px;
+  }
+  tr{
+    padding: 2px;
+  }
+  tr:nth-child(even) {
+    background-color: #EFEDFB;
+  }
+  tab10 { padding-left: 40em; }
+  /* .tr{
+    padding: 5px;
+  } */
+        </style>
+    </head>
 <body>
-	<notifier-container></notifier-container>
-  <div>
-    <button style="float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
-  </div><br><br>
-	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Company List screen</h2>
-	<!-- Editable table -->
-<div class="card">
-	<!-- <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Editable table</h3> -->
-	<div class="card-body">
-        <button class="text-success" (click)="addCompany()">
-			<mat-icon>add</mat-icon>
-		</button>
-		<table class="mat-elevation-z8" style="width: 100%;">
-            <tr>
-              <!-- <th *ngFor="let head of companyHead">{{head}}</th> -->
-              <th>ID</th>
-              <th>Company Name</th>
-              <th>Name</th>
-              <th>Address</th>
-            </tr>
-            <!-- <tr *ngFor="let adm of admins">
-              <mat-radio-button></mat-radio-button>
-              <td *ngFor="let head of adminHead">{{adm[head]}}</td>
-            </tr> -->
-            <tr *ngFor="let comp of companies; let id = index">
-                <!-- <td *ngFor="let head of companyHead">{{comp[head]}}</td> -->
-                <td>{{comp['company_id']}}</td>
-                <td>
-                  <a role="button" (click)="updateCompany(id)">
-                    <div style="color: blue; height:100%;width:100%">
-                      {{comp['company_name']}}
-                    </div>
-                  </a>
-                </td>
-                <!-- <td>{{comp['company_name']}}</td> -->
-                <td>{{comp['contact_name']}}</td>
-                <td>{{comp['address_line1']}} {{comp['address_line2']}} {{comp['address_line3']}} {{comp['city']}} {{comp['country']}} {{comp['postal_code']}}</td>
-                <td>
-                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button (click)=updateCompany(id) mat-menu-item>
-                      <mat-icon>details</mat-icon>
-                      <span>details</span>
-                    </button>
-                    <button mat-menu-item>
-                      <mat-icon>remove</mat-icon>
-                      <span>Delete</span>
-                    </button>
-                  </mat-menu>
-                  
-                </td>
-              </tr>
-          </table>
-	</div>
-  </div>
-  <!-- Editable table -->
+  <img src="/assets/RPMLOGO/rpmlogoNARROWTHUMBNAIL.png" height="11.78%" width="5.96%" style="margin-left: 3.22%;">
+  <!-- <button mat-button style="margin-left: 9.76%;font-size: 12px; color: #292E35; opacity: 100%;">Account</button>
+  <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Projects</button>
+  <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Users</button>
+  <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
+  <button mat-flat-button style="margin-left: 80%; margin-top: 6.12%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
+  <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>Companies List</b></p><button style="margin-left: 49%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div>
+  <table mat-table style="margin-left: 15%; margin-right: 15%; margin-top: 1%;">
+    <tr style="background-color: #6957E1; color: white; font-size: 12px;">
+      <th style="width: 150px;">ID</th>
+      <th style="width: 150px;">Company Name</th>
+      <th style="width: 150px;">Name</th>
+      <th style="width: 400px;">Address</th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let comp of companies; let id = index">
+        <td>{{comp['company_id']}}</td>
+        <td>
+          <a role="button" (click)="updateCompany(id)">
+            <div style="color: blue; height:100%;width:100%">
+              {{comp['company_name']}}
+            </div>
+          </a>
+        </td>
+        <td>{{comp['contact_name']}}</td>
+        <td>{{comp['address_line1']}} {{comp['address_line2']}} {{comp['address_line3']}} {{comp['city']}} {{comp['country']}} {{comp['postal_code']}}</td>
+        <td>
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button (click)=updateCompany(id) mat-menu-item>
+              <mat-icon>details</mat-icon>
+              <span>details</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>remove</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </td>
+      </tr>
+  </table>
 </body>
 </html>
-<!-- <h1 style="text-align: center;">This is new user screen</h1><br> -->

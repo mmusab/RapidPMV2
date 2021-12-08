@@ -34,12 +34,14 @@ export class CompanyListScreenComponent implements OnInit {
       // this.onLogin()
     }
     else{
+      console.log("logging out")
       this.logout.logout()
     }
   //   this.sub = this.route.params.subscribe(params => {
   //     this.companyId = params['id'];
   //  });
     this.http.get('http://127.0.0.1:5002/getCompanies').subscribe((response)=>{
+      console.log("got companies")
       this.companies = response as JSON
       this.companyHead = Object.keys(this.companies[0]);
       console.log(this.companyHead)
@@ -52,14 +54,14 @@ export class CompanyListScreenComponent implements OnInit {
   }
 
   addCompany(){
-    this.router.navigate(['/app-signup-screen', "id"]);
     console.log("in addcompany")
+    this.router.navigate(['/app-signup-screen', "id"]);
   }
 
   updateCompany(index: string | number){
+    console.log("in companyDetail")
     console.log("company id: " + this.companies[index]['company_id'])
     this.router.navigate(['/app-signup-screen', this.companies[index]['company_id']]);
-    console.log("in companyDetail")
   }
 
   back(){

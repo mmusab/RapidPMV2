@@ -5,6 +5,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotifierService } from 'angular-notifier';
 import { AuthServiceService } from '../auth-service.service';
 import { Location } from '@angular/common'
+import jwt_decode from "jwt-decode";
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
@@ -38,6 +39,14 @@ export class LandingPageComponent implements OnInit {
     }
   }
   login(content:any) {
+    let token = localStorage.getItem('token');
+    if (token) {
+      console.log("token exists")
+      this.usr = jwt_decode(token);
+      this.userEmail = this.usr['email']
+      this.userPassword = this.usr['password']
+      this.onLogin()
+    }
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -138,8 +147,8 @@ export class LandingPageComponent implements OnInit {
       });
     }
   }
-  back(){
-    console.log('in back')
-    this.location.back()
-  }
+  // back(){
+  //   console.log('in back')
+  //   this.location.back()
+  // }
 }
