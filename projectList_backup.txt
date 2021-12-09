@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+        <title>RPM Registration Form</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    </head>
+    <body>
+        <notifier-container></notifier-container>
+        <div>
+            <button style="float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
+        </div><br><br>
+        <h2 style="vertical-align:auto; text-align: center; color: maroon;">Project List Screen</h2><br><br>
+        <div style="margin-left: 10%; margin-right: 10%;">
+            <h3 style="float: left;">Company Name: {{comapnyName}}</h3>
+            <button class="btn btn-primary btn-block" style="width: 20%; float: right;" (click)="administration()">Administration</button>
+        </div>
+        <div><br><br>
+            <div class="card-body">
+                <div id="table">
+                    <button class="text-success" (click)="add()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                        <tr>
+                            <th></th>
+                            <ng-container *ngFor="let head of projectsHead">
+                                <th class="text-center">
+                                    <p >{{head}}</p>
+                                </th>
+                            </ng-container>
+                        </tr>
+
+                        <tr *ngFor="let project of projects; let id = index">
+                            <td>
+                                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button (click)=modify(id) mat-menu-item>
+                                    <mat-icon>update</mat-icon>
+                                    <span>Modify record</span>
+                                    </button>
+                                    <button (click)=delete(id) mat-menu-item>
+                                    <mat-icon>remove</mat-icon>
+                                    <span>Delete record</span>
+                                    </button>
+                                </mat-menu> 
+                            </td>
+                            <ng-container *ngFor="let head of projectsHead">
+                                <td *ngIf="head === 'project_name'">    
+                                    <a [routerLink]=projectContent(id)>{{project[head]}}</a>
+                                </td>
+                                <td *ngIf="head !== 'project_name'">    
+                                    <span>{{project[head]}}</span>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

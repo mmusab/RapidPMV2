@@ -1,82 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<title>RPM Registration Form</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-
-</head>
+    <head>
+        <style>
+            html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, caption {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    /* vertical-align: baseline; */
+    background: transparent;
+}
+/* body { 
+  background-image: url('/assets/Assets/LandingPageGraphic.svg');
+  background-repeat: no-repeat;
+  background-position: 115% 40%;
+  background-size: 60%;
+} */
+.login-form {
+		width: 340px;
+    	margin: 50px auto;
+	}
+    .login-form form {
+    	margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    .form-control, .btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .btn {        
+        font-size: 15px;
+        font-weight: bold;
+    }
+	.input{
+		background: white;
+	}
+  table {
+    font-size: 12px;
+  /* width: 100%; */
+  /* border: 1px solid #000; */
+  }
+  th{
+    /* text-align: center; */
+    padding: 5px;
+  width: 20px;
+  }
+  tr{
+    padding: 2px;
+  }
+  tr:nth-child(even) {
+    background-color: #EFEDFB;
+  }
+  tab10 { padding-left: 40em; }
+  /* .tr{
+    padding: 5px;
+  } */
+        </style>
+    </head>
 <body>
-	<notifier-container></notifier-container>
-	<div>
-		<button style="float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
-	</div><br><br>
-	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Users Account Management</h2>
-	<!-- Editable table -->
-<div class="card">
-	<!-- <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Editable table</h3> -->
-	<div class="split left" style="background-color: white">
-		<div class="card-body">
-			<h2>Company: {{companyName}}</h2>
-			<h3>Users</h3>
-			<div id="table" class="table-editable">
-				<button class="text-success" (click)="add()">
-					<mat-icon>add</mat-icon>
-				</button>
-				<table class="table table-bordered table-responsive-md table-striped text-center">
-					<tr>
-						<ng-container *ngFor="let head of userHead">
-							<th class="text-center" *ngIf="!(head === 'company_id' || head === 'user_id')">
-								<p >{{head}}</p>
-							</th>
-						</ng-container>
-						<th></th>
-					</tr>
+  <img src="/assets/RPMLOGO/rpmlogoNARROWTHUMBNAIL.png" height="11.78%" width="5.96%" style="margin-left: 3.22%;">
+  <button mat-button (click)="goToProjects()" style="margin-left: 9.76%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Projects</button>
+  <button mat-button style="margin-left: 4.18%;font-size: 12px; color: #292E35; opacity: 100%;">Users</button>
+  <button mat-button (click)="goToSignUp()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Company Admin</button>
+  <!-- <button mat-button (click)="administration()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
+  <button mat-flat-button (click)=logout.logout() style="margin-left: 30%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
+  <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position: absolute; margin-left: 57%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div>
+  <table mat-table style="margin-left: 15%; margin-right: 15%; margin-top: 1%;">
+	<tr style="background-color: #6957E1; color: white; font-size: 12px;">
+		<ng-container *ngFor="let head of userHead">
+			<th style="width: 150px;" *ngIf="!(head === 'company_id' || head === 'user_id')">
+				<p >{{head}}</p>
+			</th>
+		</ng-container>
+		<th></th>
+	</tr>
 
-				<tr *ngFor="let user of users; let id = index">
-					<ng-container *ngFor="let head of userHead">
-						<td *ngIf="!(head === 'company_id' || head === 'user_id')">    
-							<span [attr.contenteditable]="!(head === 'company_role' || head === 'verified')" (blur)="updateList(id, head, $event)" this.searchValue = ' '>{{user[head]}}</span>
-						</td>
-					</ng-container>
-					<td>
-					<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-						<mat-icon>more_vert</mat-icon>
-					</button>
-					<mat-menu #menu="matMenu">
-						<button (click)=onAddUser(id) mat-menu-item>
-						<mat-icon>update</mat-icon>
-						<span>Update record</span>
-						</button>
-						<button (click)=deleteRow(id) mat-menu-item>
-						<mat-icon>remove</mat-icon>
-						<span>delete record</span>
-						</button>
-					</mat-menu>
-					
-					</td>
-				</tr>
-				</table>
-			</div>
-		</div>
-	</div>
-	<div class="split right" style="background-color: white; margin-top: 200px;">
-			<div class="form-group">
-				<button class="btn btn-success btn-lg btn-block" style="width: 30%;" (click)="goToSignUp()" type="button">Company Admin</button>
-				<button class="btn btn-primary btn-lg btn-block" style="width: 30%;" (click)="goToProjects()" type="button">Projects</button>
-				<button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" (click)=back() type="button">Cancel</button>
-				<!-- <a href="#">Manage Users</a><br>
-				<a href="#">Cancel</a> -->
-			</div>
-	</div>
-</div>
-  <!-- Editable table -->
+<tr *ngFor="let user of users; let id = index">
+	<ng-container *ngFor="let head of userHead">
+		<td *ngIf="!(head === 'company_id' || head === 'user_id')">    
+			<span [attr.contenteditable]="!(head === 'company_role' || head === 'verified')" (blur)="updateList(id, head, $event)" this.searchValue = ' '>{{user[head]}}</span>
+		</td>
+	</ng-container>
+	<td>
+	<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+		<mat-icon>more_vert</mat-icon>
+	</button>
+	<mat-menu #menu="matMenu">
+		<button (click)=onAddUser(id) mat-menu-item>
+		<mat-icon>update</mat-icon>
+		<span>Update record</span>
+		</button>
+		<button (click)=deleteRow(id) mat-menu-item>
+		<mat-icon>remove</mat-icon>
+		<span>delete record</span>
+		</button>
+	</mat-menu>
+	
+	</td>
+</tr>
+</table>
 </body>
 </html>
-<!-- <h1 style="text-align: center;">This is new user screen</h1><br> -->

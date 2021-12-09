@@ -96,9 +96,11 @@ export class UserManagementScreenComponent{
     });
   }
   deleteRow(index: string | number){
-    if(this.users[index]['customer_id']){
-      this.http.get('http://127.0.0.1:5002/deleteUser/' + this.users[index]['customer_id']).subscribe((response)=>{
+    console.log(this.users[index])
+    if(this.users[index]['user_id']){
+      this.http.get('http://127.0.0.1:5002/deleteUser/' + this.users[index]['user_id']).subscribe((response)=>{
         console.log(response)
+        location.reload();
     });
     }
     // location.reload();
