@@ -70,8 +70,9 @@
   <button mat-button (click)="goToSignUp()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Company Admin</button>
   <!-- <button mat-button (click)="administration()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
   <button mat-flat-button (click)=logout.logout() style="margin-left: 30%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
-  <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position: absolute; margin-left: 57%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div>
+  <!-- <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position: absolute; margin-left: 57%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div> -->
   <table mat-table style="margin-left: 15%; margin-right: 15%; margin-top: 1%;">
+    <div style="position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position:absolute; margin-left: 40%;"><img (click)="add()" style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div>
 	<tr style="background-color: #6957E1; color: white; font-size: 12px;">
 		<ng-container *ngFor="let head of userHead">
 			<th style="width: 150px;" *ngIf="!(head === 'company_id' || head === 'user_id')">

@@ -1,130 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<title>RPM Registration Form</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-<style>
-	body {
-		color: #fff;
-		/* background: #63738a; */
-		font-family: 'Roboto', sans-serif;
+    <head>
+        <style>
+            html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, caption {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    /* vertical-align: baseline; */
+    background: transparent;
+}
+/* body { 
+  background-image: url('/assets/Assets/LandingPageGraphic.svg');
+  background-repeat: no-repeat;
+  background-position: 115% 40%;
+  background-size: 60%;
+} */
+.login-form {
+		width: 340px;
+    	margin: 50px auto;
 	}
-    .form-control{
-		height: 40px;
-		box-shadow: none;
-		color: #969fa4;
-		width: 70%;
-		margin-left: 30%;
-	}
-	.form-control:focus{
-		border-color: #5cb85c;
-	}
-    .form-control, .btn{        
-        border-radius: 3px;
-    }
-	.signup-form{
-		width: 80%;
-		margin: 0 auto;
-		padding: 30px 0;
-		position: relative;
-		background-color: white;
-	}
-	.signup-form h2{
-		color: #636363;
-        margin: 0 0 15px;
-		position: relative;
-		text-align: center;
-    }
-	.signup-form h2:before, .signup-form h2:after{
-		content: "";
-		height: 2px;
-		width: 30%;
-		background: #d4d4d4;
-		position: absolute;
-		top: 50%;
-		z-index: 2;
-	}	
-	.signup-form h2:before{
-		left: 0;
-	}
-	.signup-form h2:after{
-		right: 0;
-	}
-    .signup-form .hint-text{
-		color: #999;
-		margin-bottom: 30px;
-		text-align: center;
-	}
-    .signup-form form{
-		color: #999;
-		border-radius: 3px;
+    .login-form form {
     	margin-bottom: 15px;
-        background: white;
+        background: #f7f7f7;
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 0;
+        padding: 30px;
     }
-	.signup-form .form-group{
-		margin-bottom: 5px;
-	}
-	.signup-form input[type="checkbox"]{
-		margin-top: 1px;
-	}
-	.signup-form .btn{        
-        font-size: 16px;
-        font-weight: bold;		
-		min-width: 140px;
-        outline: none !important;
+    .login-form h2 {
+        margin: 0 0 15px;
     }
-	.signup-form .row div:first-child{
-		padding-right: 10px;
+    .form-control, .btn {
+        /* min-height: 38px; */
+        /* border-radius: 2px; */
+    }
+    .btn {        
+        font-size: 15px;
+        font-weight: bold;
+    }
+	.input{
+		background: white;
 	}
-	.signup-form .row div:last-child{
-		padding-left: 10px;
-	}    	
-    .signup-form a{
-		color: #fff;
-		text-decoration: underline;
-	}
-    .signup-form a:hover{
-		text-decoration: none;
-	}
-	.signup-form form a{
-		color: #5cb85c;
-		text-decoration: none;
-	}	
-	.signup-form form a:hover{
-		text-decoration: underline;
-	}  
-</style>
-</head>
+        </style>
+    </head>
 <body>
-	<notifier-container></notifier-container>
-	<div>
-		<button style="color: black; float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
-	</div><br><br>
-	<h2 style="vertical-align:auto; text-align: center; color: maroon;">Artefact Details</h2>
-<div class="signup-form">
+    <img src="/assets/RPMLOGO/rpmlogoNARROWTHUMBNAIL.png" height="11.78%" width="5.96%" style="margin-left: 3.22%;">
+    <!-- <button mat-button style="margin-left: 9.76%;font-size: 12px; color: #292E35; opacity: 100%;">Account</button>
+    <button mat-button (click)="goToProjects()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Projects</button>
+    <button mat-button (click)="goToUsers()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Users</button> -->
+	<!-- <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
+	<button mat-flat-button (click)=logout.logout() style="margin-left: 75%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
+	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><b>Artefact details</b></div>
 	<form #f="ngForm" (ngSubmit)="createUpdate()">
-		<div class="split left" style="margin-top: 10px; overflow-y: auto; max-height: 500px; background-color: white">
-			<div class="form-group">
-				<label class="inline-label" for="project_id">Project ID: {{projId}}</label>
-				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
-			</div><br><br>
-            <div class="form-group">
-				<label class="inline-label" for="company_id">Company ID: {{companyId}}</label>
-				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
-			</div><br><br>
-            <div class="form-group">
-				<label class="inline-label" for="artefact_id">Artefact ID: {{artefactId}}</label>
-				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
-			</div><br><br>
+		<div class="form-group" style="margin-left: 20%; margin-top: 2%;">
+			<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="project_id">Project ID: {{projId}}</label>
+			<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
+		</div>
+		<div class="form-group" style="margin-left: 30%; margin-top: 2%;">
+			<label class="inline-label" style="color: #6F6FFF; font-weight: bold;" for="company_id">Company ID: {{companyId}}</label>
+			<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
+		</div>
+		<div class="form-group" style="margin-left: 40%; margin-top: 2%;">
+			<label class="inline-label" style="color: green; font-weight: bold;" for="artefact_id">Artefact ID: {{artefactId}}</label>
+			<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
+		</div>
+		<div class="split left" style="margin-left: 20%; margin-right: 20%;margin-top: 15%;font-size: 12px;">
             <div class="form-group">
 				<label class="inline-label" for="artefact_type">Artefact type</label>
 				<input required ngModel [(ngModel)]="artefactInfo.art.artefact_type" type="artefact_type" class="form-control" name="artefact_type" placeholder="{{artefactInfo.art.artefact_type}}">
@@ -150,6 +90,8 @@
 				<label class="inline-label" for="status">status</label>
 				<input required ngModel [(ngModel)]="artefactInfo.art.status" type="status" class="form-control" name="status" placeholder="{{artefactInfo.art.status}}">
 			</div>
+		</div>
+		<div class="split right" style="margin-left: 20%; margin-right: 20%;margin-top: 15%;font-size: 12px;">
             <div class="form-group">
 				<label class="inline-label" for="template">template</label>
 				<select [(ngModel)]="artefactInfo.art.template" type="template" class="form-control" name="template">
@@ -175,15 +117,19 @@
 				<input required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
 			</div>
 		</div>
-        <div class="split right" style="background-color: white; margin-top: 10px;">
+		<div class="form-group">
+			<button type="submit" [disabled]="!f.valid"><img style="position: absolute; margin-top: 25%; width: 10%;height: 10%;" src="/assets/Assets/CreateUpdate.svg"></button>
+			<button mat-button style="position: absolute; margin-left: 3%; margin-top: 30%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
+		</div>
+		<!-- <button mat-button style="position: absolute; margin-left: 47%; margin-top: 30%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button> -->
+        <!-- <div class="split right" style="background-color: white; margin-top: 10px;">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
             </div>
             <div class="form-group">
                 <button class="btn btn-secondary btn-lg btn-block" style="width: 30%;" (click)=back() type="button">Cancel</button>
             </div>
-        </div>
+        </div> -->
 	</form>
-</div>
 </body>
 </html>

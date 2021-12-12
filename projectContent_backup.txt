@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<title>RPM Registration Form</title>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<style>
+	body {
+		color: #fff;
+		/* background: #63738a; */
+		font-family: 'Roboto', sans-serif;
+		font-size: 12px;
+	}
+    .form-control{
+		height: 40px;
+		box-shadow: none;
+		color: #969fa4;
+		width: 70%;
+		margin-left: 30%;
+	}
+	.form-control:focus{
+		border-color: #5cb85c;
+	}
+    .form-control, .btn{        
+        border-radius: 3px;
+    }
+	.signup-form{
+		width: 80%;
+		margin: 0 auto;
+		padding: 30px 0;
+		position: relative;
+		background-color: white;
+		font-size: 12px;
+	}
+	.signup-form h2{
+		color: #636363;
+        margin: 0 0 15px;
+		position: relative;
+		text-align: center;
+    }
+	.signup-form h2:before, .signup-form h2:after{
+		content: "";
+		height: 2px;
+		width: 30%;
+		background: #d4d4d4;
+		position: absolute;
+		top: 50%;
+		z-index: 2;
+	}	
+	.signup-form h2:before{
+		left: 0;
+	}
+	.signup-form h2:after{
+		right: 0;
+	}
+    .signup-form .hint-text{
+		color: #999;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+    .signup-form form{
+		color: #999;
+		border-radius: 3px;
+    	margin-bottom: 15px;
+        background: white;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+	.signup-form .form-group{
+		margin-bottom: 20px;
+	}
+	.signup-form input[type="checkbox"]{
+		margin-top: 3px;
+	}
+	.signup-form .btn{        
+        font-size: 16px;
+        font-weight: bold;		
+		min-width: 140px;
+        outline: none !important;
+    }
+	.signup-form .row div:first-child{
+		padding-right: 10px;
+	}
+	.signup-form .row div:last-child{
+		padding-left: 10px;
+	}    	
+    .signup-form a{
+		color: #fff;
+		text-decoration: underline;
+	}
+    .signup-form a:hover{
+		text-decoration: none;
+	}
+	.signup-form form a{
+		color: #5cb85c;
+		text-decoration: none;
+	}	
+	.signup-form form a:hover{
+		text-decoration: underline;
+	}
+</style>
+</head>
+<body>
+    <notifier-container></notifier-container>
+	<div>
+		<button style="float: right; margin-right: 5%; margin-top: 2%;" (click)=logout.logout()><mat-icon>exit_to_app</mat-icon></button>
+	</div><br><br>
+    <h2 style="vertical-align:auto; text-align: center; color: maroon;">Project Contents</h2>
+    <div style="margin-left: 10%; margin-right: 10%;">
+        <div style="float: left;">
+            <h4 style="color: black;">Company: {{companyName}}</h4><br>
+            <h4 style="color: black;">Project: {{projectName}}</h4><br>
+            <!-- <h3 style="color: black;">Heirarchy: {{projectDefaultHeirarchy}}</h3> -->
+			<!-- <form style="color: black;"> -->
+				<mat-label class="inline-label" style="color: black;">Heirarchy</mat-label>
+				<mat-form-field appearance="fill">
+				  <mat-select placeholder={{selectedHeirarchy}} [(ngModel)]="selectedHeirarchy" name="heirarchy">
+					<mat-option *ngFor="let h of heirarchyList" (click)=refreshList() [value]="h.hierarchy_id">
+					  {{h.hierarchy_name}}
+					</mat-option>
+					<mat-option>
+						<button mat-icon-button (click)=heirarchy(heirarchyModel) color="warn">
+							<mat-icon>
+								add_box
+							</mat-icon>
+							add heirarchy
+						</button>
+					</mat-option>
+				  </mat-select>
+				</mat-form-field>
+			<!-- </form> -->
+        </div>
+        <div style="float: right;">
+            <button class="btn btn-secondary btn-block" (click)=back()>Cancel</button>
+            <form style="margin-top: 38%;" id="form">
+				<!-- <div > -->
+					<!-- <button (mouseenter)="changeText = true" (mouseout)="changeText = false" mat-icon-button [matMenuTriggerFor]="menuAdd" aria-label="Example icon-button with a menu" style="color: green;"> -->
+						<button mat-icon-button [matMenuTriggerFor]="menuAdd" color="warn">
+							<mat-icon>
+								add_box
+							</mat-icon>
+						</button>
+						<!-- <span *ngIf="!changeText"></span> -->
+					<!-- </button> -->
+				<!-- </div> -->
+				<mat-menu #menuAdd="matMenu">
+					<button mat-menu-item (click)=addArtefact(root)>
+						<span>Add Artefact</span>
+					</button>
+					<button mat-menu-item (click)=open(mymodal,root)>
+						<span>Add Container</span>
+					</button>
+				</mat-menu>
+				<div class="divider"></div>
+                <input style="color: black;" type="search" id="query" name="q" placeholder="Search...">
+                <button style="color: black;">Search</button>
+            </form>
+        </div>
+    </div>
+    <div id="c1" style="overflow: auto; max-height: 400px; margin-top: 22%; margin-left: 10%; margin-right: 10%;">
+        <div>
+            <p-treeTable [value]="files" [columns]="cols[0]">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="padding: 0; background-color:gainsboro" *ngFor="let col of columns">
+                            {{col.header}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                    <tr>
+                        <td style="padding: 0;" icon="pi pi-search" *ngFor="let col of cols[1]; let i = index">
+                            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+							<button *ngIf="i == 1 && rowData[cols[1][2].field] == ''" mat-icon-button [matMenuTriggerFor]="mmenu" aria-label="Example icon-button with a menu">
+								<mat-icon>more_vert</mat-icon>
+							</button>
+							<button *ngIf="i == 1 && rowData[cols[1][2].field] != ''" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+								<mat-icon>more_vert</mat-icon>
+							</button>
+							<button *ngIf="i == 1 && rowData[cols[1][2].field] == ''" mat-icon-button [matMenuTriggerFor]="menuAddTable" aria-label="Example icon-button with a menu">
+								<mat-icon>add_box</mat-icon>
+							</button>
+							<mat-menu #menu="matMenu">
+								<button [routerLink]=editDetail(rowData.id) mat-menu-item>
+										<mat-icon>update</mat-icon>
+										<span>Modify record</span>
+									</button>
+								<button [matMenuTriggerFor]="menu3" mat-menu-item>
+									<mat-icon>file_copy</mat-icon>
+									<span>copy</span>
+								</button>
+								<button [matMenuTriggerFor]="menu2" mat-menu-item>
+									<mat-icon>move_to_inbox</mat-icon>
+									<span>move</span>
+								</button>
+								<button (click)=delete(rowData) mat-menu-item>
+									<mat-icon>remove</mat-icon>
+									<span>delete record</span>
+								</button>
+							</mat-menu>
+							<mat-menu #mmenu="matMenu">
+								<button (click)=editContainer(mymodal,rowData.id) mat-menu-item>
+										<mat-icon>update</mat-icon>
+										<span>Modify record</span>
+									</button>
+								<button [matMenuTriggerFor]="menu3" mat-menu-item>
+									<mat-icon>file_copy</mat-icon>
+									<span>copy</span>
+								</button>
+								<button [matMenuTriggerFor]="menu2" mat-menu-item>
+									<mat-icon>move_to_inbox</mat-icon>
+									<span>move</span>
+								</button>
+								<button (click)=delete(rowData) mat-menu-item>
+									<mat-icon>remove</mat-icon>
+									<span>delete record</span>
+								</button>
+							</mat-menu>
+
+							<mat-menu #menu2="matMenu">
+								<ng-container *ngFor="let con of containerList; let c = index">
+								<button mat-menu-item (click)=move(con,rowData)>
+									<!-- <mat-icon>{{con}}</mat-icon> -->
+									<span>{{con}}</span>
+								</button>
+								</ng-container>
+							</mat-menu>
+
+							<mat-menu #menu3="matMenu">
+								<ng-container *ngFor="let con of containerList; let c = index">
+								<button mat-menu-item (click)=copy(con,rowData)>
+									<!-- <mat-icon>{{con}}</mat-icon> -->
+									<span>{{con}}</span>
+								</button>
+								</ng-container>
+							</mat-menu>
+
+							<mat-menu #menuAddTable="matMenu">
+								<button mat-menu-item (click)=addArtefact(rowData.id)>
+									<span>Add Artefact</span>
+								</button>
+								<button mat-menu-item (click)=open(mymodal,rowData.id)>
+									<span>Add Container</span>
+								</button>
+							</mat-menu>
+
+							<a [routerLink]=editDetail(rowData.id) *ngIf="i == 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</a>
+							<span *ngIf="i == 0 && rowData[cols[1][2].field] == ''">{{rowData[col.field]}}</span>
+							<span *ngIf="i != 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</span>
+                            <!-- {{rowData[col.field]}} -->
+                        </td>
+                    </tr>            
+                </ng-template>
+            </p-treeTable>
+        </div>
+    </div>
+    
+</body>
+</html>
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Container</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div>
+	<label class="inline-label" for="address_line2">Container name</label>
+	<input required ngModel [(ngModel)]="newContainerName" type="newContainerName" name="newContainerName" placeholder="{{editContainerName}}">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+  </div>
+</ng-template>
+<ng-template #heirarchyModel let-modal>
+	<div class="modal-header">
+	  <h4 class="modal-title" id="modal-basic-title">Add Heirarchy</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+		<span aria-hidden="true">×</span>
+	  </button>
+	</div>
+	<div>
+	  <label class="inline-label" for="address_line2">Heirarchy name</label>
+	  <input required ngModel [(ngModel)]="newHeirarchyName" type="newHeirarchyName" name="newHeirarchyName" placeholder="{{newHeirarchyName}}">
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+	</div>
+  </ng-template>

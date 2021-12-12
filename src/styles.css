@@ -48,7 +48,7 @@
   }
   
 html, body { height: 100%; }
-body { margin: 0; font-size: 12px; }
+body { margin: 0; font-size: 12px; font-family: 'Times New Roman', Times, serif;}
 
 .example-tree-invisible {
   display: none;
@@ -94,6 +94,17 @@ body { margin: 0; font-size: 12px; }
 }
 .p-treetable table {
   font-size: 12px;
+}
+.p-treetable .p-treetable-thead > tr > th {
+  /* text-align: left;
+  padding: 0.571rem 0.857rem;
+  border: 1px solid #c8c8c8;
+  border-width: 1px 1px 1px 1px;
+  font-weight: 700; */
+  color: white;
+  background: #6957E1;
+  white-space: nowrap;
+  /* transition: background-color 0.2s, box-shadow 0.2s; */
 }
 .modal {
   text-align: center;
