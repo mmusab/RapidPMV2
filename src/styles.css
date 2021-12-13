@@ -103,7 +103,7 @@ body { margin: 0; font-size: 12px; font-family: 'Times New Roman', Times, serif;
   font-weight: 700; */
   color: white;
   background: #6957E1;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   /* transition: background-color 0.2s, box-shadow 0.2s; */
 }
 .modal {

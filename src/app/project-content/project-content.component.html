@@ -107,13 +107,18 @@
 	</button>
 </mat-menu>
 </div>
-  <div class="split" style="position: relative; margin-left: 20%; margin-right: 20%; margin-top: 0%;font-size: 12px;">
+  <div style="overflow-y: auto; height: 300px; position: relative; margin-left: 20%; margin-right: 5%; margin-top: 0%;font-size: 12px;">
 	<p-treeTable [value]="files" [columns]="cols[0]">
 	<ng-template pTemplate="header" let-columns>
 		<tr>
-			<th *ngFor="let col of columns">
-				{{col.header}}
-			</th>
+			<ng-container *ngFor="let col of columns; let i = index">
+				<th style="width: 200px;" *ngIf="i != 1">
+					{{col.header}}
+				</th>
+				<th style="width: 100px;" *ngIf="i == 1">
+					{{col.header}}
+				</th>
+			</ng-container>
 		</tr>
 	</ng-template>
 	<ng-template pTemplate="body" let-rowNode let-rowData="rowData">

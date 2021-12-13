@@ -299,9 +299,12 @@ def deleteUser(user_id):
 @app.route('/deleteProject/<project_id>', methods=['GET', 'POST'])
 def deleteProject(project_id):
   sql = "DELETE FROM project WHERE project_id = '" + project_id + "';"
-  mycursor.execute(sql)
-  mydb.commit()
-  return ({"message":"success"})
+  try:
+    mycursor.execute(sql)
+    mydb.commit()
+    return ({"message":"success"})
+  except:
+    return ({"message": "failed"})
 
 @app.route('/getCompany/<companyId>', methods=['GET', 'POST'])
 def getCompany(companyId):
@@ -437,9 +440,9 @@ def getHeirarchyList():
   print(result)
   return jsonify(result)
 
-@app.route('/getContainers/<heirarchyId>', methods=['GET', 'POST'])
-def getContainers(heirarchyId):
-  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container where hierarchy_id = '" + heirarchyId + "';"
+@app.route('/getContainers/<heirarchyId>/<projId>', methods=['GET', 'POST'])
+def getContainers(heirarchyId,projId):
+  sql = "SELECT * FROM RPMnew_dataBase.hierarchy_container where hierarchy_id = '" + heirarchyId + "' and project_id = '" + projId + "';"
   mycursor.execute(sql)
   result = mycursor.fetchall()
   row_headers = [x[0] for x in mycursor.description]
