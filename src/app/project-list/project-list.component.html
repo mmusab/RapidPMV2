@@ -72,9 +72,20 @@
   <button mat-button (click)="administration()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button>
   <button mat-flat-button (click)=logout.logout() style="margin-left: 40%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
   <!-- <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>{{comapnyName}}</b></p><button style="position: absolute; margin-left: 57%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div> -->
+  <div class="row" style="margin-left: 15%; margin-right: 15%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;">
+    <div class="col-md-6">
+      <b>{{comapnyName}}</b>
+    </div>
+    <div class="col-md-6">  
+      <button mat-button (click)="add()" style="float:right">
+        <img style="width: 67%;float: right;margin-top: 4px;" src="/assets/Assets/AddNew.svg">
+      </button>
+    </div>
+  </div>
+  <!-- <div style="margin-left: 15%; margin-right: 15%; margin-top: 1%;"> -->
   <div style="margin-left: 15%; margin-right: 15%; margin-top: 1%;">
-  <table mat-table>
-    <div style="position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>{{comapnyName}}</b></p><button (click)="add()" style="position:absolute; margin-left: 40%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div>
+  <table mat-table style="width:100%">
+    <!-- <div style="position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>{{comapnyName}}</b></p><button (click)="add()" style="position:absolute; margin-left: 40%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div> -->
     <tr style="background-color: #6957E1; color: white; font-size: 12px;">
         <th style="width: 150px;"></th>
         <ng-container *ngFor="let head of projectsHead">

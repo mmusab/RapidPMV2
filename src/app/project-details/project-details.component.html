@@ -52,7 +52,7 @@
 	<button mat-flat-button (click)=logout.logout() style="margin-left: 75%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
 	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><b>Project details</b></div>
 	<form #f="ngForm" (ngSubmit)="createUpdate()">
-		<div class="split" style="margin-left: 20%; margin-right: 20%;margin-top: 13%;font-size: 12px;">
+		<div class="split" style="margin-left: 20%; margin-right: 20%;margin-top: 13%;">
 			<div class="form-group">
 				<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="project_id">Project ID: {{projId}}</label>
 				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
@@ -63,11 +63,11 @@
 			</div><br><br>
             <div class="form-group">
 				<label class="inline-label" for="project_name">Title</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.project_name" type="project_name" class="form-control" name="title" placeholder="{{projectInfo.proj.project_name}}">
+				<input style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.project_name" type="project_name" class="form-control" name="title" placeholder="{{projectInfo.proj.project_name}}">
 			</div>
 			<div class="form-group">
 				<label class="inline-label" for="status">status</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.status" type="status" class="form-control" name="status" placeholder="{{projectInfo.proj.status}}">
+				<input style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.status" type="status" class="form-control" name="status" placeholder="{{projectInfo.proj.status}}">
 			</div>
 			<!-- <div class="form-group">
 				<label class="inline-label" for="status">status</label>
@@ -80,7 +80,7 @@
 			</div> -->
             <div class="form-group">
 				<label class="inline-label" for="template">template</label>
-				<select [(ngModel)]="projectInfo.proj.template" type="template" class="form-control" name="template">
+				<select style="font-size: 10px;" [(ngModel)]="projectInfo.proj.template" type="template" class="form-control" name="template">
 					<option selected>{{projectInfo.proj.template}}</option>
 					<option value="Y">Y</option>
 					<option value="N">N</option>
@@ -88,7 +88,7 @@
 			</div>
 			<div class="form-group">
 				<label class="inline-label" for="owner">owner</label>
-				<select [(ngModel)]="projectInfo.proj.owner" type="owner" class="form-control" name="owner">
+				<select style="font-size: 10px;" [(ngModel)]="projectInfo.proj.owner" type="owner" class="form-control" name="owner">
 					<!-- <option selected>{{projectInfo.proj.owner}}</option> -->
 					<ng-container *ngFor="let admin of admins">
 						<option [value]="admin.name">{{admin['name']}}</option>
@@ -101,17 +101,19 @@
 			</div> -->
             <div class="form-group">
 				<label class="inline-label" for="start">Start</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.start" type="date" class="form-control" name="start" placeholder="{{projectInfo.proj.start}}">
+				<input style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.start" type="date" class="form-control" name="start" placeholder="{{projectInfo.proj.start}}">
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="end">End</label>
-				<input required ngModel [(ngModel)]="projectInfo.proj.end" type="date" class="form-control" name="end" placeholder="{{projectInfo.proj.end}}">
+				<input style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.end" type="date" class="form-control" name="end" placeholder="{{projectInfo.proj.end}}">
+			</div>
+			<div class="form-group">
+				<button type="submit" [disabled]="!f.valid"><img style="float:right; position: absolute; margin-left: 45%; width: 25%;height: 25%;" src="/assets/Assets/CreateUpdate.svg"></button>
+			</div><br>
+			<div>
+				<button mat-button style="position: absolute; margin-left: 50%; margin-top: 7%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
 			</div>
 		</div>
-		<div class="form-group">
-			<button type="submit" [disabled]="!f.valid"><img style="position: absolute; margin-left: 45%; margin-top: 25%; width: 10%;height: 10%;" src="/assets/Assets/CreateUpdate.svg"></button>
-		</div>
-		<button mat-button style="position: absolute; margin-left: 48%; margin-top: 30%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
 		<!-- <div class="split right" style="background-color: white; margin-top: 200px;">
 			<div class="form-group">
 				<button type="submit" class="btn btn-primary btn-lg btn-block" style="width: 30%;" [disabled]="!f.valid">Create/Update</button>
