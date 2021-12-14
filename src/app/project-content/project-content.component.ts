@@ -58,11 +58,11 @@ export class ProjectContentComponent implements OnInit {
           this.sub = this.route.params.subscribe(params => {
           this.projectId = params['id'];
           this.userId = params['uid'];
-          this.http.get('http://82.69.10.205:5002/getProject/' + this.projectId).subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/getProject/' + this.projectId).subscribe((response)=>{
             this.temp = response as JSON
             this.projectName = this.temp[0]['project_name']
             this.projectDefaultHeirarchy = this.temp[0]['hierarchy_id_default']
-            this.http.get('http://82.69.10.205:5002/getHeirarchyList').subscribe((response)=>{
+            this.http.get('http://127.0.0.1:5002/getHeirarchyList').subscribe((response)=>{
               this.heirarchyList = response as JSON;
               for(let h of this.heirarchyList){
                 if(h['hierarchy_id'] == this.projectDefaultHeirarchy){
@@ -73,25 +73,25 @@ export class ProjectContentComponent implements OnInit {
                   console.log(this.selectedHeirarchyId)
                 }
               }
-              this.http.get('http://82.69.10.205:5002/getContainers/' + this.selectedHeirarchyId + '/' + this.projectId).subscribe((response)=>{
+              this.http.get('http://127.0.0.1:5002/getContainers/' + this.selectedHeirarchyId + '/' + this.projectId).subscribe((response)=>{
                 this.temp = response as JSON;
                 for(let c of this.temp){
                   this.containerList.push(c['container_id'] + "-" + c['container_title'])
                 }
               });
-              this.http.get('http://82.69.10.205:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
+              this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
                 this.files = response as TreeNode[];
                 console.log(this.files)
               });
             });
-            this.http.get('http://82.69.10.205:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
+            this.http.get('http://127.0.0.1:5002/getCompany/' + this.temp[0]["company_id"]).subscribe((response)=>{
               this.temp = response as JSON;
               this.companyName = this.temp[0]['company_name']
             });
           });
        });
           // this.nodeService.getFilesystem().then(files => this.files = files);
-          // this.http.get('http://82.69.10.205:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
+          // this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
           // // console.log(response as JSON)
           // // let temp = response as JSON;
           // this.files = response as TreeNode[];
@@ -144,31 +144,31 @@ export class ProjectContentComponent implements OnInit {
       }
     move(pCont: string,cont: any){
       if(cont['artefact_type'] == ""){
-        this.http.get('http://82.69.10.205:5002/moveContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
       });
       }
       else{
-        this.http.get('http://82.69.10.205:5002/moveContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
         });
       }
     }
     copy(pCont: string,cont: any){
       if(cont['artefact_type'] == ""){
-        this.http.get('http://82.69.10.205:5002/copyContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
       });
       }
       else{
-        this.http.get('http://82.69.10.205:5002/copyContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
         location.reload()
         });
       }
     }
     delete(cont: any){
       if(cont['artefact_type'] == ""){
-        this.http.get('http://82.69.10.205:5002/deleteContainer/' + cont['id'] + "/container").subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/deleteContainer/' + cont['id'] + "/container").subscribe((response)=>{
         let msg = (response as any)['message'];
         if(msg != 'done'){
           this.notifierService.notify('error', 'record has children, only items without child records can be deleted');
@@ -179,7 +179,7 @@ export class ProjectContentComponent implements OnInit {
       });
       }
       else{
-        this.http.get('http://82.69.10.205:5002/deleteContainer/' + cont['id'] + "/artefact").subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/deleteContainer/' + cont['id'] + "/artefact").subscribe((response)=>{
         location.reload()
         });
       }
@@ -203,7 +203,7 @@ export class ProjectContentComponent implements OnInit {
         // console.log("parent container id: ")
         // console.log(row)
         // console.log(this.selectedHeirarchyId)
-        this.http.get('http://82.69.10.205:5002/addContainer/' + this.newContainerName + "/" + row + "/" + this.projectId + "/" + this.selectedHeirarchyId).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/addContainer/' + this.newContainerName + "/" + row + "/" + this.projectId + "/" + this.selectedHeirarchyId).subscribe((response)=>{
         location.reload()
       });
       }, (reason) => {
@@ -216,18 +216,18 @@ export class ProjectContentComponent implements OnInit {
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
         console.log("new heirarchy name: " + this.newHeirarchyName)
-        this.http.get('http://82.69.10.205:5002/addHeirarchy/' + this.newHeirarchyName).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/addHeirarchy/' + this.newHeirarchyName).subscribe((response)=>{
           let id = (response as any)['message'];
           this.selectedHeirarchyId = id
           this.selectedHeirarchy = this.newHeirarchyName
-          this.http.get('http://82.69.10.205:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
           this.files = []  
           this.files = response as TreeNode[];
           console.log(this.files)
-          this.http.get('http://82.69.10.205:5002/getHeirarchyList').subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/getHeirarchyList').subscribe((response)=>{
               this.heirarchyList = response as JSON;
           });
-          this.http.get('http://82.69.10.205:5002/getContainers/' + this.selectedHeirarchyId + '/' + this.projectId).subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/getContainers/' + this.selectedHeirarchyId + '/' + this.projectId).subscribe((response)=>{
             this.temp = response as JSON;
             this.containerList = []
             for(let c of this.temp){
@@ -244,7 +244,7 @@ export class ProjectContentComponent implements OnInit {
 
     editContainer(content:any, row:any) {
       console.log("in open content")
-      this.http.get('http://82.69.10.205:5002/getContainer/' + row).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getContainer/' + row).subscribe((response)=>{
               this.temp = response as JSON;
               this.editContainerName = this.temp[0]['container_title']
             });
@@ -253,7 +253,7 @@ export class ProjectContentComponent implements OnInit {
         console.log(row)
         console.log(this.newContainerName)
         if(this.newContainerName != ""){
-          this.http.get('http://82.69.10.205:5002/updateContainer/' + this.newContainerName + "/" + row).subscribe((response)=>{
+          this.http.get('http://127.0.0.1:5002/updateContainer/' + this.newContainerName + "/" + row).subscribe((response)=>{
             this.newContainerName=""
             this.editContainerName=""
           location.reload()
@@ -288,12 +288,12 @@ export class ProjectContentComponent implements OnInit {
       console.log(this.heirarchyList)
       console.log(this.selectedHeirarchy)
       this.selectedHeirarchyId = this.selectedHeirarchy
-      this.http.get('http://82.69.10.205:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
         this.files = []  
         this.files = response as TreeNode[];
         console.log(this.files)
       });
-      this.http.get('http://82.69.10.205:5002/getContainers/' + this.selectedHeirarchyId + '/' + this.projectId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getContainers/' + this.selectedHeirarchyId + '/' + this.projectId).subscribe((response)=>{
         this.temp = response as JSON;
         this.containerList = []
         for(let c of this.temp){
@@ -304,7 +304,7 @@ export class ProjectContentComponent implements OnInit {
       //   if(h['hierarchy_name'] == this.selectedHeirarchy){
       //     console.log("in if")
       //     this.selectedHeirarchyId = h['hierarchy_id']
-      //     this.http.get('http://82.69.10.205:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
+      //     this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
       //     this.files = []  
       //     this.files = response as TreeNode[];
       //       console.log(this.files)
@@ -314,7 +314,7 @@ export class ProjectContentComponent implements OnInit {
     }
 
     // addHeirarchy(){
-    //   this.http.get('http://82.69.10.205:5002/addHeirarchy').subscribe((response)=>{
+    //   this.http.get('http://127.0.0.1:5002/addHeirarchy').subscribe((response)=>{
     //     location.reload()
     //   });
     // }

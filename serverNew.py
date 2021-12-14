@@ -8,6 +8,7 @@ from json import dumps
 from flask_jsonpify import jsonify
 import json
 import jwt
+import smtplib, ssl
 
 app = Flask(__name__)
 # api = Api(app)
@@ -649,4 +650,18 @@ def getprojectTree(projectId, heirId):
     contJson.append(tempa)
   return jsonify(contJson)
 
+@app.route('/emailVerification/<email>', methods=['GET', 'POST'])
+def emailVerification(email):
+  msg = "hi"
+  port = 465
+  password = "@Mushi123"
+  OTP = 112233
+  # Create a secure SSL context
+  # ssl._create_default_https_context = ssl._create_unverified_context
+  context = ssl._create_unverified_context()
+  with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+    server.login("rapidpm.musab@gmail.com", password)
+    server.sendmail("rapidpm.musab@gmail.com", email, msg)
+  customerId = {"message": str(OTP)}
+  return jsonify(customerId)
 # app.run(host='0.0.0.0', port=5002, debug=True)

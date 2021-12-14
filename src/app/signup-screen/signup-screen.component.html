@@ -44,6 +44,7 @@
         </style>
     </head>
 <body>
+	<notifier-container></notifier-container>
     <img src="/assets/RPMLOGO/rpmlogoNARROWTHUMBNAIL.png" height="11.78%" width="5.96%" style="margin-left: 3.22%;">
     <button mat-button style="margin-left: 9.76%;font-size: 12px; color: #292E35; opacity: 100%;">Account</button>
     <button mat-button (click)="goToProjects()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Projects</button>
@@ -51,7 +52,7 @@
 	<!-- <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
 	<button mat-flat-button (click)=logout.logout() style="margin-left: 45%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
 	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><b>Company Account Management</b></div>
-	<form #f="ngForm" (ngSubmit)="onSignup()">
+	<form #f="ngForm" (ngSubmit)="onSignup(otpModel)">
 		<div class="split left" style="margin-left: 20%; margin-right: 20%;margin-top: 13%;font-size: 12px;">
 			<h4 style="color: #14ABDD; font-weight: bold;">Company Administrator Account</h4>
 			<div class="form-group">
@@ -128,3 +129,18 @@
 	</form>
 </body>
 </html>
+<ng-template #otpModel let-modal>
+	<div class="modal-header">
+	  <h4 class="modal-title" id="modal-basic-title">Kindly verify email by entering the OTP sent to your email address</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+		<span aria-hidden="true">×</span>
+	  </button>
+	</div>
+	<div>
+	  <label class="inline-label" for="OTP">OTP</label>
+	  <input required ngModel [(ngModel)]="OTP" type="OTP" name="OTP" placeholder="">
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+	</div>
+  </ng-template>

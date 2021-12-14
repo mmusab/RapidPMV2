@@ -6,6 +6,7 @@ import { NotifierService } from 'angular-notifier';
 import { AuthServiceService } from '../auth-service.service';
 import { Location } from '@angular/common'
 import jwt_decode from "jwt-decode";
+import { LogoutService } from '../logout.service';
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
@@ -25,7 +26,8 @@ export class LandingPageComponent implements OnInit {
   usr:any
   userEmail = "";
   userPassword = "";
-  constructor(private modalService: NgbModal, public auth: AuthServiceService, private location: Location, private httpClient: HttpClient, private router : Router, private route : ActivatedRoute,  private notifierService: NotifierService) { }
+  modalReference:any;
+  constructor(public logout : LogoutService, private modalService: NgbModal, public auth: AuthServiceService, private location: Location, private httpClient: HttpClient, private router : Router, private route : ActivatedRoute,  private notifierService: NotifierService) { }
 
   ngOnInit(): void {
   }
@@ -63,6 +65,7 @@ export class LandingPageComponent implements OnInit {
   }
   async onLogin(){
     await this.auth.login({'userEmail':this.userEmail, 'userPassword':this.userPassword})
+    this.modalService.dismissAll();
     this.rerouting()
   }
   rerouting(){
@@ -77,7 +80,7 @@ export class LandingPageComponent implements OnInit {
     }
     if(this.auth.currentUser.authorized == "True"){
       console.log("is authorized")
-      // this.httpClient.get('http://82.69.10.205:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
+      // this.httpClient.get('http://127.0.0.1:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
       //   console.log(message as JSON)
       //   this.errorMessage = (message as any)['message'];
       //   console.log(this.errorMessage);
@@ -112,9 +115,10 @@ export class LandingPageComponent implements OnInit {
   }
   onregister(){
     // this.resetErrors();
+    this.logout.logout();
     var url = "";
-    if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
-    else{url = 'http://82.69.10.205:5002/login/none/none'}
+    if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
+    else{url = 'http://127.0.0.1:5002/login/none/none'}
     this.httpClient.get(url).toPromise().then(message => {
       console.log(message as JSON)
       this.errorMessage = (message as any)['message'];
@@ -134,8 +138,8 @@ export class LandingPageComponent implements OnInit {
     else{
       this.forgotPasswordError = ""
       var url = "";
-      if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
-      else{url = 'http://82.69.10.205:5002/login/none/none'}
+      if(this.userEmail){url = 'http://127.0.0.1:5002/login/' + this.userEmail + '/none'}
+      else{url = 'http://127.0.0.1:5002/login/none/none'}
       this.httpClient.get(url).toPromise().then(message => {
         console.log(message as JSON)
         this.errorMessage = (message as any)['message'];

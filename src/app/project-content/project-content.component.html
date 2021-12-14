@@ -72,38 +72,37 @@
   <!-- <button mat-button (click)="administration()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
   <button mat-flat-button (click)=logout.logout() style="margin-left: 75%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
   <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>Project contents</b></p></div>
-<div class="form-group" style="margin-left: 20%; margin-top: 1%;">
+<div class="form-group" style="margin-left: 15%; margin-top: 1%;">
 	<label class="inline-label" style="color: #6F6FFF; font-weight: bold;" for="project_id">{{companyName}}</label>
 <!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
 </div>
-<div class="form-group" style="margin-left: 30%; margin-top: 1%;">
+<div class="form-group" style="margin-left: 25%; margin-top: 1%;">
 	<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="company_id">{{projectName}}</label>
 	<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
 </div><br>
-<mat-label class="inline-label" style="color: black; margin-left: 20%; margin-top: 2%;"></mat-label>
+<mat-label class="inline-label" style="color: black; margin-left: 15%; margin-top: 2%;"></mat-label>
 <div>
-<mat-form-field appearance="fill">
-	<mat-select placeholder={{selectedHeirarchy}} [(ngModel)]="selectedHeirarchy" name="heirarchy">
-	<mat-option *ngFor="let h of heirarchyList" (click)=refreshList() [value]="h.hierarchy_id">
-		{{h.hierarchy_name}}
-	</mat-option>
-	<mat-option>
-		<button mat-icon-button (click)=heirarchy(heirarchyModel) color="warn">
-			<mat-icon>
-				add_box
-			</mat-icon>
-			add heirarchy
-		</button>
-	</mat-option>
-	</mat-select>
-</mat-form-field>
 <div class="row" style="margin-left: 15%; margin-right: 5%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;">
-    <div class="col-md-6">
-      <b></b>
+    <div class="col-md-6" style="font-size: 12px;">
+		<mat-form-field appearance="fill">
+			<mat-select placeholder={{selectedHeirarchy}} [(ngModel)]="selectedHeirarchy" name="heirarchy">
+			<mat-option *ngFor="let h of heirarchyList" (click)=refreshList() [value]="h.hierarchy_id">
+				{{h.hierarchy_name}}
+			</mat-option>
+			<mat-option>
+				<button mat-icon-button (click)=heirarchy(heirarchyModel) color="warn">
+					<mat-icon>
+						add_box
+					</mat-icon>
+					add heirarchy
+				</button>
+			</mat-option>
+			</mat-select>
+		</mat-form-field>
     </div>
     <div class="col-md-6">  
       <button mat-button mat-icon-button [matMenuTriggerFor]="menuAdd" style="float:right">
-        <img style="width: 200%;float: right;" src="/assets/Assets/AddNew.svg">
+        <img style="width: 300%;float: right;" src="/assets/Assets/AddNew.svg">
       </button>
     </div>
   </div>
@@ -117,7 +116,7 @@
 	</button>
 </mat-menu>
 </div>
-  <div style="overflow-y: auto; height: 300px; position: relative; margin-left: 20%; margin-right: 5%; font-size: 12px;">
+  <div style="overflow-y: auto; height: 300px; position: relative; margin-left: 15%; margin-right: 5%; font-size: 12px;">
 	<p-treeTable [value]="files" [columns]="cols[0]">
 	<ng-template pTemplate="header" let-columns>
 		<tr>

@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common'
 import { LogoutService } from '../logout.service';
 import jwt_decode from "jwt-decode";
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthServiceService } from '../auth-service.service';
 
 
 @Component({
@@ -17,6 +19,7 @@ import jwt_decode from "jwt-decode";
   styleUrls: ['./signup-screen.component.css']
 })
 export class SignupScreenComponent{
+  OTP = ""
   signupCompId = ""
   // signupCompIdNumber: number | undefined;
   customerId = ""
@@ -26,6 +29,7 @@ export class SignupScreenComponent{
   userEmail = "";
   userPassword = "";
   usr:any;
+  closeResult = '';
   ngOnInit() {
     let token = localStorage.getItem('token');
     if (token) {
@@ -35,17 +39,17 @@ export class SignupScreenComponent{
       this.userPassword = this.usr['password']
       // this.onLogin()
     }
-    else{
-      this.logout.logout()
-    }
+    // else{
+    //   this.logout.logout()
+    // }
     this.sub = this.route.params.subscribe(params => {
       this.signupCompId = params['id'];
-      if(this.signupCompId != ""){
+      if(this.signupCompId != "id"){
         // this.signupCompIdNumber = +this.signupCompId;
         // this.signupCompIdNumber = this.signupCompIdNumber + 1;
         // this.signupCompId = String(this.signupCompIdNumber);
         console.log("id is not empty")
-        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp[0])
         this.customerInfo.cust["company_id"] = this.temp[0]["company_id"];
@@ -61,7 +65,7 @@ export class SignupScreenComponent{
         //   this.customerInfo.cust[k] = this.temp[0][k]
         // }
       });
-      this.http.get('http://82.69.10.205:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp[0])
         this.companyInfo.comp["company_id"] = this.temp[0]["company_id"];
@@ -88,20 +92,39 @@ export class SignupScreenComponent{
     localStorage.removeItem('foo')
   }
   }
-  constructor(public logout : LogoutService, private location: Location, public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
-  onSignup(){
-    this.http.post('http://82.69.10.205:5002/company', this.companyInfo.comp).subscribe((response)=>{
+  constructor(public auth: AuthServiceService, private modalService: NgbModal, public logout : LogoutService, private location: Location, public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
+  onSignup(content:any){
+    console.log("signupId: " + this.signupCompId)
+    if(this.signupCompId == "id"){
+    this.http.get('http://127.0.0.1:5002/emailVerification/' + this.customerInfo.cust.email).subscribe((response)=>{
+        console.log((response as any)['message'])
+        let otp = (response as any)['message']
+        this.open(content,otp)
+   });
+  }
+  else{
+        this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
       this.signupCompId = (response as any)['message'];
       // this.dataService.adminId = this.signupCompId;
       this.customerInfo.cust["company_id"] = this.signupCompId;
       this.customerInfo.cust["company_role"] = "Admin";
-      this.http.post('http://82.69.10.205:5002/user', this.customerInfo.cust).subscribe((response)=>{
+      this.http.post('http://127.0.0.1:5002/user', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
    });
    this.router.navigate(['/app-signup-screen', this.signupCompId]);
    this.notifierService.notify('success', 'Company has been registered');
    this.notifierService.notify('success', 'Admin has been created');
    });
+  }
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
   goToUsers(){
@@ -125,5 +148,31 @@ export class SignupScreenComponent{
   back(){
     console.log('in back')
     this.location.back()
+  }
+  async open(content:any, otp:any) {
+    console.log("in open content")
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      if(this.OTP != otp){
+        this.notifierService.notify('error', 'OTP donot match');
+      }
+      else{
+        this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe(async (response)=>{
+        this.signupCompId = (response as any)['message'];
+        // this.dataService.adminId = this.signupCompId;
+        this.customerInfo.cust["company_id"] = this.signupCompId;
+        this.customerInfo.cust["company_role"] = "Admin";
+        this.http.post('http://127.0.0.1:5002/user', this.customerInfo.cust).subscribe((response)=>{
+        this.customerId = (response as any)['message'];
+        });
+        await this.auth.login({'userEmail':this.customerInfo.cust.email, 'userPassword':this.customerInfo.cust.password})
+        this.router.navigate(['/app-signup-screen', this.signupCompId]);
+        this.notifierService.notify('success', 'Company has been registered');
+        this.notifierService.notify('success', 'Admin has been created');
+        });
+      }
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 }
