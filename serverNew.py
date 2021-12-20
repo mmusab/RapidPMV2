@@ -9,6 +9,7 @@ from flask_jsonpify import jsonify
 import json
 import jwt
 import smtplib, ssl
+import math, random
 
 app = Flask(__name__)
 # api = Api(app)
@@ -650,12 +651,27 @@ def getprojectTree(projectId, heirId):
     contJson.append(tempa)
   return jsonify(contJson)
 
+# function to generate OTP
+def generateOTP():
+  # Declare a digits variable
+  # which stores all digits
+  digits = "0123456789"
+  OTP = ""
+
+  # length of password can be changed
+  # by changing value in range
+  for i in range(4):
+    OTP += digits[math.floor(random.random() * 10)]
+
+  return OTP
+
 @app.route('/emailVerification/<email>', methods=['GET', 'POST'])
 def emailVerification(email):
-  msg = "hi"
+  OTP = str(generateOTP())
+  msg = "your OTP is " + OTP
+  # msg = "hi"
   port = 465
   password = "@Mushi123"
-  OTP = 112233
   # Create a secure SSL context
   # ssl._create_default_https_context = ssl._create_unverified_context
   context = ssl._create_unverified_context()
