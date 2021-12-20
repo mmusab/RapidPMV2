@@ -49,7 +49,7 @@ export class SignupScreenComponent{
         // this.signupCompIdNumber = this.signupCompIdNumber + 1;
         // this.signupCompId = String(this.signupCompIdNumber);
         console.log("id is not empty")
-        this.http.get('http://127.0.0.1:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
+        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp[0])
         this.customerInfo.cust["company_id"] = this.temp[0]["company_id"];
@@ -65,7 +65,7 @@ export class SignupScreenComponent{
         //   this.customerInfo.cust[k] = this.temp[0][k]
         // }
       });
-      this.http.get('http://127.0.0.1:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
+      this.http.get('http://82.69.10.205:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp[0])
         this.companyInfo.comp["company_id"] = this.temp[0]["company_id"];
@@ -96,19 +96,19 @@ export class SignupScreenComponent{
   onSignup(content:any){
     console.log("signupId: " + this.signupCompId)
     if(this.signupCompId == "id"){
-    this.http.get('http://127.0.0.1:5002/emailVerification/' + this.customerInfo.cust.email).subscribe((response)=>{
+    this.http.get('http://82.69.10.205:5002/emailVerification/' + this.customerInfo.cust.email).subscribe((response)=>{
         console.log((response as any)['message'])
         let otp = (response as any)['message']
         this.open(content,otp)
    });
   }
   else{
-        this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
+        this.http.post('http://82.69.10.205:5002/company', this.companyInfo.comp).subscribe((response)=>{
       this.signupCompId = (response as any)['message'];
       // this.dataService.adminId = this.signupCompId;
       this.customerInfo.cust["company_id"] = this.signupCompId;
       this.customerInfo.cust["company_role"] = "Admin";
-      this.http.post('http://127.0.0.1:5002/user', this.customerInfo.cust).subscribe((response)=>{
+      this.http.post('http://82.69.10.205:5002/user', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
    });
    this.router.navigate(['/app-signup-screen', this.signupCompId]);
@@ -157,12 +157,12 @@ export class SignupScreenComponent{
         this.notifierService.notify('error', 'OTP donot match');
       }
       else{
-        this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe(async (response)=>{
+        this.http.post('http://82.69.10.205:5002/company', this.companyInfo.comp).subscribe(async (response)=>{
         this.signupCompId = (response as any)['message'];
         // this.dataService.adminId = this.signupCompId;
         this.customerInfo.cust["company_id"] = this.signupCompId;
         this.customerInfo.cust["company_role"] = "Admin";
-        this.http.post('http://127.0.0.1:5002/user', this.customerInfo.cust).subscribe((response)=>{
+        this.http.post('http://82.69.10.205:5002/user', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
         });
         await this.auth.login({'userEmail':this.customerInfo.cust.email, 'userPassword':this.customerInfo.cust.password})
