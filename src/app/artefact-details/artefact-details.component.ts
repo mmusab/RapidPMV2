@@ -6,13 +6,15 @@ import { ArtefactInfo } from '../artefactinfo';
 import { formatDate, Location } from '@angular/common'
 import { LogoutService } from '../logout.service';
 import jwt_decode from "jwt-decode";
+import { ComponentCanDeactivate } from '../component-can-deactivate';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-artefact-details',
   templateUrl: './artefact-details.component.html',
   styleUrls: ['./artefact-details.component.css']
 })
-export class ArtefactDetailsComponent implements OnInit {
+export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   projId = ""
   companyId = ""
   artefactId = ""
@@ -25,6 +27,7 @@ export class ArtefactDetailsComponent implements OnInit {
   userEmail = "";
   userPassword = "";
   usr:any;
+  isDirty = false;
 
   ngOnInit(){
     let token = localStorage.getItem('token');
@@ -43,11 +46,11 @@ export class ArtefactDetailsComponent implements OnInit {
     this.containerId = params['contId']
     this.projId = params['projId']
     this.userId = params['userId']
-    this.http.get('http://82.69.10.205:5002/getProject/' + this.projId).subscribe((response)=>{
+    this.http.get('http://127.0.0.1:5002/getProject/' + this.projId).subscribe((response)=>{
       this.temp = response as JSON;
       console.log(this.temp)
       this.companyId = this.temp[0]["company_id"];
-      this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getAdmin/' + this.companyId).subscribe((response)=>{
             this.admins = response as JSON;
             console.log(this.admins)
             // this.adminId = this.temp[0]["customer_id"];
@@ -56,7 +59,7 @@ export class ArtefactDetailsComponent implements OnInit {
     });
     if(params['id'] != 'id'){
       this.artefactId = params['id']
-      this.http.get('http://82.69.10.205:5002/getArtefact/' + this.artefactId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getArtefact/' + this.artefactId).subscribe((response)=>{
       this.temp = response as JSON
       console.log(response as JSON)
       this.artefactInfo.art["artefact_type"] = this.temp[0]["artefact_type"];
@@ -82,19 +85,22 @@ export class ArtefactDetailsComponent implements OnInit {
   }
 }
   constructor(public logout : LogoutService, private location: Location,public artefactInfo: ArtefactInfo, private route : ActivatedRoute, private http: HttpClient, private router : Router, private notifierService: NotifierService) { }
+  canDeactivate(): boolean{
+    return !this.isDirty;
+  }
 
   createUpdate(){
     let date1 = formatDate(this.artefactInfo.art.create_date,'MM-dd-yyy','en_US');
     let date2 = formatDate(this.artefactInfo.art.update_date,'MM-dd-yyy','en_US');
     if(date1 < date2){
       this.artefactInfo.art["project_id"] = this.projId
-      this.http.post('http://82.69.10.205:5002/artefact/' + this.containerId, this.artefactInfo.art).subscribe((response)=>{
+      this.http.post('http://127.0.0.1:5002/artefact/' + this.containerId, this.artefactInfo.art).subscribe((response)=>{
         // this.projId = (response as any)['message'];
         // this.router.navigate(['/app-project-details', this.projId, this.userId]);
         this.router.navigate(['/app-project-content', this.projId, this.userId]);
         // this.notifierService.notify('success', 'project details updated');
   
-    //     this.http.get('http://82.69.10.205:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
+    //     this.http.get('http://127.0.0.1:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
     //     this.temp = response as JSON
     //     console.log(this.temp[0]["company_id"])
     //     console.log(this.temp[0]["company_role"])

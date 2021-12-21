@@ -10,17 +10,18 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
 import { ProjectContentComponent } from './project-content/project-content.component';
 import { ArtefactDetailsComponent } from './artefact-details/artefact-details.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { DirtyCheckGuard } from './dirty-check.guard';
 
 const routes: Routes = [{path:'', component: LandingPageComponent},
                         {path:'app-login-screen', component: LoginScreenComponent},
-                        {path:'app-signup-screen/:id', component: SignupScreenComponent},
+                        {path:'app-signup-screen/:id', component: SignupScreenComponent, canDeactivate:[DirtyCheckGuard]},
                         {path:'app-project-list/:id/:type', component: ProjectListComponent},
                         {path:'app-password-reset-screen', component: PasswordResetScreenComponent},
                         {path:'app-user-management-screen/:id', component: UserManagementScreenComponent},
                         {path:'app-company-list-screen/:id', component: CompanyListScreenComponent},
-                        {path:'app-project-details/:id/:userid', component: ProjectDetailsComponent},
+                        {path:'app-project-details/:id/:userid', component: ProjectDetailsComponent, canDeactivate:[DirtyCheckGuard]},
                         {path:'app-project-content/:id/:uid', component: ProjectContentComponent},
-                        {path:'app-artefact-details/:id/:contId/:projId/:userId', component: ArtefactDetailsComponent}];
+                        {path:'app-artefact-details/:id/:contId/:projId/:userId', component: ArtefactDetailsComponent, canDeactivate:[DirtyCheckGuard]}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

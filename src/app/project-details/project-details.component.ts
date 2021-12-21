@@ -1,18 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, CanDeactivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { ProjectInfo } from '../project-info';
 import { formatDate, Location } from '@angular/common'
 import { LogoutService } from '../logout.service';
 import jwt_decode from "jwt-decode";
+import { ComponentCanDeactivate } from '../component-can-deactivate';
+import { Observable } from 'rxjs';
+import { DirtyCheckGuard } from '../dirty-check.guard';
 
 @Component({
   selector: '[app-project-details]',
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.css']
 })
-export class ProjectDetailsComponent implements OnInit {
+export class ProjectDetailsComponent implements OnInit, ComponentCanDeactivate {
   projId = "";
   userId = ""
   sub: any;
@@ -22,7 +25,7 @@ export class ProjectDetailsComponent implements OnInit {
   userEmail = "";
   userPassword = "";
   usr:any;
-
+  isDirty = false;
   ngOnInit(){
     let token = localStorage.getItem('token');
     if (token) {
@@ -43,11 +46,11 @@ export class ProjectDetailsComponent implements OnInit {
     this.userId = params['userid'];
     // this.projectInfo.proj["company_id"] = this.userId;
     this.projectInfo.proj["template"] = 'N';
-    this.http.get('http://82.69.10.205:5002/getUser/' + this.userId).subscribe((response)=>{
+    this.http.get('http://127.0.0.1:5002/getUser/' + this.userId).subscribe((response)=>{
       this.users = response as JSON
       this.projectInfo.proj["company_id"] = this.users[0]["company_id"];
       console.log("companyID: " + this.projectInfo.proj["company_id"])
-        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.users[0]["company_id"]).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/getAdmin/' + this.users[0]["company_id"]).subscribe((response)=>{
             this.admins = response as JSON;
             console.log(this.admins)
             // this.adminId = this.temp[0]["customer_id"];
@@ -56,7 +59,7 @@ export class ProjectDetailsComponent implements OnInit {
       });
     if(this.projId != ""){
       console.log("id is not empty")
-      this.http.get('http://82.69.10.205:5002/getProject/' + this.projId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getProject/' + this.projId).subscribe((response)=>{
       this.temp = response as JSON;
       console.log(this.temp)
       this.projectInfo.proj["project_id"] = this.temp[0]["project_id"];
@@ -78,18 +81,20 @@ export class ProjectDetailsComponent implements OnInit {
   }
 }
   constructor(public logout : LogoutService, private location: Location, public projectInfo: ProjectInfo, private route : ActivatedRoute, private http: HttpClient, private router : Router, private notifierService: NotifierService) { }
-
+  canDeactivate(): boolean{
+    return !this.isDirty;
+  }
   createUpdate(){
     let date1 = formatDate(this.projectInfo.proj.start,'MM-dd-yyy','en_US');
     let date2 = formatDate(this.projectInfo.proj.end,'MM-dd-yyy','en_US');
     if(date1 < date2){
-      this.http.post('http://82.69.10.205:5002/project', this.projectInfo.proj).subscribe((response)=>{
+      this.http.post('http://127.0.0.1:5002/project', this.projectInfo.proj).subscribe((response)=>{
       this.projId = (response as any)['message'];
       // this.router.navigate(['/app-project-details', this.projId, this.userId]);
       this.router.navigate(['/app-project-list', this.userId, this.users[0]["company_role"]]);
       // this.notifierService.notify('success', 'project details updated');
 
-  //     this.http.get('http://82.69.10.205:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
+  //     this.http.get('http://127.0.0.1:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
   //     this.temp = response as JSON
   //     console.log(this.temp[0]["company_id"])
   //     console.log(this.temp[0]["company_role"])

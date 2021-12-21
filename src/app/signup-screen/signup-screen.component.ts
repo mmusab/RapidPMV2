@@ -11,6 +11,9 @@ import { LogoutService } from '../logout.service';
 import jwt_decode from "jwt-decode";
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthServiceService } from '../auth-service.service';
+import { ComponentCanDeactivate } from '../component-can-deactivate';
+import { Observable } from 'rxjs';
+import { DirtyCheckGuard } from '../dirty-check.guard';
 
 
 @Component({
@@ -18,7 +21,7 @@ import { AuthServiceService } from '../auth-service.service';
   templateUrl: './signup-screen.component.html',
   styleUrls: ['./signup-screen.component.css']
 })
-export class SignupScreenComponent{
+export class SignupScreenComponent implements OnInit, ComponentCanDeactivate{
   OTP = ""
   signupCompId = ""
   // signupCompIdNumber: number | undefined;
@@ -30,6 +33,7 @@ export class SignupScreenComponent{
   userPassword = "";
   usr:any;
   closeResult = '';
+  isDirty = false;
   ngOnInit() {
     let token = localStorage.getItem('token');
     if (token) {
@@ -49,7 +53,7 @@ export class SignupScreenComponent{
         // this.signupCompIdNumber = this.signupCompIdNumber + 1;
         // this.signupCompId = String(this.signupCompIdNumber);
         console.log("id is not empty")
-        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
+        this.http.get('http://127.0.0.1:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp[0])
         this.customerInfo.cust["company_id"] = this.temp[0]["company_id"];
@@ -65,7 +69,7 @@ export class SignupScreenComponent{
         //   this.customerInfo.cust[k] = this.temp[0][k]
         // }
       });
-      this.http.get('http://82.69.10.205:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getCompany/' + this.signupCompId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp[0])
         this.companyInfo.comp["company_id"] = this.temp[0]["company_id"];
@@ -84,6 +88,9 @@ export class SignupScreenComponent{
         // }
       });
       }
+      else{
+        this.customerInfo.cust["status"] = "Pending";
+      }
    });
    if (!localStorage.getItem('foo')) {
     localStorage.setItem('foo', 'no reload')
@@ -93,22 +100,26 @@ export class SignupScreenComponent{
   }
   }
   constructor(public auth: AuthServiceService, private modalService: NgbModal, public logout : LogoutService, private location: Location, public customerInfo: CustomerInfo, public companyInfo: CompanyInfo, private http: HttpClient, private router : Router, private route : ActivatedRoute, private notifierService: NotifierService, public dataService: DataService) { }
+  canDeactivate(): boolean{
+    return !this.isDirty;
+  }
   onSignup(content:any){
+    this.isDirty=false
     console.log("signupId: " + this.signupCompId)
     if(this.signupCompId == "id"){
-    this.http.get('http://82.69.10.205:5002/emailVerification/' + this.customerInfo.cust.email).subscribe((response)=>{
+    this.http.get('http://127.0.0.1:5002/emailVerification/' + this.customerInfo.cust.email).subscribe((response)=>{
         console.log((response as any)['message'])
         let otp = (response as any)['message']
         this.open(content,otp)
    });
   }
   else{
-        this.http.post('http://82.69.10.205:5002/company', this.companyInfo.comp).subscribe((response)=>{
+        this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe((response)=>{
       this.signupCompId = (response as any)['message'];
       // this.dataService.adminId = this.signupCompId;
       this.customerInfo.cust["company_id"] = this.signupCompId;
       this.customerInfo.cust["company_role"] = "Admin";
-      this.http.post('http://82.69.10.205:5002/user', this.customerInfo.cust).subscribe((response)=>{
+      this.http.post('http://127.0.0.1:5002/user', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
    });
    this.router.navigate(['/app-signup-screen', this.signupCompId]);
@@ -157,12 +168,13 @@ export class SignupScreenComponent{
         this.notifierService.notify('error', 'OTP donot match');
       }
       else{
-        this.http.post('http://82.69.10.205:5002/company', this.companyInfo.comp).subscribe(async (response)=>{
+        this.customerInfo.cust["status"] = "Active";
+        this.http.post('http://127.0.0.1:5002/company', this.companyInfo.comp).subscribe(async (response)=>{
         this.signupCompId = (response as any)['message'];
         // this.dataService.adminId = this.signupCompId;
         this.customerInfo.cust["company_id"] = this.signupCompId;
         this.customerInfo.cust["company_role"] = "Admin";
-        this.http.post('http://82.69.10.205:5002/user', this.customerInfo.cust).subscribe((response)=>{
+        this.http.post('http://127.0.0.1:5002/user', this.customerInfo.cust).subscribe((response)=>{
         this.customerId = (response as any)['message'];
         });
         await this.auth.login({'userEmail':this.customerInfo.cust.email, 'userPassword':this.customerInfo.cust.password})

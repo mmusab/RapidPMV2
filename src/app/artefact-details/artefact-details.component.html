@@ -67,7 +67,7 @@
 		<div class="split left" style="margin-left: 20%; margin-right: 20%;margin-top: 15%;font-size: 12px;">
             <div class="form-group">
 				<label class="inline-label" for="artefact_type">Artefact type</label>
-				<input style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.artefact_type" type="artefact_type" class="form-control" name="artefact_type" placeholder="{{artefactInfo.art.artefact_type}}">
+				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.artefact_type" type="artefact_type" class="form-control" name="artefact_type" placeholder="{{artefactInfo.art.artefact_type}}">
 			</div>
 			<div class="form-group">
 				<label class="inline-label" for="owner">owner</label>
@@ -80,15 +80,15 @@
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="artefact_name">Artefact name</label>
-				<input style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.artefact_name" type="artefact_name" class="form-control" name="artefact_name" placeholder="{{artefactInfo.art.artefact_name}}">
+				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.artefact_name" type="artefact_name" class="form-control" name="artefact_name" placeholder="{{artefactInfo.art.artefact_name}}">
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="description">Description</label>
-				<input style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.description" type="description" class="form-control" name="description" placeholder="{{artefactInfo.art.description}}">
+				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.description" type="description" class="form-control" name="description" placeholder="{{artefactInfo.art.description}}">
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="status">status</label>
-				<input style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.status" type="status" class="form-control" name="status" placeholder="{{artefactInfo.art.status}}">
+				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.status" type="status" class="form-control" name="status" placeholder="{{artefactInfo.art.status}}">
 			</div>
 		</div>
 		<div class="split right" style="margin-left: 20%; margin-right: 20%;margin-top: 15%;font-size: 12px;">
@@ -102,23 +102,23 @@
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="created_date">create date</label>
-				<input style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.create_date" type="date" class="form-control" name="created_date" placeholder="{{artefactInfo.art.create_date}}">
+				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.create_date" type="date" class="form-control" name="created_date" placeholder="{{artefactInfo.art.create_date}}">
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="updated_date">Update date</label>
-				<input style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.update_date" type="date" class="form-control" name="updated_date" placeholder="{{artefactInfo.art.update_date}}">
+				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.update_date" type="date" class="form-control" name="updated_date" placeholder="{{artefactInfo.art.update_date}}">
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="location_url">Location url</label>
-				<input style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.location_url" type="location_url" class="form-control" name="location_url" placeholder="{{artefactInfo.art.location_url}}">
+				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.location_url" type="location_url" class="form-control" name="location_url" placeholder="{{artefactInfo.art.location_url}}">
 			</div>
             <div class="form-group">
 				<label class="inline-label" for="template_url">Template url</label>
-				<input style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
+				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
 			</div>
 		</div>
 		<div class="form-group">
-			<button type="submit" [disabled]="!f.valid"><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" src="/assets/Assets/CreateUpdate.svg"></button>
+			<button (click)="isDirty=false" type="submit" [disabled]="!f.valid"><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" src="/assets/Assets/CreateUpdate.svg"></button>
 			<button mat-button style="position: absolute; margin-left: 3%; margin-top: 25%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
 		</div>
 		<!-- <button mat-button style="position: absolute; margin-left: 47%; margin-top: 30%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button> -->
