@@ -41,6 +41,27 @@
 	.input{
 		background: white;
 	}
+	/* .button {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #04AA6D;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+} */
+
+.button:hover {box-shadow: 0 2px #999;}
+	/* background-color: #3e8e41} */
+
+/* .button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+} */
         </style>
     </head>
 <body>
@@ -122,9 +143,9 @@
 			</div> -->
 		</div>
 		<div class="form-group">
-			<button type="submit"><img style="position: absolute; margin-left: 45%; margin-top: 22%; width: 10%;height: 10%;" src="/assets/Assets/CreateUpdate.svg"></button>
+			<button type="submit"><img style="position: absolute; margin-left: 45%; margin-top: 22%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
 		</div>
-		<button mat-button style="position: absolute; margin-left: 47%; margin-top: 26%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
+		<button mat-button style="position: absolute; margin-left: 47%; margin-top: 28%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
 		<!-- <button mat-button (click) = back() style="margin-left: 50%; font-size: 12px; color: #292E35;opacity: 100%;">Cancel</button> -->
 	</form>
 </body>

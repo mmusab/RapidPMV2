@@ -41,6 +41,7 @@
 	.input{
 		background: white;
 	}
+	.button:hover {box-shadow: 0 2px #999;}
         </style>
     </head>
 <body>
@@ -50,9 +51,9 @@
     <button mat-button (click)="goToUsers()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Users</button> -->
 	<!-- <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
 	<button mat-flat-button (click)=logout.logout() style="margin-left: 75%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
-	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><b>Project details</b></div>
+	<div style="white-space: pre-wrap; margin-top: 0%; margin-left: 15%; font-size: 30px; color: #727272; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><b>Project details</b></div>
 	<form #f="ngForm" (ngSubmit)="createUpdate()">
-		<div class="split" style="margin-left: 20%; margin-right: 20%;margin-top: 13%;">
+		<div class="split" style="margin-left: 20%; margin-right: 20%;margin-top: 11%;">
 			<div class="form-group">
 				<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="project_id">Project ID: {{projId}}</label>
 				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
@@ -60,7 +61,7 @@
             <div class="form-group" style="margin-left: 20%;">
 				<label class="inline-label" style="color: #6F6FFF; font-weight: bold;" for="company_id">Company ID: {{projectInfo.proj.company_id}}</label>
 				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
-			</div><br><br>
+			</div><br>
             <div class="form-group">
 				<label class="inline-label" for="project_name">Title</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.project_name" type="project_name" class="form-control" name="title" placeholder="{{projectInfo.proj.project_name}}">
@@ -108,7 +109,7 @@
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.end" type="date" class="form-control" name="end" placeholder="{{projectInfo.proj.end}}">
 			</div>
 			<div class="form-group">
-				<button (click)="isDirty=false" type="submit" [disabled]="!f.valid"><img style="float:right; position: absolute; margin-left: 45%; width: 25%;height: 25%;" src="/assets/Assets/CreateUpdate.svg"></button>
+				<button (click)="isDirty=false" type="submit" [disabled]="!f.valid"><img style="float:right; position: absolute; margin-left: 45%; width: 25%;height: 25%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
 			</div><br>
 			<div>
 				<button mat-button style="position: absolute; margin-left: 50%; margin-top: 7%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
