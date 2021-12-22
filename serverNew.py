@@ -24,7 +24,7 @@ mydb = mysql.connector.connect(
   database = "RPMnew_dataBase",
   auth_plugin='mysql_native_password'
 )
-
+ret = ""
 # defining cursor to navigate through database
 mycursor = mydb.cursor()
 
@@ -501,7 +501,6 @@ def copyContainer(contId,type,pContId):
     mydb.commit()
     destId = mycursor.lastrowid
     hostId = contId
-
     copyRecursive(hostId, destId)
   else:
     sql = "INSERT INTO artefact (artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template) SELECT artefact_type, artefact_owner, artefact_name, description, status, create_date, update_date, location_url, template_url, project_id, template FROM artefact WHERE artefact_id = '" + str(
@@ -517,12 +516,13 @@ def copyContainer(contId,type,pContId):
   return jsonify(customerId)
 
 def deleteRecursive(contId):
+  ret = ""
   sql = "SELECT a.* FROM RPMnew_dataBase.artefact a, RPMnew_dataBase.container_artefact_link ca WHERE a.artefact_id = ca.artefact_id and ca.container_id = '" + str(
     contId) + "';"
   mycursor.execute(sql)
   artefacts = mycursor.fetchall()
   if(artefacts):
-    return("error")
+    return "error"
   # for a in artefacts:
   #   sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(a[0]) + "';"
   #   mycursor.execute(sql)
@@ -535,7 +535,9 @@ def deleteRecursive(contId):
   containers = mycursor.fetchall()
   if(containers):
     for c in containers:
-      deleteRecursive(c[0])
+      ret = deleteRecursive(c[0])
+  if(ret == "error"):
+    return "error"
   sql = "DELETE FROM RPMnew_dataBase.hierarchy_container WHERE container_id = '" + str(contId) + "';"
   mycursor.execute(sql)
   mydb.commit()

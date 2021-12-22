@@ -80,7 +80,7 @@ body { margin: 0; font-size: 12px; font-family: 'Times New Roman', Times, serif;
 .inline-label { 
   white-space: nowrap;
   max-width: 150px;
-  overflow: hidden;
+  /* overflow: hidden; */
   text-overflow: ellipsis;
   float:left;  
   }

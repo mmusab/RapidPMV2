@@ -74,11 +74,11 @@
   <button mat-flat-button (click)=logout.logout() style="margin-left: 75%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
   <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><p><b>Project contents</b></p></div>
 <div class="form-group" style="margin-left: 15%; margin-top: 1%;">
-	<label class="inline-label" style="color: #6F6FFF; font-weight: bold;" for="project_id">{{companyName}}</label>
+	<label class="inline-label" style="color: #6F6FFF; font-weight: bold;" for="project_id">Company: {{companyName}}</label>
 <!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
 </div>
-<div class="form-group" style="margin-left: 25%; margin-top: 1%;">
-	<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="company_id">{{projectName}}</label>
+<div class="form-group" style="margin-left: 30%; margin-top: 1%;">
+	<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="company_id">Project: {{projectName}}</label>
 	<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
 </div><br>
 <mat-label class="inline-label" style="color: black; margin-left: 15%; margin-top: 2%;"></mat-label>
@@ -86,20 +86,24 @@
 <div class="row" style="margin-left: 15%; margin-right: 5%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-family:'Times New Roman', Times, serif; font-weight: bolder;">
     <div class="col-md-6" style="font-size: 12px;">
 		<mat-form-field appearance="fill">
-			<mat-select placeholder={{selectedHeirarchy}} [(ngModel)]="selectedHeirarchy" name="heirarchy">
-			<mat-option *ngFor="let h of heirarchyList" (click)=refreshList() [value]="h.hierarchy_id">
-				{{h.hierarchy_name}}
-			</mat-option>
-			<mat-option>
-				<button mat-icon-button (click)=heirarchy(heirarchyModel) color="warn">
-					<mat-icon>
-						add_box
-					</mat-icon>
-					add heirarchy
-				</button>
-			</mat-option>
-			</mat-select>
+				<mat-select placeholder={{selectedHeirarchy}} [(ngModel)]="selectedHeirarchy" name="heirarchy">
+					<mat-option *ngFor="let h of heirarchyList" (click)=refreshList() [value]="h.hierarchy_id">
+						{{h.hierarchy_name}}
+					</mat-option>
+					<mat-option>
+						<button mat-icon-button (click)=heirarchy(heirarchyModel) color="warn">
+							<mat-icon>
+								add_box
+							</mat-icon>
+							add heirarchy
+						</button>
+					</mat-option>
+				</mat-select>
 		</mat-form-field>
+		<button (click)=searchFilter() mat-button style="margin-left: 10px;"><mat-icon>search</mat-icon></button>
+		<!-- <div style="margin-left: 300px;"> -->
+			<input [(ngModel)]="search" style="margin-left: 0px; height: 30px;" matInput placeholder="Search">
+		<!-- </div> -->
     </div>
     <div class="col-md-6">  
       <button mat-button mat-icon-button [matMenuTriggerFor]="menuAdd" style="float:right">
@@ -221,7 +225,7 @@
 </html>
 
 <ng-template #mymodal let-modal>
-	<div class="modal-header">
+	<div style="padding: 10px; width: 300px; height: 50px; background: #F9F9F9;" class="modal-header">
 	  <h4 class="modal-title" id="modal-basic-title">Add Container</h4>
 	  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
 		<span aria-hidden="true">×</span>
@@ -231,12 +235,13 @@
 	  <label class="inline-label" for="address_line2">Container name</label>
 	  <input required ngModel [(ngModel)]="newContainerName" type="newContainerName" name="newContainerName" placeholder="{{editContainerName}}">
 	</div>
-	<div class="modal-footer">
-	  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
-	</div>
+	<!-- <div class="modal-footer"> -->
+		<button style="align-self: center; width: 50px; margin-top: 20px;" class="modal-footer" type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+	<!-- </div> -->
   </ng-template>
+
   <ng-template #heirarchyModel let-modal>
-	  <div class="modal-header">
+	  <div style="padding: 10px; width: 300px; height: 50px; background: #F9F9F9;" class="modal-header">
 		<h4 class="modal-title" id="modal-basic-title">Add Heirarchy</h4>
 		<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
 		  <span aria-hidden="true">×</span>
@@ -246,7 +251,7 @@
 		<label class="inline-label" for="address_line2">Heirarchy name</label>
 		<input required ngModel [(ngModel)]="newHeirarchyName" type="newHeirarchyName" name="newHeirarchyName" placeholder="{{newHeirarchyName}}">
 	  </div>
-	  <div class="modal-footer">
-		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
-	  </div>
+	  <!-- <div class="modal-footer"> -->
+		<button style="align-self: center; width: 50px; margin-top: 20px;" type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+	  <!-- </div> -->
 	</ng-template>

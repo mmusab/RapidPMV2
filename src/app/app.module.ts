@@ -16,6 +16,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {InputTextModule} from 'primeng/inputtext';
 import {ToastModule} from 'primeng/toast';
 import {ContextMenuModule} from 'primeng/contextmenu';
+import {MatFormFieldModule} from '@angular/material/form-field';
 // import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { NotifierModule } from 'angular-notifier';
 import { CustomerInfo } from './customer-info';
@@ -77,7 +78,8 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     ContextMenuModule,
     TreeTableModule,
     MatSelectModule,
-    NgbModule
+    NgbModule,
+    MatFormFieldModule
   ],
   providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo,ArtefactInfo, AuthServiceService, LogoutService],
   bootstrap: [AppComponent]

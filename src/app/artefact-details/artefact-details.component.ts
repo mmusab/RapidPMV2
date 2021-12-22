@@ -90,6 +90,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   }
 
   createUpdate(){
+    this.isDirty = false;
     let date1 = formatDate(this.artefactInfo.art.create_date,'MM-dd-yyy','en_US');
     let date2 = formatDate(this.artefactInfo.art.update_date,'MM-dd-yyy','en_US');
     if(date1 < date2){

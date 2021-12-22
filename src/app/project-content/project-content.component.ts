@@ -38,6 +38,7 @@ export class ProjectContentComponent implements OnInit {
       usr:any;
       editContainerName = ""
       newHeirarchyName = ""
+      search = ""
       // map = {"project":0,"container":1,"artefact":2}
 
       constructor(private notifierService: NotifierService, public logout : LogoutService, private location: Location, private router : Router, private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
@@ -330,5 +331,7 @@ export class ProjectContentComponent implements OnInit {
         //         $event.returnValue =true;
         //     // }
         // }
-
+  searchFilter(){
+    console.log(this.search)
+  }
 }
