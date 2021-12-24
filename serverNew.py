@@ -452,15 +452,27 @@ def getContainers(heirarchyId,projId):
   print(result)
   return jsonify(result)
 
-@app.route('/moveContainer/<contId>/<type>/<pContId>', methods=['GET', 'POST'])
-def moveContainer(contId,type,pContId):
+@app.route('/moveContainer/<contId>/<type>/<pContId>/<heirarchyId>', methods=['GET', 'POST'])
+def moveContainer(contId,type,pContId,heirarchyId):
   if(type == "container"):
     sql = "UPDATE hierarchy_container SET parent_container_id = '" + str(pContId) + "' WHERE container_id = '" + str(contId) + "';"
     mycursor.execute(sql)
     mydb.commit()
   else:
-    sql = "UPDATE container_artefact_link SET container_id = '" + str(pContId) + "' WHERE artefact_id = '" + str(
-      contId) + "';"
+    sql = "SELECT cal.* FROM RPMnew_dataBase.container_artefact_link cal, RPMnew_dataBase.hierarchy_container hc WHERE hc.container_id=cal.container_id and hc.hierarchy_id = '" + str(heirarchyId) + "' and cal.artefact_id = '" + str(contId) + "';"
+    mycursor.execute(sql)
+    contLinkInfo = mycursor.fetchall()
+    if(contLinkInfo):
+      previousContId = contLinkInfo[0][0]
+    else:
+      previousContId=""
+    val = (pContId, contId)
+    sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
+    mycursor.execute(sql, val)
+    mydb.commit()
+    sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(contId) + "' and container_id = '" + str(previousContId) + "';"
+    # sql = "UPDATE container_artefact_link SET container_id = '" + str(pContId) + "' WHERE artefact_id = '" + str(
+    #   contId) + "';"
     mycursor.execute(sql)
     mydb.commit()
   customerId = {"message": "success"}
@@ -548,6 +560,7 @@ def deleteContainer(contId, type):
   if(type == "container"):
     msg = deleteRecursive(contId)
   else:
+    # sql = "DELETE cal FROM RPMnew_dataBase.container_artefact_link cal, RPMnew_dataBase.hierarchy_container hc WHERE hc.container_id=cal.container_id and hc.hierarchy_id = '" + str(heirarchyId) + "' and cal.artefact_id = '" + str(contId) + "';"
     sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(contId) + "';"
     mycursor.execute(sql)
     mycursor.execute(sql)
