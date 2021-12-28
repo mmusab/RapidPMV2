@@ -20,7 +20,7 @@ const routes: Routes = [{path:'', component: LandingPageComponent},
                         {path:'app-user-management-screen/:id', component: UserManagementScreenComponent},
                         {path:'app-company-list-screen/:id', component: CompanyListScreenComponent},
                         {path:'app-project-details/:id/:userid', component: ProjectDetailsComponent, canDeactivate:[DirtyCheckGuard]},
-                        {path:'app-project-content/:id/:uid', component: ProjectContentComponent},
+                        {path:'app-project-content/:id/:uid/:hid', component: ProjectContentComponent},
                         {path:'app-artefact-details/:id/:contId/:projId/:userId', component: ArtefactDetailsComponent, canDeactivate:[DirtyCheckGuard]}];
 
 @NgModule({

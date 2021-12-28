@@ -10,10 +10,22 @@ import json
 import jwt
 import smtplib, ssl
 import math, random
+import socket
 
 app = Flask(__name__)
 # api = Api(app)
 CORS(app)
+app.secret_key = b'wellThisIsMySecreteKey'
+socket.setdefaulttimeout(1)
+soc = socket.socket()
+host = '0.0.0.0'  # The server's hostname or IP address
+port = 2004  # The port used by the server
+
+@app.before_first_request
+def do_something_only_once():
+  soc.bind((host, port))
+  soc.listen(5)
+users = {}
 
 #### MySQL #######3
 # initializing database connection
@@ -27,6 +39,19 @@ mydb = mysql.connector.connect(
 ret = ""
 # defining cursor to navigate through database
 mycursor = mydb.cursor()
+
+######### Login ###########
+def login():
+  try:
+    conn, addr = soc.accept()
+    if (conn):
+      print("Got connection from", addr)
+      length_of_message = int.from_bytes(conn.recv(2), byteorder='big')
+      msg = conn.recv(length_of_message).decode("UTF-8")
+      print(msg)
+      users["connection"] = conn
+  except socket.timeout:
+    print("time out")
 
 #### functions #####
 def checkLogin(userEmail,userPassword):
@@ -62,6 +87,18 @@ def checkLogin(userEmail,userPassword):
     json_data["authorized"] = "False"
     json_data["message"] = ["Email address not found"]
   return (json.dumps(json_data),json_data)
+
+@app.route('/openArtefact/<artId>', methods=['GET', 'POST'])
+def openArtefact(artId):
+  import serverTest
+  sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + artId + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  row_headers = [x[0] for x in mycursor.description]
+  combinedData = [dict(zip(row_headers, res)) for res in result]
+  message = {"message": "open request sent to client"}
+  serverTest.server(jsonify(combinedData), users["connection"])
+  return jsonify(message)
 
 @app.route('/login/<userEmail>/<userPassword>', methods=['GET', 'POST'])
 def login(userEmail,userPassword):
@@ -463,7 +500,7 @@ def moveContainer(contId,type,pContId,heirarchyId):
     mycursor.execute(sql)
     contLinkInfo = mycursor.fetchall()
     if(contLinkInfo):
-      previousContId = contLinkInfo[0][0]
+      previousContId = contLinkInfo[0][1]
     else:
       previousContId=""
     val = (pContId, contId)

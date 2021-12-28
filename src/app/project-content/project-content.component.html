@@ -212,7 +212,7 @@
 					</button>
 				</mat-menu>
 
-				<a [routerLink]=editDetail(rowData.id) *ngIf="i == 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</a>
+				<a [routerLink]="" (click)=openArtefact(rowData.id) *ngIf="i == 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</a>
 				<span *ngIf="i == 0 && rowData[cols[1][2].field] == ''">{{rowData[col.field]}}</span>
 				<span *ngIf="i != 0 && rowData[cols[1][2].field] != ''">{{rowData[col.field]}}</span>
 				<!-- {{rowData[col.field]}} -->
