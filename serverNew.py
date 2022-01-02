@@ -1,7 +1,9 @@
+import glob
+import os
 import time
 
 import mysql.connector
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_file
 from flask_cors import CORS, cross_origin
 from flask_restful import Resource, Api
 from json import dumps
@@ -11,6 +13,9 @@ import jwt
 import smtplib, ssl
 import math, random
 import socket
+import glob
+import os.path
+import shutil
 
 app = Flask(__name__)
 # api = Api(app)
@@ -23,6 +28,7 @@ port = 2004  # The port used by the server
 
 @app.before_first_request
 def do_something_only_once():
+  # comSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
   soc.bind((host, port))
   soc.listen(5)
 users = {}
@@ -41,9 +47,11 @@ ret = ""
 mycursor = mydb.cursor()
 
 ######### Login ###########
-def login():
+def Login():
   try:
+    print("checking connection1")
     conn, addr = soc.accept()
+    print("checking connection2")
     if (conn):
       print("Got connection from", addr)
       length_of_message = int.from_bytes(conn.recv(2), byteorder='big')
@@ -51,6 +59,7 @@ def login():
       print(msg)
       users["connection"] = conn
   except socket.timeout:
+    # return("time out")
     print("time out")
 
 #### functions #####
@@ -90,15 +99,64 @@ def checkLogin(userEmail,userPassword):
 
 @app.route('/openArtefact/<artId>', methods=['GET', 'POST'])
 def openArtefact(artId):
-  import serverTest
-  sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + artId + "';"
-  mycursor.execute(sql)
-  result = mycursor.fetchall()
-  row_headers = [x[0] for x in mycursor.description]
-  combinedData = [dict(zip(row_headers, res)) for res in result]
-  message = {"message": "open request sent to client"}
-  serverTest.server(jsonify(combinedData), users["connection"])
-  return jsonify(message)
+  try:
+    Login()
+    import serverTest
+    sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + artId + "';"
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    row_headers = [x[0] for x in mycursor.description]
+    combinedData = [dict(zip(row_headers, res)) for res in result]
+    combinedData = combinedData[0]
+
+    try:
+      if (combinedData['artefact_name'] + '.docx' not in os.listdir(combinedData['location_url'])):
+        shutil.copy(os.path.join(combinedData['template_url']), os.path.join(combinedData['location_url'], combinedData['artefact_name'] + '.docx'))
+    except:
+      return jsonify({"message": "make sure location urls are correct"})
+    combinedData['downloadType']='artefact'
+    combinedData = json.dumps(combinedData)
+    combinedData = json.loads(combinedData)
+    message = {"message": "open request sent to client"}
+    print(str(combinedData))
+    serverTest.server(str(combinedData), users["connection"])
+    return jsonify(message)
+  except:
+    return jsonify({"message": "make sure client is running"})
+
+@app.route('/download/<loc>/<name>', methods=['GET', 'POST'])
+def download(loc, name):
+  print("inside download endpoint")
+  path = loc.replace("\\","/") + name + ".docx"
+  # if(name == "template"):
+  #   path = loc.split("-")[1].replace("\\","/")
+  # path = "C:\\RapidPM\\RapidPM\\a10-exception-report-v101.docx"
+  return send_file(path, as_attachment=True)
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+  print("inside upload endpoint")
+  f = request.files['videoFile']
+  print(f)
+  # tempUrl = request.form["title"]
+  # tempUrl = "/home/jc/RapidPM/RapidPM/" + tempUrl
+  # fileType = request.form["description"]
+  # id = request.form["id"]
+  locationUrl = request.form["location"]
+  if f:
+    # if(fileType == "template"):
+    #   pid = request.form["projectId"]
+    #   sql = "INSERT INTO projects_artefactTypeDefault (ArtefactType, TemplateUrl, LocationUrl, Manadatory, Multiples, project_id)(SELECT ArtefactType, '" + "s-" + tempUrl.replace("\\\\","/") + "', LocationUrl, Manadatory, Multiples, '" + pid + "' FROM projects_artefactTypeDefault WHERE artefactType_id ='" + id + "')"
+    #   mycursor.execute(sql)
+    #   mydb.commit()
+    #   sql = "INSERT INTO ProjectsTemplates (project_id, artefactType_id) VALUES (%s, %s)"
+    #   cust = (int(pid), mycursor.lastrowid)
+    #   mycursor.execute(sql, cust)
+    #   mydb.commit()
+    #   f.save(tempUrl.replace("\\\\","/"))
+    # else:
+    f.save(locationUrl + f.filename)
+    return "Success"
 
 @app.route('/login/<userEmail>/<userPassword>', methods=['GET', 'POST'])
 def login(userEmail,userPassword):
@@ -133,6 +191,7 @@ def company():
     sql = "SELECT LAST_INSERT_ID()"
     mycursor.execute(sql)
     companyId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
+    os.mkdir("/home/musab/RapidPMV2/artefacts/" + companyId["message"])
     return jsonify(companyId)
   else:
     sql = "UPDATE company SET RPM = '" + value[0] + "', company_name = '" + value[1] + "', contact_name = '" + value[2] + "', address_line1 = '" + value[
@@ -206,6 +265,7 @@ def project():
     sql = "SELECT LAST_INSERT_ID()"
     mycursor.execute(sql)
     projectId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
+    os.mkdir("/home/musab/RapidPMV2/artefacts/" + str(project['company_id']) + '/' + str(projectId["message"]))
     return jsonify(projectId)
   else:
     sql = "UPDATE project SET project_name = '" + str(project[
@@ -246,7 +306,7 @@ def artefact(contId):
       sql = "INSERT INTO container_artefact_link (container_id, artefact_id) VALUES (%s, %s)"
       mycursor.execute(sql, value)
       mydb.commit()
-
+    # os.mkdir("/home/musab/RapidPMV2/artefacts/" + str(project['company_id']) + '/' + artefact['project_id'] + '/' + str(artefactId["message"]))
     return jsonify(artefactId)
   else:
     sql = "UPDATE artefact SET artefact_type = '" + str(artefact[
@@ -338,6 +398,17 @@ def deleteUser(user_id):
 @app.route('/deleteProject/<project_id>', methods=['GET', 'POST'])
 def deleteProject(project_id):
   sql = "DELETE FROM project WHERE project_id = '" + project_id + "';"
+  try:
+    mycursor.execute(sql)
+    mydb.commit()
+    return ({"message":"success"})
+  except:
+    return ({"message": "failed"})
+
+@app.route('/deleteCompany/<company_id>', methods=['GET', 'POST'])
+def deleteCompany(company_id):
+  print("trying to delete company: " + company_id)
+  sql = "DELETE FROM company WHERE company_id = '" + company_id + "';"
   try:
     mycursor.execute(sql)
     mydb.commit()
@@ -597,6 +668,12 @@ def deleteContainer(contId, type):
   if(type == "container"):
     msg = deleteRecursive(contId)
   else:
+    sql = "SELECT * FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + contId + "';"
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    row_headers = [x[0] for x in mycursor.description]
+    document = [dict(zip(row_headers, res)) for res in result]
+
     # sql = "DELETE cal FROM RPMnew_dataBase.container_artefact_link cal, RPMnew_dataBase.hierarchy_container hc WHERE hc.container_id=cal.container_id and hc.hierarchy_id = '" + str(heirarchyId) + "' and cal.artefact_id = '" + str(contId) + "';"
     sql = "DELETE FROM RPMnew_dataBase.container_artefact_link WHERE artefact_id = '" + str(contId) + "';"
     mycursor.execute(sql)
@@ -605,6 +682,11 @@ def deleteContainer(contId, type):
     sql = "DELETE FROM RPMnew_dataBase.artefact WHERE artefact_id = '" + str(contId) + "';"
     mycursor.execute(sql)
     mydb.commit()
+    # print(document)
+    print("document path is: " + document[0]['location_url'] + '/' + document[0]["artefact_name"] + '.docx')
+    if(os.path.exists(document[0]['location_url'] + '/' + document[0]["artefact_name"] + '.docx')):
+      print("deleting document")
+      os.remove(document[0]['location_url'] + '/' + document[0]["artefact_name"] + '.docx')
     msg = "done"
   customerId = {"message": msg}
   return jsonify(customerId)

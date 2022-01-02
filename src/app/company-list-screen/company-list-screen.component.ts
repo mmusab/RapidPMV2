@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { LogoutService } from '../logout.service';
 import jwt_decode from "jwt-decode";
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: '[app-company-list-screen]',
@@ -20,7 +21,8 @@ export class CompanyListScreenComponent implements OnInit {
   userEmail = "";
   userPassword = "";
   usr:any;
-  constructor(private location: Location, private http: HttpClient, private router : Router, private route : ActivatedRoute, public logout : LogoutService) { }
+  temp: any;
+  constructor(private notifierService: NotifierService, private location: Location, private http: HttpClient, private router : Router, private route : ActivatedRoute, public logout : LogoutService) { }
 
   ngOnInit(){
     let token = localStorage.getItem('token');
@@ -65,6 +67,24 @@ export class CompanyListScreenComponent implements OnInit {
   back(){
     console.log('in back')
     this.location.back()
+  }
+
+  delete(index: string | number){
+    if(this.companies[index]['company_id']){
+      console.log("in delete company")
+      this.http.get('http://82.69.10.205:5002/deleteCompany/' + this.companies[index]['company_id']).subscribe((response)=>{
+        console.log(response)
+        this.temp = response as JSON;
+        console.log(this.temp['message'])
+        if(this.temp['message'] == 'success'){
+          location.reload();
+        }
+        else{
+          this.notifierService.notify('error', 'This company has projects and users. These need to be deleted before the company can be deleted');
+        }
+    });
+    }
+    // location.reload();
   }
 
 }

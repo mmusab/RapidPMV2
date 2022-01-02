@@ -85,6 +85,8 @@ export class ProjectDetailsComponent implements OnInit, ComponentCanDeactivate {
     return !this.isDirty;
   }
   createUpdate(){
+    this.isDirty = false;
+    console.log("in create project")
     let date1 = formatDate(this.projectInfo.proj.start,'MM-dd-yyy','en_US');
     let date2 = formatDate(this.projectInfo.proj.end,'MM-dd-yyy','en_US');
     if(date1 < date2){

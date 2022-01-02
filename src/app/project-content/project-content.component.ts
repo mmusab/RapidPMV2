@@ -223,6 +223,12 @@ export class ProjectContentComponent implements OnInit {
       console.log("inside open Artefact")
       this.http.get('http://82.69.10.205:5002/openArtefact/' + row).subscribe((response)=>{
         this.temp = response as JSON;
+        if(this.temp['message'] == 'make sure client is running'){
+          this.notifierService.notify('error', this.temp['message']);
+        }
+        if(this.temp['message'] == 'make sure location urls are correct'){
+          this.notifierService.notify('error', this.temp['message']);
+        }
         console.log(this.temp)
         });
     }
