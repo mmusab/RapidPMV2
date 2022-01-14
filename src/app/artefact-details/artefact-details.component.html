@@ -47,13 +47,16 @@
 <body>
 	<notifier-container></notifier-container>
     <img src="/assets/RPMLOGO/rpmlogoNARROWTHUMBNAIL.png" height="11.78%" width="5.96%" style="margin-left: 3.22%;">
-    <!-- <button mat-button style="margin-left: 9.76%;font-size: 12px; color: #292E35; opacity: 100%;">Account</button>
+	<button mat-button style="margin-left: 9.76%;font-size: 12px; color: #292E35; opacity: 100%;">Account</button>
+    <button mat-button style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Projects</button>
+    <button mat-button style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Users</button>
+	<!-- <button mat-button style="margin-left: 9.76%;font-size: 12px; color: #292E35; opacity: 100%;">Account</button>
     <button mat-button (click)="goToProjects()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Projects</button>
     <button mat-button (click)="goToUsers()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Users</button> -->
 	<!-- <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
-	<button mat-flat-button (click)=logout.logout() style="margin-left: 75%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
-	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-family:'Times New Roman', Times, serif; font-weight: bolder;"><b>Artefact details</b></div>
-	<form #f="ngForm" (ngSubmit)="createUpdate()">
+	<button mat-flat-button (click)=logout.logout() style="margin-left: 40%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
+	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-weight: bolder;"><b>Artefact details</b></div>
+	<form #f="ngForm" (ngSubmit)="createUpdate(f.valid)">
 		<div class="form-group" style="margin-left: 20%; margin-top: 2%;">
 			<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="project_id">Project ID: {{projId}}</label>
 			<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
@@ -120,7 +123,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<button type="submit" [disabled]="!f.valid"><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
+			<!-- <ng-template> -->
+			<button type="submit"><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
+			<!-- <button *ngIf="!f.valid" (click)=inValidForm()><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button> -->
+				<!-- </ng-template> -->
+			<!-- <ng-template *ngIf="f.valid" >
+				<button type="submit" ><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
+			</ng-template> -->
 			<button mat-button style="position: absolute; margin-left: 3%; margin-top: 27%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
 		</div>
 		<!-- <button mat-button style="position: absolute; margin-left: 47%; margin-top: 30%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button> -->

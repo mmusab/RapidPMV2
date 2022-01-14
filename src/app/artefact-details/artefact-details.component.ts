@@ -46,11 +46,11 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
     this.containerId = params['contId']
     this.projId = params['projId']
     this.userId = params['userId']
-    this.http.get('http://82.69.10.205:5002/getProject/' + this.projId).subscribe((response)=>{
+    this.http.get('http://127.0.0.1:5002/getProject/' + this.projId).subscribe((response)=>{
       this.temp = response as JSON;
       console.log(this.temp)
       this.companyId = this.temp[0]["company_id"];
-      this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getAdmin/' + this.companyId).subscribe((response)=>{
             this.admins = response as JSON;
             console.log(this.admins)
             // this.adminId = this.temp[0]["customer_id"];
@@ -59,7 +59,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
     });
     if(params['id'] != 'id'){
       this.artefactId = params['id']
-      this.http.get('http://82.69.10.205:5002/getArtefact/' + this.artefactId).subscribe((response)=>{
+      this.http.get('http://127.0.0.1:5002/getArtefact/' + this.artefactId).subscribe((response)=>{
       this.temp = response as JSON
       console.log(response as JSON)
       this.artefactInfo.art["artefact_type"] = this.temp[0]["artefact_type"];
@@ -89,37 +89,45 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
     return !this.isDirty;
   }
 
-  createUpdate(){
+  createUpdate(validty: boolean | null){
     this.isDirty = false;
-    let date1 = formatDate(this.artefactInfo.art.create_date,'MM-dd-yyy','en_US');
-    let date2 = formatDate(this.artefactInfo.art.update_date,'MM-dd-yyy','en_US');
-    if(date1 < date2){
-      this.artefactInfo.art["project_id"] = this.projId
-      this.http.post('http://82.69.10.205:5002/artefact/' + this.containerId, this.artefactInfo.art).subscribe((response)=>{
-        // this.projId = (response as any)['message'];
-        // this.router.navigate(['/app-project-details', this.projId, this.userId]);
-        this.router.navigate(['/app-project-content', this.projId, this.userId, "id"]);
-        // this.notifierService.notify('success', 'project details updated');
-  
-    //     this.http.get('http://82.69.10.205:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
-    //     this.temp = response as JSON
-    //     console.log(this.temp[0]["company_id"])
-    //     console.log(this.temp[0]["company_role"])
-    //     this.router.navigate(['/app-project-details', this.projId]);
-    //     this.router.navigate(['/app-project-list', this.userId, this.temp[0]["company_role"]]);
-    //     this.router.navigate(['/app-project-details', this.projId, this.userId]);
-    //     this.notifierService.notify('success', 'project details updated');
-    //  });
-     });
+    if(validty){
+      let date1 = formatDate(this.artefactInfo.art.create_date,'MM-dd-yyy','en_US');
+      let date2 = formatDate(this.artefactInfo.art.update_date,'MM-dd-yyy','en_US');
+      if(date1 < date2){
+        this.artefactInfo.art["project_id"] = this.projId
+        this.http.post('http://127.0.0.1:5002/artefact/' + this.containerId, this.artefactInfo.art).subscribe((response)=>{
+          // this.projId = (response as any)['message'];
+          // this.router.navigate(['/app-project-details', this.projId, this.userId]);
+          this.router.navigate(['/app-project-content', this.projId, this.userId, "id"]);
+          // this.notifierService.notify('success', 'project details updated');
+    
+      //     this.http.get('http://127.0.0.1:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
+      //     this.temp = response as JSON
+      //     console.log(this.temp[0]["company_id"])
+      //     console.log(this.temp[0]["company_role"])
+      //     this.router.navigate(['/app-project-details', this.projId]);
+      //     this.router.navigate(['/app-project-list', this.userId, this.temp[0]["company_role"]]);
+      //     this.router.navigate(['/app-project-details', this.projId, this.userId]);
+      //     this.notifierService.notify('success', 'project details updated');
+      //  });
+      });
+      }
+      else{
+        this.notifierService.notify('error', 'start date should be less than end date');
+      }
     }
     else{
-      this.notifierService.notify('error', 'start date should be less than end date');
+      this.notifierService.notify('error', 'make sure you have filled all the fields');
     }
   }
   back(){
     console.log('in back')
     this.location.back()
   }
+  // inValidForm(){
+  //   this.notifierService.notify('error', 'make sure you have filled all the fields');
+  // }
   // @HostListener('window:beforeunload', ['$event'])
   // unloadNotification($event: any) {
   //     // if (!this.canDeactivate()) {
