@@ -48,13 +48,13 @@ export class ProjectDetailsComponent implements OnInit, ComponentCanDeactivate {
     this.userId = params['userid'];
     // this.projectInfo.proj["company_id"] = this.userId;
     this.projectInfo.proj["template"] = 'N';
-    this.http.get('http://127.0.0.1:5002/getUser/' + this.userId).subscribe((response)=>{
+    this.http.get('http://82.69.10.205:5002/getUser/' + this.userId).subscribe((response)=>{
       this.users = response as JSON
       this.projectInfo.proj["company_id"] = this.users[0]["company_id"];
       this.type = this.users[0]["company_role"]
       this.companyId = this.users[0]["company_id"];
       console.log("companyID: " + this.projectInfo.proj["company_id"])
-        this.http.get('http://127.0.0.1:5002/getAdmin/' + this.users[0]["company_id"]).subscribe((response)=>{
+        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.users[0]["company_id"]).subscribe((response)=>{
             this.admins = response as JSON;
             console.log(this.admins)
             // this.adminId = this.temp[0]["customer_id"];
@@ -63,7 +63,7 @@ export class ProjectDetailsComponent implements OnInit, ComponentCanDeactivate {
       });
     if(this.projId != ""){
       console.log("id is not empty")
-      this.http.get('http://127.0.0.1:5002/getProject/' + this.projId).subscribe((response)=>{
+      this.http.get('http://82.69.10.205:5002/getProject/' + this.projId).subscribe((response)=>{
       this.temp = response as JSON;
       console.log(this.temp)
       this.projectInfo.proj["project_id"] = this.temp[0]["project_id"];
@@ -94,13 +94,13 @@ export class ProjectDetailsComponent implements OnInit, ComponentCanDeactivate {
     let date1 = formatDate(this.projectInfo.proj.start,'MM-dd-yyy','en_US');
     let date2 = formatDate(this.projectInfo.proj.end,'MM-dd-yyy','en_US');
     if(date1 < date2){
-      this.http.post('http://127.0.0.1:5002/project', this.projectInfo.proj).subscribe((response)=>{
+      this.http.post('http://82.69.10.205:5002/project', this.projectInfo.proj).subscribe((response)=>{
       this.projId = (response as any)['message'];
       // this.router.navigate(['/app-project-details', this.projId, this.userId]);
       this.router.navigate(['/app-project-list', this.userId, this.users[0]["company_role"]]);
       // this.notifierService.notify('success', 'project details updated');
 
-  //     this.http.get('http://127.0.0.1:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
+  //     this.http.get('http://82.69.10.205:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
   //     this.temp = response as JSON
   //     console.log(this.temp[0]["company_id"])
   //     console.log(this.temp[0]["company_role"])
@@ -136,7 +136,7 @@ export class ProjectDetailsComponent implements OnInit, ComponentCanDeactivate {
   }
 
   goToProjects(){
-    this.http.get('http://127.0.0.1:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+    this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
       this.temp = response as JSON;
       let adminId = this.temp[0]["user_id"];
       this.router.navigate(['/app-project-list', adminId, "Admin"]);
