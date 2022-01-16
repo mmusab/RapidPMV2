@@ -40,6 +40,9 @@ export class ProjectContentComponent implements OnInit {
       editContainerName = ""
       newHeirarchyName = ""
       search = ""
+      users:any;
+      type = "";
+      companyId = "";
       // map = {"project":0,"container":1,"artefact":2}
 
       constructor(private notifierService: NotifierService, public logout : LogoutService, private location: Location, private router : Router, private http: HttpClient, private route : ActivatedRoute, private modalService: NgbModal) {
@@ -111,6 +114,11 @@ export class ProjectContentComponent implements OnInit {
               this.companyName = this.temp[0]['company_name']
             });
           });
+          this.http.get('http://127.0.0.1:5002/getUser/' + this.userId).subscribe((response)=>{
+          this.users = response as JSON
+          this.type = this.users[0]["company_role"]
+          this.companyId = this.users[0]["company_id"];
+          });
        });
           // this.nodeService.getFilesystem().then(files => this.files = files);
           // this.http.get('http://127.0.0.1:5002/getprojectTree/' + this.projectId + '/' + this.selectedHeirarchyId).subscribe((response)=>{
@@ -165,31 +173,41 @@ export class ProjectContentComponent implements OnInit {
           ];
       }
     move(pCont: string,cont: any){
-      if(cont['artefact_type'] == ""){
-        this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/container/" + pCont.split('-')[0] + "/" + this.selectedHeirarchyId).subscribe((response)=>{
-        // location.reload()
-        this.router.navigate(['/app-project-content', this.projectId, this.userId,this.selectedHeirarchyId]);
-        location.reload()
-      });
+      if(cont['id'] != pCont.split('-')[0]){
+        if(cont['artefact_type'] == ""){
+          this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/container/" + pCont.split('-')[0] + "/" + this.selectedHeirarchyId).subscribe((response)=>{
+          // location.reload()
+          this.router.navigate(['/app-project-content', this.projectId, this.userId,this.selectedHeirarchyId]);
+          location.reload()
+        });
+        }
+        else{
+          this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0] + "/" + this.selectedHeirarchyId).subscribe((response)=>{
+          // location.reload()
+          this.router.navigate(['/app-project-content', this.projectId, this.userId,this.selectedHeirarchyId]);
+          location.reload()
+          });
+        }
       }
       else{
-        this.http.get('http://127.0.0.1:5002/moveContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0] + "/" + this.selectedHeirarchyId).subscribe((response)=>{
-        // location.reload()
-        this.router.navigate(['/app-project-content', this.projectId, this.userId,this.selectedHeirarchyId]);
-        location.reload()
-        });
+        this.notifierService.notify('error', "container cannot be moved inside itself");
       }
     }
     copy(pCont: string,cont: any){
-      if(cont['artefact_type'] == ""){
-        this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
-        location.reload()
-      });
+      if(cont['id'] != pCont.split('-')[0]){
+        if(cont['artefact_type'] == ""){
+          this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/container/" + pCont.split('-')[0]).subscribe((response)=>{
+          location.reload()
+        });
+        }
+        else{
+          this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
+          location.reload()
+          });
+        }
       }
       else{
-        this.http.get('http://127.0.0.1:5002/copyContainer/' + cont['id'] + "/artefact/" + pCont.split('-')[0]).subscribe((response)=>{
-        location.reload()
-        });
+        this.notifierService.notify('error', "container cannot be copied inside itself");
       }
     }
     delete(cont: any){
@@ -377,5 +395,27 @@ export class ProjectContentComponent implements OnInit {
         // }
   searchFilter(){
     console.log(this.search)
+  }
+
+  goToSignUp(){
+    this.router.navigate(['/app-signup-screen', this.companyId]);
+  }
+
+  user(){
+    if(this.type == "Admin"){
+      this.router.navigate(['/app-user-management-screen', this.companyId]);
+    }
+    else{
+      console.log(this.type)
+      this.notifierService.notify('error', 'Can only be accessible by admin');
+    }
+  }
+
+  goToProjects(){
+    this.http.get('http://127.0.0.1:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+      this.temp = response as JSON;
+      let adminId = this.temp[0]["user_id"];
+      this.router.navigate(['/app-project-list', adminId, "Admin"]);
+    });
   }
 }

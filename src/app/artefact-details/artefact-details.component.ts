@@ -28,6 +28,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   userPassword = "";
   usr:any;
   isDirty = false;
+  type = "";
 
   ngOnInit(){
     let token = localStorage.getItem('token');
@@ -76,6 +77,11 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       this.artefactInfo.art["artefact_id"] = this.temp[0]["artefact_id"];
       });
     }
+
+    this.http.get('http://127.0.0.1:5002/getUser/' + this.userId).subscribe((response)=>{
+      this.temp = response as JSON
+      this.type = this.temp[0]["company_role"]
+    });
   });
   if (!localStorage.getItem('foo')) {
     localStorage.setItem('foo', 'no reload')
@@ -124,6 +130,28 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   back(){
     console.log('in back')
     this.location.back()
+  }
+
+  goToSignUp(){
+    this.router.navigate(['/app-signup-screen', this.companyId]);
+  }
+
+  user(){
+    if(this.type == "Admin"){
+      this.router.navigate(['/app-user-management-screen', this.companyId]);
+    }
+    else{
+      console.log(this.type)
+      this.notifierService.notify('error', 'Can only be accessible by admin');
+    }
+  }
+
+  goToProjects(){
+    this.http.get('http://127.0.0.1:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+      this.temp = response as JSON;
+      let adminId = this.temp[0]["user_id"];
+      this.router.navigate(['/app-project-list', adminId, "Admin"]);
+    });
   }
   // inValidForm(){
   //   this.notifierService.notify('error', 'make sure you have filled all the fields');

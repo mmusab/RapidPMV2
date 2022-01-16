@@ -242,7 +242,7 @@ export class ProjectListComponent{
     this.router.navigate(['/app-project-details', "id", this.id]);
   }
 
-  administration(){
+  users(){
     if(this.type == "Admin"){
       this.router.navigate(['/app-user-management-screen', this.companyId]);
     }
@@ -277,4 +277,9 @@ export class ProjectListComponent{
     console.log('in back')
     this.location.back()
   }
+
+  goToSignUp(){
+    this.router.navigate(['/app-signup-screen', this.companyId]);
+  }
+  
 }
