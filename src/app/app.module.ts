@@ -42,6 +42,7 @@ import { ArtefactDetailsComponent } from './artefact-details/artefact-details.co
 import { AuthServiceService } from './auth-service.service';
 import { LogoutService } from './logout.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { ArtefactTypeDefaultComponent } from './artefact-type-default/artefact-type-default.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     ProjectDetailsComponent,
     ProjectContentComponent,
     ArtefactDetailsComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    ArtefactTypeDefaultComponent
   ],
   imports: [
     BrowserModule,

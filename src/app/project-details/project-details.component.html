@@ -57,6 +57,7 @@
 	<div style="white-space: pre-wrap; margin-top: 0%; margin-left: 15%; font-size: 30px; color: #727272; font-weight: bolder;"><b>Project details</b></div>
 	<form #f="ngForm" (ngSubmit)="createUpdate()">
 		<div class="split" style="margin-left: 20%; margin-right: 20%;margin-top: 11%;">
+			<button mat-button (click)="goToTypeDefaults()" style="float: right; margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Artefact Defaults</button><br>
 			<div class="form-group">
 				<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="project_id">Project ID: {{projId}}</label>
 				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
@@ -64,15 +65,15 @@
             <div class="form-group" style="margin-left: 20%;">
 				<label class="inline-label" style="color: #6F6FFF; font-weight: bold;" for="company_id">Company ID: {{projectInfo.proj.company_id}}</label>
 				<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
+			</div><br><br>
+            <div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+				<label class="inline-label" style="float: left;" for="project_name">Title</label>
+				<input (change)="isDirty=true" style="font-size: 10px; margin-left: 2%;" required ngModel [(ngModel)]="projectInfo.proj.project_name" type="project_name" class="form-control" name="title" placeholder="{{projectInfo.proj.project_name}}">
 			</div><br>
-            <div class="form-group">
-				<label class="inline-label" for="project_name">Title</label>
-				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.project_name" type="project_name" class="form-control" name="title" placeholder="{{projectInfo.proj.project_name}}">
-			</div>
-			<div class="form-group">
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="status">status</label>
-				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.status" type="status" class="form-control" name="status" placeholder="{{projectInfo.proj.status}}">
-			</div>
+				<input (change)="isDirty=true" style="font-size: 10px; margin-left: 2%;" required ngModel [(ngModel)]="projectInfo.proj.status" type="status" class="form-control" name="status" placeholder="{{projectInfo.proj.status}}">
+			</div><br>
 			<!-- <div class="form-group">
 				<label class="inline-label" for="status">status</label>
 				<select [(ngModel)]="projectInfo.proj.status" type="status" name="status" class="form-control">
@@ -82,40 +83,40 @@
 					<option value="Pending">Pending</option>
 				</select>
 			</div> -->
-            <div class="form-group">
+            <div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="template">template</label>
-				<select style="font-size: 10px;" [(ngModel)]="projectInfo.proj.template" type="template" class="form-control" name="template">
+				<select style="font-size: 10px; margin-left: 2%;" [(ngModel)]="projectInfo.proj.template" type="template" class="form-control" name="template">
 					<option hidden selected>{{projectInfo.proj.template}}</option>
 					<option value="Y">Y</option>
 					<option value="N">N</option>
 				</select>
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="owner">owner</label>
-				<select style="font-size: 10px;" [(ngModel)]="projectInfo.proj.owner" type="owner" class="form-control" name="owner">
+				<select style="font-size: 10px; margin-left: 2%;" [(ngModel)]="projectInfo.proj.owner" type="owner" class="form-control" name="owner">
 					<!-- <option selected>{{projectInfo.proj.owner}}</option> -->
 					<ng-container *ngFor="let admin of admins">
 						<option [value]="admin.name">{{admin['name']}}</option>
 					</ng-container>
 				</select>
-			</div>
+			</div><br>
             <!-- <div class="form-group">
 				<label class="inline-label" for="owner">owner</label>
 				<input required ngModel [(ngModel)]="projectInfo.proj.owner" type="owner" class="form-control" name="owner" placeholder="{{projectInfo.proj.owner}}">
 			</div> -->
-            <div class="form-group">
+            <div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="start">Start</label>
-				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.start" type="date" class="form-control" name="start" placeholder="{{projectInfo.proj.start}}">
-			</div>
-            <div class="form-group">
+				<input (change)="isDirty=true" style="font-size: 10px; margin-left: 2%;" required ngModel [(ngModel)]="projectInfo.proj.start" type="date" class="form-control" name="start" placeholder="{{projectInfo.proj.start}}">
+			</div><br>
+            <div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="end">End</label>
-				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="projectInfo.proj.end" type="date" class="form-control" name="end" placeholder="{{projectInfo.proj.end}}">
-			</div>
+				<input (change)="isDirty=true" style="font-size: 10px; margin-left: 2%;" required ngModel [(ngModel)]="projectInfo.proj.end" type="date" class="form-control" name="end" placeholder="{{projectInfo.proj.end}}">
+			</div><br>
 			<div class="form-group">
-				<button type="submit" [disabled]="!f.valid"><img style="float:right; position: absolute; margin-left: 45%; width: 25%;height: 25%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
+				<button type="submit" [disabled]="!f.valid"><img style="float:right; position: absolute; margin-left: 40%; width: 20%;height: 20%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
 			</div><br>
 			<div>
-				<button mat-button style="position: absolute; margin-left: 50%; margin-top: 7%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
+				<button mat-button style="position: absolute; margin-left: 45%; margin-top: 7%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
 			</div>
 		</div>
 		<!-- <div class="split right" style="background-color: white; margin-top: 200px;">

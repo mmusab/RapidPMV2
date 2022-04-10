@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, button, caption {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    /* vertical-align: baseline; */
+    background: transparent;
+}
+/* body { 
+  background-image: url('/assets/Assets/LandingPageGraphic.svg');
+  background-repeat: no-repeat;
+  background-position: 115% 40%;
+  background-size: 60%;
+} */
+.login-form {
+		width: 340px;
+    	margin: 50px auto;
+	}
+    .login-form form {
+    	margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    .form-control, .btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .btn {        
+        font-size: 15px;
+        font-weight: bold;
+    }
+	.input{
+		background: white;
+	}
+  table {
+    font-size: 12px;
+  /* width: 100%; */
+  /* border: 1px solid #000; */
+  }
+  th{
+    /* text-align: center; */
+    padding: 5px;
+  width: 20px;
+  }
+  tr{
+    padding: 2px;
+  }
+  tr:nth-child(even) {
+    background-color: #EFEDFB;
+  }
+  tab10 { padding-left: 40em; }
+  /* .tr{
+    padding: 5px;
+  } */
+        </style>
+    </head>
+<body>
+  <notifier-container></notifier-container>
+  <img src="/assets/RPMLOGO/rpmlogoNARROWTHUMBNAIL.png" height="11.78%" width="5.96%" style="margin-left: 3.22%;">
+  <!-- <button mat-button (click)="goToSignUp()" style="margin-left: 9.76%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Company Admin</button>
+  <button mat-button (click)="goToProjects()" style="margin-left: 4.18%;font-size: 12px; color: #292E35; opacity: 60%;">Projects</button>
+  <button mat-button style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 100%;">Users</button> -->
+  <!-- <button mat-button (click)="administration()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
+  <button mat-flat-button (click)=logout.logout() style="margin-left: 80%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
+  <!-- <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position: absolute; margin-left: 57%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div> -->
+  <div class="row" style="margin-left: 15%; margin-right: 0%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;">
+    <div class="col-md-5">
+        <b>Project Artefact type Defaults</b>
+      </div>
+      <div class="col-md-5">  
+        <button mat-button (click)="add()" style="float:right">
+          <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg">
+        </button>
+      </div>
+  </div>  
+  <div style="margin-left: 15%; margin-right: 15%; margin-top: 1%;">
+  <table mat-table style="width:100%">
+    <!-- <div style="position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position:absolute; margin-left: 40%;"><img (click)="add()" style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div> -->
+	<tr style="background-color: #6957E1; color: white; font-size: 12px;">
+		<ng-container *ngFor="let head of typeHead">
+			<th *ngIf="!(head === 'project_id' || head === 'type_id')">
+				<p >{{head}}</p>
+			</th>
+		</ng-container>
+        <th></th>
+	</tr>
+
+<tr *ngFor="let type of typeDefaults; let id = index">
+	<ng-container *ngFor="let head of typeHead">
+		<td *ngIf="!(head === 'project_id' || head === 'type_id' || head === 'mandatory' || head === 'multiples')">    
+			<span [attr.contenteditable]="!(head === 'type_id')" (blur)="updateList(id, head, $event)" this.searchValue = ' '>{{type[head]}}</span>
+		</td>
+    <td *ngIf="(head === 'mandatory' || head === 'multiples')">
+      <select (change)="updateOptions(id, head, $event)">
+        <option selected>{{type[head]}}</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>		
+    </td>
+	</ng-container>
+	<td>
+	<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+		<mat-icon>more_vert</mat-icon>
+	</button>
+	<mat-menu #menu="matMenu">
+		<button (click)=onAddType(id) mat-menu-item>
+		<mat-icon>update</mat-icon>
+		<span>Update record</span>
+		</button>
+		<button (click)=deleteRow(id) mat-menu-item>
+		<mat-icon>remove</mat-icon>
+		<span>delete record</span>
+		</button>
+	</mat-menu>
+	
+	</td>
+</tr>
+</table>
+</div>
+<div>
+  <button mat-button style="position: absolute; margin-left: 45%; margin-top: 7%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
+</div>
+</body>
+</html>

@@ -89,6 +89,15 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS container_artefact_link (link_id IN
                                                         "artefact_id INT, "
                                                         "FOREIGN KEY (artefact_id) REFERENCES artefact(artefact_id), "
                                                         "FOREIGN KEY (container_id) REFERENCES hierarchy_container(container_id))")
+
+mycursor.execute("CREATE TABLE IF NOT EXISTS artefact_type_default (type_id INT AUTO_INCREMENT PRIMARY KEY, "
+                                                        "project_id INT, "
+                                                        "artefact_type VARCHAR(255), "
+                                                        "location_url VARCHAR(255), "
+                                                        "template_url VARCHAR(255), "
+                                                        "multiples VARCHAR(255), "
+                                                        "mandatory VARCHAR(255), "
+                                                        "FOREIGN KEY (project_id) REFERENCES project(project_id))")
 # mycursor.execute("CREATE TABLE IF NOT EXISTS artifacts (artifact_id INT AUTO_INCREMENT PRIMARY KEY, "
 #                                                         "ArtefactName VARCHAR(255), "
 #                                                         "ArtefactType VARCHAR(255), "

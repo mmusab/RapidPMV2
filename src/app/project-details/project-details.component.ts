@@ -143,4 +143,8 @@ export class ProjectDetailsComponent implements OnInit, ComponentCanDeactivate {
     });
   }
 
+  goToTypeDefaults(){
+    this.router.navigate(['/app-artefact-type-default', this.projId]);
+  }
+
 }

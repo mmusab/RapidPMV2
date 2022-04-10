@@ -243,6 +243,37 @@ def user():
     customerId = {"message": str(custmId)}
     return jsonify(customerId)
 
+@app.route('/type', methods=['GET', 'POST'])
+def type():
+  typeDefault = request.json
+  print(typeDefault)
+  typeId = typeDefault['type_id']
+  del typeDefault['type_id']
+  pairs = typeDefault.items()
+  key = []
+  value = []
+  for k, v in pairs:
+    key.append(str(k))
+    value.append(str(v))
+  key = tuple(key)
+  value = tuple(value)
+  print(value)
+  if(typeId == ""):
+    sql = "INSERT INTO artefact_type_default (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s)"
+    mycursor.execute(sql, value)
+    mydb.commit()
+    sql = "SELECT LAST_INSERT_ID()"
+    mycursor.execute(sql)
+    typeId = {"message": str(mycursor.fetchall()[0]).split('(')[1].split(',')[0]}
+    return jsonify(typeId)
+  else:
+    sql = "UPDATE artefact_type_default SET project_id = '" + str(typeDefault['project_id']) + "', artefact_type = '" + typeDefault['artefact_type'] + "', location_url = '" + typeDefault['location_url'] + "', template_url = '" + typeDefault['template_url'] + "', multiples = '" + typeDefault['multiples'] + "', mandatory = '" + typeDefault['mandatory'] + "'WHERE type_id = '" + str(typeId) + "';"
+    # sql = "UPDATE user SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE user_id = '" + str(custmId) + "';"
+    mycursor.execute(sql)
+    mydb.commit()
+    typeId = {"message": str(typeId)}
+    return jsonify(typeId)
+
 @app.route('/project', methods=['GET', 'POST'])
 def project():
   project = request.json
@@ -345,6 +376,20 @@ def getUsers(company_id):
   print(result)
   return jsonify(result)
 
+@app.route('/getArtefactDefaults/<project_id>', methods=['GET', 'POST'])
+def getArtefactDefaults(project_id):
+  sql = "SELECT * FROM RPMnew_dataBase.artefact_type_default WHERE project_id = '" + project_id + "';"
+  mycursor.execute(sql)
+  result = mycursor.fetchall()
+  header = mycursor.description
+  # print(header)
+  row_headers = [x[0] for x in mycursor.description]
+  # print(row_headers)
+  result = [dict(zip(row_headers, res)) for res in result]
+  # users = {"message": result};
+  print(result)
+  return jsonify(result)
+
 @app.route('/getUser/<user_id>', methods=['GET', 'POST'])
 def getUser(user_id):
   sql = "SELECT * FROM RPMnew_dataBase.user WHERE user_id = '" + user_id + "';"
@@ -387,6 +432,13 @@ def getCompanies():
   # users = {"message": result};
   print(result)
   return jsonify(result)
+
+@app.route('/deleteType/<type_id>', methods=['GET', 'POST'])
+def deleteType(type_id):
+  sql = "DELETE FROM artefact_type_default WHERE type_id = '" + type_id + "';"
+  mycursor.execute(sql)
+  mydb.commit()
+  return ({"message":"success"})
 
 @app.route('/deleteUser/<user_id>', methods=['GET', 'POST'])
 def deleteUser(user_id):

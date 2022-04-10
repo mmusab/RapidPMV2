@@ -10,6 +10,7 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
 import { ProjectContentComponent } from './project-content/project-content.component';
 import { ArtefactDetailsComponent } from './artefact-details/artefact-details.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { ArtefactTypeDefaultComponent } from './artefact-type-default/artefact-type-default.component';
 import { DirtyCheckGuard } from './dirty-check.guard';
 
 const routes: Routes = [{path:'', component: LandingPageComponent},
@@ -21,7 +22,8 @@ const routes: Routes = [{path:'', component: LandingPageComponent},
                         {path:'app-company-list-screen/:id', component: CompanyListScreenComponent},
                         {path:'app-project-details/:id/:userid', component: ProjectDetailsComponent, canDeactivate:[DirtyCheckGuard]},
                         {path:'app-project-content/:id/:uid/:hid', component: ProjectContentComponent},
-                        {path:'app-artefact-details/:id/:contId/:projId/:userId', component: ArtefactDetailsComponent, canDeactivate:[DirtyCheckGuard]}];
+                        {path:'app-artefact-details/:id/:contId/:projId/:userId', component: ArtefactDetailsComponent, canDeactivate:[DirtyCheckGuard]},
+                        {path:'app-artefact-type-default/:id', component: ArtefactTypeDefaultComponent},];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
