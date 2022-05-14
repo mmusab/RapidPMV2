@@ -143,6 +143,16 @@ export class ArtefactTypeDefaultComponent{
       console.log('in back')
       this.location.back()
     }
+    updateAll(){
+      for (var index in this.typeDefaults) {
+        this.typeDefaults[index]["project_id"] = this.projectId;
+      }
+      this.http.post('http://82.69.10.205:5002/typeBulkAdd', this.typeDefaults).subscribe((response)=>{
+      console.log(response)
+      // this.typeId = (response as any)['message'];
+      this.notifierService.notify('success', 'Type has been created/updated');
+   });
+    }
 
     locationUrl(event: any, index: string | number){
       console.log(event)

@@ -77,8 +77,17 @@
         <b>Project Artefact type Defaults</b>
       </div>
       <div class="col-md-5">  
-        <button mat-button (click)="add()" style="float:right">
-          <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg">
+        <button mat-button (click)="add()" style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+          Create
+          <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
+        </button><br>
+        <button mat-button (click)="updateAll()" style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+          Update
+          <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
+        </button><br>
+        <button mat-button (click)=back() style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+          Cancel
+          <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
         </button>
       </div>
   </div>  
@@ -86,15 +95,30 @@
   <table mat-table style="width:100%">
     <!-- <div style="position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position:absolute; margin-left: 40%;"><img (click)="add()" style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div> -->
 	<tr style="background-color: #6957E1; color: white; font-size: 12px;">
+    <th></th>
 		<ng-container *ngFor="let head of typeHead">
 			<th *ngIf="!(head === 'project_id' || head === 'type_id')">
 				<p >{{head}}</p>
 			</th>
 		</ng-container>
-        <th></th>
 	</tr>
 
 <tr *ngFor="let type of typeDefaults; let id = index">
+  <td>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)=onAddType(id) mat-menu-item>
+      <mat-icon>update</mat-icon>
+      <span>Update record</span>
+      </button>
+      <button (click)=deleteRow(id) mat-menu-item>
+      <mat-icon>remove</mat-icon>
+      <span>delete record</span>
+      </button>
+    </mat-menu>
+    </td>
 	<ng-container *ngFor="let head of typeHead">
 		<td *ngIf="!(head === 'project_id' || head === 'type_id' || head === 'mandatory' || head === 'multiples')">    
 			<span [attr.contenteditable]="!(head === 'type_id')" (blur)="updateList(id, head, $event)" this.searchValue = ' '>{{type[head]}}</span>
@@ -107,27 +131,11 @@
       </select>		
     </td>
 	</ng-container>
-	<td>
-	<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-		<mat-icon>more_vert</mat-icon>
-	</button>
-	<mat-menu #menu="matMenu">
-		<button (click)=onAddType(id) mat-menu-item>
-		<mat-icon>update</mat-icon>
-		<span>Update record</span>
-		</button>
-		<button (click)=deleteRow(id) mat-menu-item>
-		<mat-icon>remove</mat-icon>
-		<span>delete record</span>
-		</button>
-	</mat-menu>
-	
-	</td>
 </tr>
 </table>
 </div>
-<div>
+<!-- <div>
   <button mat-button style="position: absolute; margin-left: 45%; margin-top: 7%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
-</div>
+</div> -->
 </body>
 </html>
