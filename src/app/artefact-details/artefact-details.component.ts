@@ -23,12 +23,15 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   sub: any;
   temp:any;
   admins:any;
+  artTypes:any;
   users:any;
   userEmail = "";
   userPassword = "";
   usr:any;
   isDirty = false;
   type = "";
+  status = ['Proposed', 'In progress', 'Awaiting signoff', 'Complete']
+  regex  = /^([a-zA-Z0-9\s\._-]+)$/
 
   ngOnInit(){
     let token = localStorage.getItem('token');
@@ -47,6 +50,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
     this.containerId = params['contId']
     this.projId = params['projId']
     this.userId = params['userId']
+    this.requestTypes();
     this.http.get('http://82.69.10.205:5002/getProject/' + this.projId).subscribe((response)=>{
       this.temp = response as JSON;
       console.log(this.temp)
@@ -97,7 +101,8 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
 
   createUpdate(validty: boolean | null){
     this.isDirty = false;
-    if(validty){
+    if(validty && this.artefactInfo.art.artefact_name.match(this.regex)){
+      // console.log(this.artefactInfo.art)
       let date1 = formatDate(this.artefactInfo.art.create_date,'MM-dd-yyy','en_US');
       let date2 = formatDate(this.artefactInfo.art.update_date,'MM-dd-yyy','en_US');
       if(date1 < date2){
@@ -124,7 +129,12 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       }
     }
     else{
-      this.notifierService.notify('error', 'make sure you have filled all the fields');
+      if(this.artefactInfo.art.artefact_name.match(this.regex) || this.artefactInfo.art.artefact_name == ''){
+        this.notifierService.notify('error', 'make sure you have filled all the fields');
+      }
+      else{
+        this.notifierService.notify('error', 'name is not a valid filename');
+      }
     }
   }
   back(){
@@ -162,6 +172,13 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   //         $event.returnValue =true;
   //     // }
   // }
+
+  requestTypes(){
+    this.http.get('http://82.69.10.205:5002/getArtefactDefaults/' + this.projId).subscribe((response)=>{
+      this.artTypes = response as JSON
+      console.log(this.artTypes)
+    });
+  }
 
 }
 

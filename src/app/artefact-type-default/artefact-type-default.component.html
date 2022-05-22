@@ -77,10 +77,6 @@
         <b>Project Artefact type Defaults</b>
       </div>
       <div class="col-md-5">  
-        <button mat-button (click)="add()" style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
-          Create
-          <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
-        </button><br>
         <button mat-button (click)="updateAll()" style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
           Update
           <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
@@ -95,7 +91,11 @@
   <table mat-table style="width:100%">
     <!-- <div style="position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position:absolute; margin-left: 40%;"><img (click)="add()" style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div> -->
 	<tr style="background-color: #6957E1; color: white; font-size: 12px;">
-    <th></th>
+    <th>
+      <button mat-button (click)="add()" style="padding: 0%;">
+        <mat-icon>add</mat-icon>
+      </button><br>
+    </th>
 		<ng-container *ngFor="let head of typeHead">
 			<th *ngIf="!(head === 'project_id' || head === 'type_id')">
 				<p >{{head}}</p>
@@ -105,7 +105,7 @@
 
 <tr *ngFor="let type of typeDefaults; let id = index">
   <td>
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" style="padding-left: 25px;">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">

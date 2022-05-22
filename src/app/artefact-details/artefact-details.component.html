@@ -55,8 +55,22 @@
     <button mat-button (click)="goToUsers()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Users</button> -->
 	<!-- <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
 	<button mat-flat-button (click)=logout.logout() style="margin-left: 40%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
-	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-weight: bolder;"><b>Artefact details</b></div>
 	<form #f="ngForm" (ngSubmit)="createUpdate(f.valid)">
+		<div class="row" style="margin-left: 15%; margin-right: 0%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;">
+			<div class="col-md-5">
+				<b>Artefact details</b>
+			  </div>
+			  <div class="col-md-5">  
+				<button type="submit" mat-button style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+				  Create/Update
+				  <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
+				</button><br>
+				<button mat-button (click)=back() style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+				  Cancel
+				  <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
+				</button>
+			  </div>
+		</div>
 		<div class="form-group" style="margin-left: 20%; margin-top: 2%;">
 			<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="project_id">Project ID: {{projId}}</label>
 			<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
@@ -70,9 +84,18 @@
 			<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
 		</div>
 		<div class="split left" style="margin-left: 20%; margin-right: 20%;margin-top: 15%;font-size: 12px;">
-            <div class="form-group">
+            <!-- <div class="form-group">
 				<label class="inline-label" for="artefact_type">Artefact type</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.artefact_type" type="artefact_type" class="form-control" name="artefact_type" placeholder="{{artefactInfo.art.artefact_type}}">
+			</div> -->
+			<div class="form-group">
+				<label class="inline-label" for="artefact_type">Artefact type</label>
+				<select style="font-size: 10px;" [(ngModel)]="artefactInfo.art.artefact_type" type="artefact_type" class="form-control" name="artefact_type">
+					<!-- <option selected>{{projectInfo.proj.owner}}</option> -->
+					<ng-container *ngFor="let artefact of artTypes">
+						<option [value]="artefact.artefact_type">{{artefact['artefact_type']}}</option>
+					</ng-container>
+				</select>
 			</div>
 			<div class="form-group">
 				<label class="inline-label" for="owner">owner</label>
@@ -91,10 +114,19 @@
 				<label class="inline-label" for="description">Description</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.description" type="description" class="form-control" name="description" placeholder="{{artefactInfo.art.description}}">
 			</div>
-            <div class="form-group">
+			<div class="form-group">
+				<label class="inline-label" for="status">status</label>
+				<select style="font-size: 10px;" [(ngModel)]="artefactInfo.art.status" type="status" class="form-control" name="status">
+					<!-- <option selected>{{projectInfo.proj.owner}}</option> -->
+					<ng-container *ngFor="let st of status">
+						<option [value]="st">{{st}}</option>
+					</ng-container>
+				</select>
+			</div>
+            <!-- <div class="form-group">
 				<label class="inline-label" for="status">status</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.status" type="status" class="form-control" name="status" placeholder="{{artefactInfo.art.status}}">
-			</div>
+			</div> -->
 		</div>
 		<div class="split right" style="margin-left: 20%; margin-right: 20%;margin-top: 15%;font-size: 12px;">
             <div class="form-group">
@@ -114,24 +146,27 @@
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.update_date" type="date" class="form-control" name="updated_date" placeholder="{{artefactInfo.art.update_date}}">
 			</div>
             <div class="form-group">
-				<label class="inline-label" for="location_url">Location url</label>
+				<label class="inline-label" for="location_url">Artefact URL</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.location_url" type="location_url" class="form-control" name="location_url" placeholder="{{artefactInfo.art.location_url}}">
 			</div>
             <div class="form-group">
-				<label class="inline-label" for="template_url">Template url</label>
+				<label class="inline-label" for="template_url">Template URL</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
+				<ng-container *ngIf="artefactInfo.art.location_url === artefactInfo.art.template_url">
+					<p style="color:brown;">Artefact URL and Template URL are same</p>
+				</ng-container>
 			</div>
 		</div>
-		<div class="form-group">
+		<!-- <div class="form-group"> -->
 			<!-- <ng-template> -->
-			<button type="submit"><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
+			<!-- <button type="submit"><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button> -->
 			<!-- <button *ngIf="!f.valid" (click)=inValidForm()><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button> -->
 				<!-- </ng-template> -->
 			<!-- <ng-template *ngIf="f.valid" >
 				<button type="submit" ><img style="position: absolute; margin-top: 20%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
 			</ng-template> -->
-			<button mat-button style="position: absolute; margin-left: 3%; margin-top: 27%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
-		</div>
+			<!-- <button mat-button style="position: absolute; margin-left: 3%; margin-top: 27%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
+		</div> -->
 		<!-- <button mat-button style="position: absolute; margin-left: 47%; margin-top: 30%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button> -->
         <!-- <div class="split right" style="background-color: white; margin-top: 10px;">
             <div class="form-group">
