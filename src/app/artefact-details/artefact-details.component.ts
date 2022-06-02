@@ -7,7 +7,8 @@ import { formatDate, Location } from '@angular/common'
 import { LogoutService } from '../logout.service';
 import jwt_decode from "jwt-decode";
 import { ComponentCanDeactivate } from '../component-can-deactivate';
-import { Observable } from 'rxjs';
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+
 
 @Component({
   selector: 'app-artefact-details',
@@ -15,6 +16,20 @@ import { Observable } from 'rxjs';
   styleUrls: ['./artefact-details.component.css']
 })
 export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
+  // typeArtefact = {
+  //   "type_id" : "",	
+  //   "project_id" : "",
+  //   "artefact_type" : "",
+  //   "location_url" : "asfdaefresfw",
+  //   "template_url" : "",
+  //   "multiples" : "",
+  //   "mandatory" : ""
+  // };
+  templateFlag = true
+  typeArtefact = 0;
+  date:any;
+  ProjectName = ""
+  companyName = ""
   projId = ""
   companyId = ""
   artefactId = ""
@@ -55,11 +70,16 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       this.temp = response as JSON;
       console.log(this.temp)
       this.companyId = this.temp[0]["company_id"];
+      this.ProjectName = this.temp[0]["project_name"];
       this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
             this.admins = response as JSON;
             console.log(this.admins)
             // this.adminId = this.temp[0]["customer_id"];
             // this.router.navigate(['/app-project-list', this.adminId, "Admin"]);
+        });
+      this.http.get('http://82.69.10.205:5002/getCompany/' + this.companyId).subscribe((response)=>{
+          this.temp = response as JSON;
+          this.companyName = this.temp[0]["company_name"];
         });
     });
     if(params['id'] != 'id'){
@@ -79,6 +99,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       this.artefactInfo.art["project_id"] = this.temp[0]["project_id"];
       this.artefactInfo.art["template"] = this.temp[0]["template"];
       this.artefactInfo.art["artefact_id"] = this.temp[0]["artefact_id"];
+      this.templateFlag = false
       });
     }
 
@@ -102,10 +123,28 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   createUpdate(validty: boolean | null){
     this.isDirty = false;
     if(validty && this.artefactInfo.art.artefact_name.match(this.regex)){
-      // console.log(this.artefactInfo.art)
+      console.log(this.artefactInfo.art)
+      this.artefactInfo.art.artefact_type = this.artTypes[this.typeArtefact]['artefact_type']
+
+      if(this.artefactInfo.art.create_date == ''){
+        this.date=new Date().toLocaleDateString();;
+        this.artefactInfo.art.create_date = this.date;
+        this.artefactInfo.art.update_date = this.date;
+        this.artefactInfo.art.location_url = this.artTypes[this.typeArtefact]['location_url']
+        if(this.templateFlag){
+          this.artefactInfo.art.template_url = this.artTypes[this.typeArtefact]['template_url']
+        }
+        else{
+          this.artefactInfo.art.template_url = 'File uploaded, template ignored'
+        }
+      }
+      else{
+        this.date=new Date().toLocaleDateString();;
+        this.artefactInfo.art.update_date = this.date;
+      }
       let date1 = formatDate(this.artefactInfo.art.create_date,'MM-dd-yyy','en_US');
       let date2 = formatDate(this.artefactInfo.art.update_date,'MM-dd-yyy','en_US');
-      if(date1 < date2){
+      if(true){
         this.artefactInfo.art["project_id"] = this.projId
         this.http.post('http://82.69.10.205:5002/artefact/' + this.containerId, this.artefactInfo.art).subscribe((response)=>{
           // this.projId = (response as any)['message'];
@@ -176,9 +215,66 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   requestTypes(){
     this.http.get('http://82.69.10.205:5002/getArtefactDefaults/' + this.projId).subscribe((response)=>{
       this.artTypes = response as JSON
+      // this.artefactInfo.art.template_url = this.artTypes[0]['template_url']
       console.log(this.artTypes)
     });
   }
+
+
+  public files: NgxFileDropEntry[] = [];
+
+  public dropped(files: NgxFileDropEntry[]) {
+    console.log('in dropped funtion')
+    this.files = files;
+    this.artefactInfo.art.template_url = this.artefactInfo.art.template_url + this.files[0].relativePath
+    for (const droppedFile of files) {
+
+      // Is it a file?
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+
+          this.artefactInfo.art.template_url = 'File uploaded, template ignored'
+          this.templateFlag = false
+          // Here you can access the real file
+          console.log(droppedFile.relativePath, file);
+
+          /**
+          // You could upload it like this:
+          const formData = new FormData()
+          formData.append('logo', file, relativePath)
+
+          // Headers
+          const headers = new HttpHeaders({
+            'security-token': 'mytoken'
+          })
+
+          this.http.post('https://mybackend.com/api/upload/sanitize-and-save-logo', formData, { headers: headers, responseType: 'blob' })
+          .subscribe(data => {
+            // Sanitized logo returned from backend
+          })
+          **/
+
+        });
+      } else {
+        // It was a directory (empty directories are added, otherwise only files)
+        const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
+        console.log(droppedFile.relativePath, fileEntry);
+      }
+    }
+  }
+
+  public fileOver(event: any){
+    console.log('file over')
+    console.log(event);
+  }
+
+  public fileLeave(event: any){
+    console.log('file leave')
+    console.log(event);
+  }
+
+
 
 }
 

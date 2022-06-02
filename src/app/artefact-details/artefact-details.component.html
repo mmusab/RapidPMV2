@@ -72,11 +72,11 @@
 			  </div>
 		</div>
 		<div class="form-group" style="margin-left: 20%; margin-top: 2%;">
-			<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="project_id">Project ID: {{projId}}</label>
+			<label class="inline-label" style="color: #14ABDD; font-weight: bold;" for="project_id">Project:  {{ProjectName}}</label>
 			<!-- <input required ngModel [(ngModel)]="projectInfo.proj.project_id" type="project_id" class="form-control" name="project_id" placeholder="{{projectInfo.proj.project_id}}"> -->
 		</div>
 		<div class="form-group" style="margin-left: 30%; margin-top: 2%;">
-			<label class="inline-label" style="color: #6F6FFF; font-weight: bold;" for="company_id">Company ID: {{companyId}}</label>
+			<label class="inline-label" style="color: #6F6FFF; font-weight: bold;" for="company_id">Company:  {{companyName}}</label>
 			<!-- <input required ngModel [(ngModel)]="projectInfo.proj.customer_id" type="customer_id" class="form-control" name="customer_id" placeholder="{{projectInfo.proj.customer_id}}"> -->
 		</div>
 		<div class="form-group" style="margin-left: 40%; margin-top: 2%;">
@@ -90,10 +90,10 @@
 			</div> -->
 			<div class="form-group">
 				<label class="inline-label" for="artefact_type">Artefact type</label>
-				<select style="font-size: 10px;" [(ngModel)]="artefactInfo.art.artefact_type" type="artefact_type" class="form-control" name="artefact_type">
+				<select (change)="templateFlag=true" style="font-size: 10px;" [(ngModel)]="typeArtefact" type="artefact_type" class="form-control" name="artefact_type">
 					<!-- <option selected>{{projectInfo.proj.owner}}</option> -->
-					<ng-container *ngFor="let artefact of artTypes">
-						<option [value]="artefact.artefact_type">{{artefact['artefact_type']}}</option>
+					<ng-container *ngFor="let artefact of artTypes; let id = index">
+						<option [value]="id">{{artefact['artefact_type']}}</option>
 					</ng-container>
 				</select>
 			</div>
@@ -123,6 +123,14 @@
 					</ng-container>
 				</select>
 			</div>
+			<div class="form-group">
+				<label class="inline-label" for="created_date">create date:  {{artefactInfo.art.create_date}}</label>
+				<!-- <input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.create_date" type="date" class="form-control" name="created_date" placeholder="{{artefactInfo.art.create_date}}"> -->
+			</div><br><br>
+            <div class="form-group">
+				<label class="inline-label" for="updated_date">Update date:  {{artefactInfo.art.update_date}}</label>
+				<!-- <input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.update_date" type="date" class="form-control" name="updated_date" placeholder="{{artefactInfo.art.update_date}}"> -->
+			</div><br><br>
             <!-- <div class="form-group">
 				<label class="inline-label" for="status">status</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.status" type="status" class="form-control" name="status" placeholder="{{artefactInfo.art.status}}">
@@ -136,26 +144,45 @@
 					<option value="Y">Y</option>
 					<option value="N">N</option>
 				</select>
-			</div>
+			</div><br>
             <div class="form-group">
-				<label class="inline-label" for="created_date">create date</label>
-				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.create_date" type="date" class="form-control" name="created_date" placeholder="{{artefactInfo.art.create_date}}">
-			</div>
+				<label class="inline-label" for="location_url">Artefact URL: {{artTypes[typeArtefact].location_url}}</label>
+				<!-- <input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.location_url" type="location_url" class="form-control" name="location_url" placeholder="{{artefactInfo.art.location_url}}"> -->
+			</div><br><br>
             <div class="form-group">
-				<label class="inline-label" for="updated_date">Update date</label>
-				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.update_date" type="date" class="form-control" name="updated_date" placeholder="{{artefactInfo.art.update_date}}">
-			</div>
-            <div class="form-group">
-				<label class="inline-label" for="location_url">Artefact URL</label>
-				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.location_url" type="location_url" class="form-control" name="location_url" placeholder="{{artefactInfo.art.location_url}}">
-			</div>
-            <div class="form-group">
-				<label class="inline-label" for="template_url">Template URL</label>
-				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
+				<ng-container *ngIf="templateFlag == true">
+					<label class="inline-label" for="template_url">Template URL: {{artTypes[typeArtefact].template_url}}</label>
+				</ng-container>
+				<ng-container *ngIf="templateFlag == false">
+					<label class="inline-label" for="template_url">Template URL: {{artefactInfo.art.template_url}}</label>
+				</ng-container>
+				<!-- <input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
 				<ng-container *ngIf="artefactInfo.art.location_url === artefactInfo.art.template_url">
 					<p style="color:brown;">Artefact URL and Template URL are same</p>
-				</ng-container>
-			</div>
+				</ng-container> -->
+			</div><br><br>
+			<div>
+				<ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" 
+				(onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+					<ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+					  <button type="button" (click)="openFileSelector()">Drop file here <br/>or<br/>Click to browse</button>
+					</ng-template>
+				</ngx-file-drop>
+				<!-- <div class="upload-table">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+							</tr>
+						</thead>
+						<tbody class="upload-name-style">
+							<tr *ngFor="let item of files; let i=index">
+								<td><strong>{{ item.relativePath }}</strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</div> -->
+			</div><br>
 		</div>
 		<!-- <div class="form-group"> -->
 			<!-- <ng-template> -->
@@ -177,5 +204,6 @@
             </div>
         </div> -->
 	</form>
+
 </body>
 </html>

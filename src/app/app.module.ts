@@ -43,6 +43,7 @@ import { AuthServiceService } from './auth-service.service';
 import { LogoutService } from './logout.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ArtefactTypeDefaultComponent } from './artefact-type-default/artefact-type-default.component';
+import { NgxFileDropModule } from 'ngx-file-drop';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { ArtefactTypeDefaultComponent } from './artefact-type-default/artefact-t
     TreeTableModule,
     MatSelectModule,
     NgbModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    NgxFileDropModule
   ],
   providers: [CustomerInfo,CompanyInfo, DataService, ProjectInfo,ArtefactInfo, AuthServiceService, LogoutService],
   bootstrap: [AppComponent]
