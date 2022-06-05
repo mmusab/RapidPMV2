@@ -25,6 +25,9 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   //   "multiples" : "",
   //   "mandatory" : ""
   // };
+  defaultTemplateLocation = ""
+  defaultArtefactLocation = ""
+  isChecked = false
   templateFlag = true
   typeArtefact = 0;
   date:any;
@@ -47,6 +50,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   type = "";
   status = ['Proposed', 'In progress', 'Awaiting signoff', 'Complete']
   regex  = /^([a-zA-Z0-9\s\._-]+)$/
+  myfile: any;
 
   ngOnInit(){
     let token = localStorage.getItem('token');
@@ -61,53 +65,56 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       this.logout.logout()
     }
     this.sub = this.route.params.subscribe(params => {
-    // this.projId = params['id'];
-    this.containerId = params['contId']
-    this.projId = params['projId']
-    this.userId = params['userId']
-    this.requestTypes();
-    this.http.get('http://82.69.10.205:5002/getProject/' + this.projId).subscribe((response)=>{
-      this.temp = response as JSON;
-      console.log(this.temp)
-      this.companyId = this.temp[0]["company_id"];
-      this.ProjectName = this.temp[0]["project_name"];
-      this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
-            this.admins = response as JSON;
-            console.log(this.admins)
-            // this.adminId = this.temp[0]["customer_id"];
-            // this.router.navigate(['/app-project-list', this.adminId, "Admin"]);
+      // this.projId = params['id'];
+      this.containerId = params['contId']
+      this.projId = params['projId']
+      this.userId = params['userId']
+      this.requestTypes();
+      this.http.get('http://82.69.10.205:5002/getProject/' + this.projId).subscribe((response)=>{
+        this.temp = response as JSON;
+        console.log(this.temp)
+        this.companyId = this.temp[0]["company_id"];
+        this.ProjectName = this.temp[0]["project_name"];
+        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+              this.admins = response as JSON;
+              console.log(this.admins)
+              // this.adminId = this.temp[0]["customer_id"];
+              // this.router.navigate(['/app-project-list', this.adminId, "Admin"]);
+          });
+        this.http.get('http://82.69.10.205:5002/getCompany/' + this.companyId).subscribe((response)=>{
+            this.temp = response as JSON;
+            this.companyName = this.temp[0]["company_name"];
+            this.companyId = this.temp[0]["company_id"];
+            this.defaultTemplateLocation = "./" + this.companyId + '/' + this.projId + '/' + 'templates/'
+            this.defaultArtefactLocation = "./" + this.companyId + '/' + this.projId + '/' + 'artefacts/'
         });
-      this.http.get('http://82.69.10.205:5002/getCompany/' + this.companyId).subscribe((response)=>{
-          this.temp = response as JSON;
-          this.companyName = this.temp[0]["company_name"];
-        });
-    });
-    if(params['id'] != 'id'){
-      this.artefactId = params['id']
-      this.http.get('http://82.69.10.205:5002/getArtefact/' + this.artefactId).subscribe((response)=>{
-      this.temp = response as JSON
-      console.log(response as JSON)
-      this.artefactInfo.art["artefact_type"] = this.temp[0]["artefact_type"];
-      this.artefactInfo.art["artefact_owner"] = this.temp[0]["artefact_owner"];
-      this.artefactInfo.art["artefact_name"] = this.temp[0]["artefact_name"];
-      this.artefactInfo.art["description"] = this.temp[0]["description"];
-      this.artefactInfo.art["status"] = this.temp[0]["status"];
-      this.artefactInfo.art["create_date"] = this.temp[0]["create_date"];
-      this.artefactInfo.art["update_date"] = this.temp[0]["update_date"];
-      this.artefactInfo.art["location_url"] = this.temp[0]["location_url"];
-      this.artefactInfo.art["template_url"] = this.temp[0]["template_url"];
-      this.artefactInfo.art["project_id"] = this.temp[0]["project_id"];
-      this.artefactInfo.art["template"] = this.temp[0]["template"];
-      this.artefactInfo.art["artefact_id"] = this.temp[0]["artefact_id"];
-      this.templateFlag = false
       });
-    }
+      if(params['id'] != 'id'){
+        this.artefactId = params['id']
+        this.http.get('http://82.69.10.205:5002/getArtefact/' + this.artefactId).subscribe((response)=>{
+        this.temp = response as JSON
+        console.log(response as JSON)
+        this.artefactInfo.art["artefact_type"] = this.temp[0]["artefact_type"];
+        this.artefactInfo.art["artefact_owner"] = this.temp[0]["artefact_owner"];
+        this.artefactInfo.art["artefact_name"] = this.temp[0]["artefact_name"];
+        this.artefactInfo.art["description"] = this.temp[0]["description"];
+        this.artefactInfo.art["status"] = this.temp[0]["status"];
+        this.artefactInfo.art["create_date"] = this.temp[0]["create_date"];
+        this.artefactInfo.art["update_date"] = this.temp[0]["update_date"];
+        this.artefactInfo.art["location_url"] = this.temp[0]["location_url"];
+        this.artefactInfo.art["template_url"] = this.temp[0]["template_url"];
+        this.artefactInfo.art["project_id"] = this.temp[0]["project_id"];
+        this.artefactInfo.art["template"] = this.temp[0]["template"];
+        this.artefactInfo.art["artefact_id"] = this.temp[0]["artefact_id"];
+        // this.templateFlag = false
+        });
+      }
 
-    this.http.get('http://82.69.10.205:5002/getUser/' + this.userId).subscribe((response)=>{
-      this.temp = response as JSON
-      this.type = this.temp[0]["company_role"]
+      this.http.get('http://82.69.10.205:5002/getUser/' + this.userId).subscribe((response)=>{
+        this.temp = response as JSON
+        this.type = this.temp[0]["company_role"]
+      });
     });
-  });
   if (!localStorage.getItem('foo')) {
     localStorage.setItem('foo', 'no reload')
     location.reload()
@@ -121,6 +128,8 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   }
 
   createUpdate(validty: boolean | null){
+    console.log(this.templateFlag)
+    console.log(this.isChecked)
     this.isDirty = false;
     if(validty && this.artefactInfo.art.artefact_name.match(this.regex)){
       console.log(this.artefactInfo.art)
@@ -130,26 +139,58 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
         this.date=new Date().toLocaleDateString();;
         this.artefactInfo.art.create_date = this.date;
         this.artefactInfo.art.update_date = this.date;
-        this.artefactInfo.art.location_url = this.artTypes[this.typeArtefact]['location_url']
-        if(this.templateFlag){
-          this.artefactInfo.art.template_url = this.artTypes[this.typeArtefact]['template_url']
-        }
-        else{
-          this.artefactInfo.art.template_url = 'File uploaded, template ignored'
-        }
       }
       else{
         this.date=new Date().toLocaleDateString();;
         this.artefactInfo.art.update_date = this.date;
       }
+      if(this.templateFlag){
+        if(!this.isChecked){
+          this.artefactInfo.art.template_url = this.artTypes[this.typeArtefact]['template_url']
+          this.artefactInfo.art.location_url = this.artTypes[this.typeArtefact]['location_url']
+        }
+        else{
+
+          this.artefactInfo.art.template_url = this.defaultTemplateLocation
+          this.artefactInfo.art.location_url = this.defaultArtefactLocation
+
+        }
+      }
+      else{
+        this.artefactInfo.art.template_url = 'File uploaded, template ignored'
+        if(!this.isChecked){
+          this.artefactInfo.art.location_url = this.artTypes[this.typeArtefact]['location_url']
+        }
+        else{
+          this.artefactInfo.art.location_url = this.defaultArtefactLocation
+        }
+      }
+      // this.artefactInfo.art.template_url = this.artefactInfo.art.template_url + '-' +this.files[0].relativePath
       let date1 = formatDate(this.artefactInfo.art.create_date,'MM-dd-yyy','en_US');
       let date2 = formatDate(this.artefactInfo.art.update_date,'MM-dd-yyy','en_US');
       if(true){
+         
+          // You could upload it like this:
+          const formData = new FormData()
+          if(this.myfile){
+            formData.append('file', this.myfile)
+          }
+          else{
+            formData.append('file', 'no file')
+          }
+          formData.append('artInfo', JSON.stringify(this.artefactInfo.art))
+          
         this.artefactInfo.art["project_id"] = this.projId
-        this.http.post('http://82.69.10.205:5002/artefact/' + this.containerId, this.artefactInfo.art).subscribe((response)=>{
+        this.http.post('http://82.69.10.205:5002/artefact/' + this.containerId, formData).subscribe((response)=>{
+          this.temp = response as JSON
+          if(this.temp['message'] == 'success'){
+            this.router.navigate(['/app-project-content', this.projId, this.userId, "id"]);
+          }
+          else{
+            this.notifierService.notify('error', this.temp['message']);
+          }
           // this.projId = (response as any)['message'];
           // this.router.navigate(['/app-project-details', this.projId, this.userId]);
-          this.router.navigate(['/app-project-content', this.projId, this.userId, "id"]);
           // this.notifierService.notify('success', 'project details updated');
     
       //     this.http.get('http://82.69.10.205:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
@@ -233,7 +274,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file((file: File) => {
-
+          this.myfile = file
           this.artefactInfo.art.template_url = 'File uploaded, template ignored'
           this.templateFlag = false
           // Here you can access the real file
@@ -273,7 +314,10 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
     console.log('file leave')
     console.log(event);
   }
-
+  getDrfaultUrls(){
+    this.isChecked = !this.isChecked
+    console.log(this.isChecked)
+  }
 
 
 }

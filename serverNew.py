@@ -345,7 +345,24 @@ def project():
 
 @app.route('/artefact/<contId>', methods=['GET', 'POST'])
 def artefact(contId):
-  artefact = request.json
+  artefact = request.form['artInfo']
+  artefact = json.loads(artefact)
+  if(request.files):
+    file = request.files['file']
+  else:
+    file = []
+  if file:
+    try:
+      filename = file.filename
+      # shutil.copy(file.stream, artefact['location_url'] + artefact['artefact_name'] + '.' + filename.split('.')[-1])
+      # shutil.copy(file.stream, artefact['location_url'].split('artefacts')[0] + '/templates/' + filename)
+      # file.save(os.path.join(artefact['location_url'], artefact['artefact_name'] + '.' + filename.split('.')[-1]))
+      file.save(os.path.join(artefact['location_url'].split('artefacts')[0] + '/templates/', filename))
+      shutil.copyfile(artefact['location_url'].split('artefacts')[0] + '/templates/' + filename, artefact['location_url'] + artefact['artefact_name'] + '.' + filename.split('.')[-1])
+      # request.files['file'].save(os.path.join(artefact['location_url'], artefact['artefact_name'] + '.' + filename.split('.')[-1] ) )
+    except:
+      message = {"message": 'urls not correct'}
+      return jsonify(message)
   print(artefact)
   artId = artefact['artefact_id']
   del artefact['artefact_id']
@@ -372,7 +389,8 @@ def artefact(contId):
       mycursor.execute(sql, value)
       mydb.commit()
     # os.mkdir("/home/musab/RapidPMV2/artefacts/" + str(project['company_id']) + '/' + artefact['project_id'] + '/' + str(artefactId["message"]))
-    return jsonify(artefactId)
+    message = {"message": 'success'}
+    return jsonify(message)
   else:
     sql = "UPDATE artefact SET artefact_type = '" + str(artefact[
       'artefact_type']) + "', artefact_owner = '" + str(artefact['artefact_owner']) + "', artefact_name = '" + str(artefact['artefact_name']) + "', description = '" + \
@@ -381,8 +399,8 @@ def artefact(contId):
     # sql = "UPDATE user SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE user_id = '" + str(custmId) + "';"
     mycursor.execute(sql)
     mydb.commit()
-    customerId = {"message": str(artId)}
-    return jsonify(customerId)
+    message = {"message": 'success'}
+    return jsonify(message)
 
 @app.route('/addHeirarchy/<heirName>', methods=['GET', 'POST'])
 def addHeirarchy(heirName):

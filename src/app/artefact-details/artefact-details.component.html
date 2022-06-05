@@ -146,21 +146,27 @@
 				</select>
 			</div><br>
             <div class="form-group">
-				<label class="inline-label" for="location_url">Artefact URL: {{artTypes[typeArtefact].location_url}}</label>
+				<label class="inline-label" for="location_url">Artefact URL: {{artefactInfo.art.location_url}}</label>
 				<!-- <input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.location_url" type="location_url" class="form-control" name="location_url" placeholder="{{artefactInfo.art.location_url}}"> -->
 			</div><br><br>
             <div class="form-group">
-				<ng-container *ngIf="templateFlag == true">
+				<label class="inline-label" for="template_url">Template URL: {{artefactInfo.art.template_url}}</label>
+
+				<!-- <ng-container *ngIf="templateFlag == true">
 					<label class="inline-label" for="template_url">Template URL: {{artTypes[typeArtefact].template_url}}</label>
 				</ng-container>
 				<ng-container *ngIf="templateFlag == false">
 					<label class="inline-label" for="template_url">Template URL: {{artefactInfo.art.template_url}}</label>
-				</ng-container>
+				</ng-container> -->
 				<!-- <input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="artefactInfo.art.template_url" type="template_url" class="form-control" name="template_url" placeholder="{{artefactInfo.art.template_url}}">
 				<ng-container *ngIf="artefactInfo.art.location_url === artefactInfo.art.template_url">
 					<p style="color:brown;">Artefact URL and Template URL are same</p>
 				</ng-container> -->
 			</div><br><br>
+
+			<mat-checkbox color="primary" (change)="getDrfaultUrls()">
+				Default URLs
+			</mat-checkbox><br><br>
 			<div>
 				<ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" 
 				(onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
