@@ -16,6 +16,7 @@ import socket
 import glob
 import os.path
 import shutil
+from pathlib import Path
 
 app = Flask(__name__)
 # api = Api(app)
@@ -354,12 +355,11 @@ def artefact(contId):
   if file:
     try:
       filename = file.filename
-      # shutil.copy(file.stream, artefact['location_url'] + artefact['artefact_name'] + '.' + filename.split('.')[-1])
-      # shutil.copy(file.stream, artefact['location_url'].split('artefacts')[0] + '/templates/' + filename)
-      # file.save(os.path.join(artefact['location_url'], artefact['artefact_name'] + '.' + filename.split('.')[-1]))
+      Path(artefact['location_url'].split('artefacts')[0] + '/templates').mkdir(parents=True, exist_ok=True)
+      Path(artefact['location_url']).mkdir(parents=True, exist_ok=True)
+
       file.save(os.path.join(artefact['location_url'].split('artefacts')[0] + '/templates/', filename))
       shutil.copyfile(artefact['location_url'].split('artefacts')[0] + '/templates/' + filename, artefact['location_url'] + artefact['artefact_name'] + '.' + filename.split('.')[-1])
-      # request.files['file'].save(os.path.join(artefact['location_url'], artefact['artefact_name'] + '.' + filename.split('.')[-1] ) )
     except:
       message = {"message": 'urls not correct'}
       return jsonify(message)
@@ -396,7 +396,6 @@ def artefact(contId):
       'artefact_type']) + "', artefact_owner = '" + str(artefact['artefact_owner']) + "', artefact_name = '" + str(artefact['artefact_name']) + "', description = '" + \
           str(artefact['description']) + "', status = '" + str(artefact['status']) + "',create_date = '" + str(artefact[
             'create_date']) + "',update_date = '" + str(artefact['update_date']) + "',location_url = '" + str(artefact['location_url']) + "',template_url = '" + str(artefact['template_url']) + "',project_id = '" + str(artefact['project_id']) + "',template = '" + str(artefact['template']) + "' WHERE artefact_id = '" + str(artId) + "';"
-    # sql = "UPDATE user SET (" + ", ".join(key) + ") VALUES (%s, %s, %s, %s, %s, %s, %s) WHERE user_id = '" + str(custmId) + "';"
     mycursor.execute(sql)
     mydb.commit()
     message = {"message": 'success'}

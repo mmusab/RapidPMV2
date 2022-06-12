@@ -51,6 +51,8 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   status = ['Proposed', 'In progress', 'Awaiting signoff', 'Complete']
   regex  = /^([a-zA-Z0-9\s\._-]+)$/
   myfile: any;
+  artefactLocation = ["RPM database", "User defined default locations"]
+  locationType = "RPM database"
 
   ngOnInit(){
     let token = localStorage.getItem('token');
@@ -145,7 +147,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
         this.artefactInfo.art.update_date = this.date;
       }
       if(this.templateFlag){
-        if(!this.isChecked){
+        if(this.locationType == "User defined default locations"){
           this.artefactInfo.art.template_url = this.artTypes[this.typeArtefact]['template_url']
           this.artefactInfo.art.location_url = this.artTypes[this.typeArtefact]['location_url']
         }
@@ -158,7 +160,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       }
       else{
         this.artefactInfo.art.template_url = 'File uploaded, template ignored'
-        if(!this.isChecked){
+        if(this.locationType == "User defined default locations"){
           this.artefactInfo.art.location_url = this.artTypes[this.typeArtefact]['location_url']
         }
         else{
@@ -317,6 +319,11 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   getDrfaultUrls(){
     this.isChecked = !this.isChecked
     console.log(this.isChecked)
+  }
+
+  selectTemplate(){
+    console.log("in select template")
+    this.router.navigate(['/app-artefact-template-selection', this.projId]);
   }
 
 

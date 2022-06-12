@@ -44,6 +44,7 @@ import { LogoutService } from './logout.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ArtefactTypeDefaultComponent } from './artefact-type-default/artefact-type-default.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
+import { ArtefactTemplateSelectionComponent } from './artefact-template-selection/artefact-template-selection.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { NgxFileDropModule } from 'ngx-file-drop';
     ProjectContentComponent,
     ArtefactDetailsComponent,
     LandingPageComponent,
-    ArtefactTypeDefaultComponent
+    ArtefactTypeDefaultComponent,
+    ArtefactTemplateSelectionComponent
   ],
   imports: [
     BrowserModule,
