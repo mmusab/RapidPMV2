@@ -170,7 +170,7 @@
 				</mat-checkbox><br><br> -->
 				<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 					<label class="inline-label" for="artefact_location">Artefact location</label>
-					<select style="font-size: 10px; margin-left: 2%;" [(ngModel)]="locationType" type="artefact_location" class="form-control" name="artefact_location">
+					<select style="font-size: 10px; margin-left: 2%;" [(ngModel)]="locationType" type="artefact_location" class="form-control" name="artefact_location" [value] = "locationType">
 						<!-- <option selected>{{projectInfo.proj.owner}}</option> -->
 						<ng-container *ngFor="let location of artefactLocation;">
 							<option [value]="location">{{location}}</option>

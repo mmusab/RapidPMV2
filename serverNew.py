@@ -146,7 +146,7 @@ def openArtefact(artId, location_type):
           combinedData['location_type'] = location_type
           return jsonify({"message": serverTest.server(str(combinedData), users["connection"])})
         else:
-          return jsonify({"message": "make sure location urls are correct"})
+          return jsonify({"message": "file not found"})
       combinedData['downloadType'] = 'artefact'
       combinedData = json.dumps(combinedData)
       combinedData = json.loads(combinedData)
@@ -479,7 +479,7 @@ def artefact(contId):
       return jsonify(message)
     return True
   else:
-    return jsonify({"message": 'something went wrong'})
+    return jsonify({"message": 'something went wrong make sure client is running'})
 
 
 @app.route('/addHeirarchy/<heirName>', methods=['GET', 'POST'])
