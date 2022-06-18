@@ -32,7 +32,7 @@ export class CompanyListScreenComponent implements OnInit {
       this.userEmail = this.usr['email']
       this.userPassword = this.usr['password']
       this.companyId = this.usr['compId']
-      this.http.get('http://82.69.10.205:5002/getCompanies').subscribe((response)=>{
+      this.http.get('http://192.168.18.81:5002/getCompanies').subscribe((response)=>{
         console.log("got companies")
         this.companies = response as JSON
         this.companyHead = Object.keys(this.companies[0]);
@@ -48,7 +48,7 @@ export class CompanyListScreenComponent implements OnInit {
   //   this.sub = this.route.params.subscribe(params => {
   //     this.companyId = params['id'];
   //  });
-    // this.http.get('http://82.69.10.205:5002/getUser/' + this.userId).subscribe((response)=>{
+    // this.http.get('http://192.168.18.81:5002/getUser/' + this.userId).subscribe((response)=>{
     //   this.user = response as JSON
     // });
   }
@@ -72,7 +72,7 @@ export class CompanyListScreenComponent implements OnInit {
   delete(index: string | number){
     if(this.companies[index]['company_id']){
       console.log("in delete company")
-      this.http.get('http://82.69.10.205:5002/deleteCompany/' + this.companies[index]['company_id']).subscribe((response)=>{
+      this.http.get('http://192.168.18.81:5002/deleteCompany/' + this.companies[index]['company_id']).subscribe((response)=>{
         console.log(response)
         this.temp = response as JSON;
         console.log(this.temp['message'])
