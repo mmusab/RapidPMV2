@@ -70,7 +70,7 @@ export class LoginScreenComponent{
     }
     if(this.auth.currentUser.authorized == "True"){
       console.log("is authorized")
-      // this.httpClient.get('http://192.168.1.15:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
+      // this.httpClient.get('http://82.69.10.205:5002/login/' + this.userEmail + '/' + this.userPassword).toPromise().then(message => {
       //   console.log(message as JSON)
       //   this.errorMessage = (message as any)['message'];
       //   console.log(this.errorMessage);
@@ -106,8 +106,8 @@ export class LoginScreenComponent{
   onregister(){
     // this.resetErrors();
     var url = "";
-    if(this.userEmail){url = 'http://192.168.1.15:5002/login/' + this.userEmail + '/none'}
-    else{url = 'http://192.168.1.15:5002/login/none/none'}
+    if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
+    else{url = 'http://82.69.10.205:5002/login/none/none'}
     this.httpClient.get(url).toPromise().then(message => {
       console.log(message as JSON)
       this.errorMessage = (message as any)['message'];
@@ -127,8 +127,8 @@ export class LoginScreenComponent{
     else{
       this.forgotPasswordError = ""
       var url = "";
-      if(this.userEmail){url = 'http://192.168.1.15:5002/login/' + this.userEmail + '/none'}
-      else{url = 'http://192.168.1.15:5002/login/none/none'}
+      if(this.userEmail){url = 'http://82.69.10.205:5002/login/' + this.userEmail + '/none'}
+      else{url = 'http://82.69.10.205:5002/login/none/none'}
       this.httpClient.get(url).toPromise().then(message => {
         console.log(message as JSON)
         this.errorMessage = (message as any)['message'];

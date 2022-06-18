@@ -27,7 +27,7 @@ export class AuthServiceService {
 
 async login(credentials:any) {
   let token = localStorage.getItem('token');
-  const message = await this.httpClient.get('http://192.168.1.15:5002/login/' + credentials['userEmail'] + '/' + credentials['userPassword']).toPromise()
+  const message = await this.httpClient.get('http://82.69.10.205:5002/login/' + credentials['userEmail'] + '/' + credentials['userPassword']).toPromise()
   console.log(message);
   this.currentUser['authorized'] = (message as any)['authorized'];
   this.currentUser['message'] = (message as any)['message'][0];
