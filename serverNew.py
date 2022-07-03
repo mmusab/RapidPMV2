@@ -421,7 +421,7 @@ def artefact(contId):
 
       file.save(os.path.join(artefact['location_url'].split('artefacts')[0] + '/templates/', filename))
       shutil.copyfile(artefact['location_url'].split('artefacts')[0] + '/templates/' + filename,
-                      artefact['location_url'] + artefact['artefact_name'] + '.' + filename.split('.')[-1])
+                      artefact['location_url'] + artefact['artefact_name'].split('.')[0] + '.' + filename.split('.')[-1])
     except:
       message = {"message": 'urls not correct'}
       return jsonify(message)
