@@ -79,10 +79,11 @@ body { margin: 0; font-size: 12px;}
 
 .inline-label { 
   white-space: nowrap;
-  max-width: 150px;
+  width: 150px;
   /* overflow: hidden; */
   text-overflow: ellipsis;
-  float:left;  
+  float:left; 
+  text-align: left; 
   }
   .divider{
     width:5px;
