@@ -74,18 +74,18 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       this.projId = params['projId']
       this.userId = params['userId']
       this.requestTypes();
-      this.http.get('http://127.0.0.1:5002/getProject/' + this.projId).subscribe((response)=>{
+      this.http.get('http://82.69.10.205:5002/getProject/' + this.projId).subscribe((response)=>{
         this.temp = response as JSON;
         console.log(this.temp)
         this.companyId = this.temp[0]["company_id"];
         this.ProjectName = this.temp[0]["project_name"];
-        this.http.get('http://127.0.0.1:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
               this.admins = response as JSON;
               console.log(this.admins)
               // this.adminId = this.temp[0]["customer_id"];
               // this.router.navigate(['/app-project-list', this.adminId, "Admin"]);
           });
-        this.http.get('http://127.0.0.1:5002/getCompany/' + this.companyId).subscribe((response)=>{
+        this.http.get('http://82.69.10.205:5002/getCompany/' + this.companyId).subscribe((response)=>{
             this.temp = response as JSON;
             this.companyName = this.temp[0]["company_name"];
             this.companyId = this.temp[0]["company_id"];
@@ -95,7 +95,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
       });
       if(params['id'] != 'id'){
         this.artefactId = params['id']
-        this.http.get('http://127.0.0.1:5002/getArtefact/' + this.artefactId).subscribe((response)=>{
+        this.http.get('http://82.69.10.205:5002/getArtefact/' + this.artefactId).subscribe((response)=>{
         this.temp = response as JSON
         console.log(response as JSON)
         this.artefactInfo.art["artefact_type"] = this.temp[0]["artefact_type"];
@@ -124,7 +124,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
         this.artefactInfo.art["project_id"] = this.projId
       }
 
-      this.http.get('http://127.0.0.1:5002/getUser/' + this.userId).subscribe((response)=>{
+      this.http.get('http://82.69.10.205:5002/getUser/' + this.userId).subscribe((response)=>{
         this.temp = response as JSON
         this.type = this.temp[0]["company_role"]
       });
@@ -199,7 +199,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
           
         // this.artefactInfo.art["project_id"] = this.projId
         formData.append('location_type', this.locationType)
-        this.http.post('http://127.0.0.1:5002/artefact/' + this.containerId, formData).subscribe((response)=>{
+        this.http.post('http://82.69.10.205:5002/artefact/' + this.containerId, formData).subscribe((response)=>{
           this.temp = response as JSON
           if(this.temp['message'] == 'success'){
             this.router.navigate(['/app-project-content', this.projId, this.userId, "id"]);
@@ -211,7 +211,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
           // this.router.navigate(['/app-project-details', this.projId, this.userId]);
           // this.notifierService.notify('success', 'project details updated');
     
-      //     this.http.get('http://127.0.0.1:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
+      //     this.http.get('http://82.69.10.205:5002/getUser/' + this.projectInfo.proj["customer_id"]).subscribe((response)=>{
       //     this.temp = response as JSON
       //     console.log(this.temp[0]["company_id"])
       //     console.log(this.temp[0]["company_role"])
@@ -256,7 +256,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   }
 
   goToProjects(){
-    this.http.get('http://127.0.0.1:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+    this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
       this.temp = response as JSON;
       let adminId = this.temp[0]["user_id"];
       this.router.navigate(['/app-project-list', adminId, "Admin"]);
@@ -273,7 +273,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   // }
 
   requestTypes(){
-    this.http.get('http://127.0.0.1:5002/getArtefactDefaults/' + this.projId).subscribe((response)=>{
+    this.http.get('http://82.69.10.205:5002/getArtefactDefaults/' + this.projId).subscribe((response)=>{
       this.artTypes = response as JSON
       // this.artefactInfo.art.template_url = this.artTypes[0]['template_url']
       console.log(this.artTypes)

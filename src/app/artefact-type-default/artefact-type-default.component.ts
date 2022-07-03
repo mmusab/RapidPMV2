@@ -52,7 +52,7 @@ export class ArtefactTypeDefaultComponent{
     this.sub = this.route.params.subscribe(params => {
       this.projectId = params['id'];
    });
-  //  this.http.get('http://127.0.0.1:5002/getArtefactDefault/' + this.projectId).subscribe((response)=>{
+  //  this.http.get('http://82.69.10.205:5002/getArtefactDefault/' + this.projectId).subscribe((response)=>{
   //     this.typeDefaults = response as JSON
   //     this.companyName = this.company[0]["company_name"]
   //     console.log(this.companyName)
@@ -76,7 +76,7 @@ export class ArtefactTypeDefaultComponent{
     // this.users[index]["company_id"] = this.signupCompId;
     this.typeDefaults[index]["project_id"] = this.projectId;
     console.log(this.typeDefaults[index])
-    this.http.post('http://127.0.0.1:5002/type', this.typeDefaults[index]).subscribe((response)=>{
+    this.http.post('http://82.69.10.205:5002/type', this.typeDefaults[index]).subscribe((response)=>{
       console.log(response)
       this.typeId = (response as any)['message'];
       this.notifierService.notify('success', 'Type has been created/updated');
@@ -88,7 +88,7 @@ export class ArtefactTypeDefaultComponent{
   // }
 
   requestTypes(){
-    this.http.get('http://127.0.0.1:5002/getArtefactDefaults/' + this.projectId).subscribe((response)=>{
+    this.http.get('http://82.69.10.205:5002/getArtefactDefaults/' + this.projectId).subscribe((response)=>{
       this.typeDefaults = response as JSON
       this.typeHead = Object.keys(this.artDefault);
       // if (!this.typeHead){
@@ -103,7 +103,7 @@ export class ArtefactTypeDefaultComponent{
   deleteRow(index: string | number){
     console.log(this.typeDefaults[index])
     if(this.typeDefaults[index]['type_id']){
-      this.http.get('http://127.0.0.1:5002/deleteType/' + this.typeDefaults[index]['type_id']).subscribe((response)=>{
+      this.http.get('http://82.69.10.205:5002/deleteType/' + this.typeDefaults[index]['type_id']).subscribe((response)=>{
         console.log(response)
         location.reload();
     });
@@ -132,7 +132,7 @@ export class ArtefactTypeDefaultComponent{
     }
 
     // goToProjects(){
-    //   this.http.get('http://127.0.0.1:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
+    //   this.http.get('http://82.69.10.205:5002/getAdmin/' + this.signupCompId).subscribe((response)=>{
     //     this.temp = response as JSON;
     //     this.adminId = this.temp[0]["user_id"];
     //     this.router.navigate(['/app-project-list', this.adminId, "Admin"]);
@@ -147,7 +147,7 @@ export class ArtefactTypeDefaultComponent{
       for (var index in this.typeDefaults) {
         this.typeDefaults[index]["project_id"] = this.projectId;
       }
-      this.http.post('http://127.0.0.1:5002/typeBulkAdd', this.typeDefaults).subscribe((response)=>{
+      this.http.post('http://82.69.10.205:5002/typeBulkAdd', this.typeDefaults).subscribe((response)=>{
       console.log(response)
       // this.typeId = (response as any)['message'];
       this.notifierService.notify('success', 'Type has been created/updated');
