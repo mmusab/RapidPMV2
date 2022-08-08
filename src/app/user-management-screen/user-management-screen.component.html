@@ -69,16 +69,17 @@
   <button mat-button (click)="goToProjects()" style="margin-left: 4.18%;font-size: 12px; color: #292E35; opacity: 60%;">Projects</button>
   <button mat-button style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 100%;">Users</button>
   <!-- <button mat-button (click)="administration()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
-  <button mat-flat-button (click)=logout.logout() style="margin-left: 30%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
+  <button mat-flat-button (click)=logout.logout() style="margin-left: 40%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
   <!-- <div style="display: flex; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #292E35; font-weight: bolder;"><p><b>{{companyName}}</b></p><button style="position: absolute; margin-left: 57%;"><img style="width: 60%;height: 60%;" src="/assets/Assets/AddNew.svg"></button></div> -->
   <div class="row" style="margin-left: 15%; margin-right: 15%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;">
     <div class="col-md-6">
       <b>{{companyName}}</b>
     </div>
     <div class="col-md-6">  
-      <button mat-button (click)="add()" style="float:right">
-        <img style="width: 67%;float: right;margin-top: 4px;" src="/assets/Assets/AddNew.svg">
-      </button>
+      <button mat-button (click)="add()" style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+        Add New
+        <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
+      </button><br>
     </div>
   </div>  
   <div style="margin-left: 15%; margin-right: 15%; margin-top: 1%;">

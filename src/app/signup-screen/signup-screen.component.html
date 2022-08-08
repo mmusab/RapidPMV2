@@ -72,15 +72,30 @@
     <button mat-button (click)="goToUsers()" style="margin-left: 4.18%; margin-top: 2%; font-size: 12px; color: #292E35;opacity: 60%;">Users</button>
 	<!-- <button mat-button style="margin-left: 4.18%; margin-top: 6.12%; font-size: 12px; color: #292E35;opacity: 60%;">Administration</button> -->
 	<button mat-flat-button (click)=logout.logout() style="margin-left: 45%; margin-top: 2%; font-size: 12px; color: #292E35; border-color: #6957E1; color: #6957E1;">Log Out   <img style="width: 25%;height: 25%;" src="/assets/Assets/LogOut.svg"></button>
-	<div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-weight: bolder;"><b>Company Account Management</b></div>
+	<!-- <div style="white-space: pre-wrap; margin-top: 1.25%; margin-left: 15%; font-size: 30px; color: #727272; font-weight: bolder;"><b>Company Account Management</b></div> -->
 	<form #f="ngForm" (ngSubmit)="onSignup(otpModel)">
-		<div class="split left" style="margin-left: 20%; margin-right: 20%;margin-top: 13%;font-size: 12px;">
+		<div class="row" style="margin-left: 15%; margin-right: 0%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;">
+			<div class="col-md-5">
+				<b>Company Administrator Account</b>
+			  </div>
+			  <div class="col-md-5">  
+				<button type="submit" mat-button style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+				  Create/Update
+				  <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
+				</button><br>
+				<button mat-button (click)=back() style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+				  Cancel
+				  <!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
+				</button>
+			  </div>
+		</div>
+		<div style="margin-left: 30%; margin-right: 30%;margin-top: 3%;font-size: 12px;">
 			<h4 style="color: #14ABDD; font-weight: bold;">Company Administrator Account</h4>
-			<div class="form-group">
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="name">Name</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="customerInfo.cust.name" type="name" class="form-control" name="name" placeholder="{{customerInfo.cust.name}}">
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="email">Email</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel #Email="ngModel" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" [(ngModel)]="customerInfo.cust.email" type="email" class="form-control" name="email" placeholder="{{customerInfo.cust.email}}">
 				<div *ngIf="Email.errors && Email.touched" class ="alert alert-danger">
@@ -88,12 +103,12 @@
 					Invalid pattern
 					</div> 
 				</div> 
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="comapny_role">Company Role</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" readonly ngModel [(ngModel)]="customerInfo.cust.company_role" type="comapny_role" class="form-control" name="comapny_role" value="Admin" placeholder="Admin">
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="status">Status</label>
 				<select style="font-size: 10px;" [(ngModel)]="customerInfo.cust.status" type="status" name="status" class="form-control">
 					<option hidden selected>{{customerInfo.cust.status}}</option>
@@ -101,34 +116,33 @@
 					<option value="Inactive">Inactive</option>
 					<option value="Pending">Pending</option> -->
 				</select>
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="password">Password</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="customerInfo.cust.password" type="password" class="form-control" name="password" placeholder="{{customerInfo.cust.password}}">
-			</div>
-		</div>
-		<div class="split right" style="margin-left: 20%; margin-right: 20%;margin-top: 13%;font-size: 12px;">
+			</div><br><br>
+	
 			<h4 style="color: #6F6FFF; font-weight: bold;">Company Information</h4>
-			<div class="form-group">
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label"  for="company_name">Company Name</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="companyInfo.comp.company_name" type="company_name" class="form-control" name="company_name" placeholder="{{companyInfo.comp.company_name}}">
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label"  for="contact_name">Contact Name</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="companyInfo.comp.contact_name" type="contact_name" class="form-control" name="contact_name" placeholder="{{companyInfo.comp.contact_name}}">
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="address_line1">Address Line 1</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="companyInfo.comp.address_line1" type="address_line1" class="form-control" name="address_line1" placeholder="{{companyInfo.comp.address_line1}}">
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="address_line2">Address Line 2</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="companyInfo.comp.address_line2" type="address_line2" class="form-control" name="address_line2" placeholder="{{companyInfo.comp.address_line2}}">
-			</div>
-			<div class="form-group">
+			</div><br>
+			<div class="form-group" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
 				<label class="inline-label" for="address_line3">Address Line 3</label>
 				<input (change)="isDirty=true" style="font-size: 10px;" required ngModel [(ngModel)]="companyInfo.comp.address_line3" type="address_line3" class="form-control" name="address_line3" placeholder="{{companyInfo.comp.address_line3}}">
-			</div>
+			</div><br>
 			<!-- <div class="form-group">
 				<label class="inline-label" for="city">City</label>
 				<input required ngModel [(ngModel)]="companyInfo.comp.city" type="city" class="form-control" name="city" placeholder="{{companyInfo.comp.city}}">
@@ -142,10 +156,10 @@
 				<input required ngModel [(ngModel)]="companyInfo.comp.postal_code" type="postalCode" class="form-control" name="postalCode" placeholder="{{companyInfo.comp.postal_code}}" >
 			</div> -->
 		</div>
-		<div class="form-group">
+		<!-- <div class="form-group">
 			<button type="submit"><img style="position: absolute; margin-left: 45%; margin-top: 22%; width: 10%;height: 10%;" class="button" src="/assets/Assets/CreateUpdate.svg"></button>
 		</div>
-		<button mat-button style="position: absolute; margin-left: 47%; margin-top: 28%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button>
+		<button mat-button style="position: absolute; margin-left: 47%; margin-top: 28%; font-size: 12px; color: #292E35;opacity: 100%;" (click)=back() type="button">Cancel</button> -->
 		<!-- <button mat-button (click) = back() style="margin-left: 50%; font-size: 12px; color: #292E35;opacity: 100%;">Cancel</button> -->
 	</form>
 </body>

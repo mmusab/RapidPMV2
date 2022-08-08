@@ -143,10 +143,10 @@ def openArtefact(artId, location_type):
                       os.path.join(combinedData['location_url'], combinedData['artefact_name'] + '.docx'))
       except:
         if (location_type == 'User defined default locations'):
-          combinedData['location_type'] = location_type
+          combinedData['location_type'] = artId
           return jsonify({"message": serverTest.server(str(combinedData), users["connection"])})
-        else:
-          return jsonify({"message": "file not found"})
+        # else:
+        #   return jsonify({"message": "file not found"})
       combinedData['downloadType'] = 'artefact'
       combinedData = json.dumps(combinedData)
       combinedData = json.loads(combinedData)
@@ -164,11 +164,14 @@ def openArtefact(artId, location_type):
 @app.route('/download/<loc>/<name>', methods=['GET', 'POST'])
 def download(loc, name):
   print("inside download endpoint")
-  path = loc.replace("\\", "/") + name + ".docx"
+  path = loc.replace("\\", "/") + name
   # if(name == "template"):
   #   path = loc.split("-")[1].replace("\\","/")
   # path = "C:\\RapidPM\\RapidPM\\a10-exception-report-v101.docx"
+  # try:
   return send_file(path, as_attachment=True)
+  # except:
+  #   return 'not a server file'
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -416,21 +419,22 @@ def artefact(contId):
   if file:
     try:
       filename = file.filename
-      Path(artefact['location_url'].split('artefacts')[0] + '/templates').mkdir(parents=True, exist_ok=True)
+      Path(artefact['location_url'].split('artefacts')[0] + 'templates').mkdir(parents=True, exist_ok=True)
       Path(artefact['location_url']).mkdir(parents=True, exist_ok=True)
 
-      file.save(os.path.join(artefact['location_url'].split('artefacts')[0] + '/templates/', filename))
-      shutil.copyfile(artefact['location_url'].split('artefacts')[0] + '/templates/' + filename,
+      file.save(os.path.join(artefact['location_url'].split('artefacts')[0] + 'templates/', filename))
+      shutil.copyfile(artefact['location_url'].split('artefacts')[0] + 'templates/' + filename,
                       artefact['location_url'] + artefact['artefact_name'].split('.')[0] + '.' + filename.split('.')[-1])
     except:
       message = {"message": 'urls not correct'}
       return jsonify(message)
   else:
     if (location_type == 'User defined default locations'):
-      path_exist = openArtefact(artefact['artefact_id'], location_type)
+      path_exist = openArtefact(artefact['location_url'], location_type)
       path_exist = path_exist.json['message']
       if path_exist == True:
-        return jsonify({"message": 'url exists'})
+        # return jsonify({"message": 'url exists'})
+        path_exist = "default"
       if path_exist == False:
         return jsonify({"message": 'URL do not exists'})
 

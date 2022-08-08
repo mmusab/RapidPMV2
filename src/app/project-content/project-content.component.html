@@ -86,7 +86,7 @@
 </div><br>
 <mat-label class="inline-label" style="color: black; margin-left: 15%; margin-top: 2%;"></mat-label>
 <div>
-<div class="row" style="margin-left: 15%; margin-right: 5%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;">
+<div class="row" style="margin-left: 15%; margin-right: 15%; margin-top: 1%;position: inherit; display: flex; margin-top: 1.25%; font-size: 30px; color: #292E35; font-weight: bolder;">
     <div class="col-md-6" style="font-size: 12px;">
 		<mat-form-field appearance="fill">
 				<mat-select placeholder={{selectedHeirarchy}} [(ngModel)]="selectedHeirarchy" name="heirarchy">
@@ -109,9 +109,10 @@
 		<!-- </div> -->
     </div>
     <div class="col-md-6">  
-      <button mat-button mat-icon-button [matMenuTriggerFor]="menuAdd" style="float:right">
-        <img style="width: 300%;float: right;" src="/assets/Assets/AddNew.svg">
-      </button>
+		<button type="submit" mat-button [matMenuTriggerFor]="menuAdd" style="float:right;text-align: center;font-size: small;background-color: gray;color: white;margin-right: 2%; width: 25%; float: right; margin-top: 4px;">
+			Add New
+			<!-- <img style="margin-right: 10%; width: 67%; float: right; margin-top: 4px;" src="/assets/Assets/AddNew.svg"> -->
+		  </button>
     </div>
   </div>
 <!-- <button style="position: absolute; margin-left: 30%; margin-top: 0%;" mat-icon-button [matMenuTriggerFor]="menuAdd"><img style="width: 200%;height: 200%;" src="/assets/Assets/AddNew.svg"></button> -->
@@ -124,7 +125,7 @@
 	</button>
 </mat-menu>
 </div>
-  <div style="overflow-y:auto; max-height:60%; position: relative; margin-left: 15%; margin-right: 5%; font-size: 12px;">
+  <div style="overflow-y:auto; max-height:60%; position: relative; margin-left: 15%; margin-right: 15%; font-size: 12px;">
 	<p-treeTable [value]="files" [columns]="cols[0]">
 	<ng-template pTemplate="header" let-columns>
 		<tr>
