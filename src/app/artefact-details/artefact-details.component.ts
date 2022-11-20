@@ -52,7 +52,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   regex  = /^([a-zA-Z0-9\s\._-]+)$/
   myfile: any;
   artefactLocation = ["RPM database", "User defined default locations"]
-  locationType = "RPM database"
+  locationType = "User defined default locations"
   uploaded_file_name = ""
   continue = true
 
@@ -79,7 +79,7 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
         console.log(this.temp)
         this.companyId = this.temp[0]["company_id"];
         this.ProjectName = this.temp[0]["project_name"];
-        this.http.get('http://82.69.10.205:5002/getAdmin/' + this.companyId).subscribe((response)=>{
+        this.http.get('http://82.69.10.205:5002/getUsers/' + this.companyId).subscribe((response)=>{
               this.admins = response as JSON;
               console.log(this.admins)
               // this.adminId = this.temp[0]["customer_id"];
@@ -284,13 +284,19 @@ export class ArtefactDetailsComponent implements OnInit, ComponentCanDeactivate{
   public files: NgxFileDropEntry[] = [];
 
   public dropped(files: NgxFileDropEntry[]) {
-    if(confirm('uploaded file will replace the already existing file, do you want to continue?')){
-      this.continue = true
+    if(this.locationType == "RPM database"){
+      if(confirm('uploaded file will replace the already existing file, do you want to continue?')){
+        this.continue = true
+      }
+      else{
+        this.continue = false
+      }
     }
     else{
-      this.continue = false
+      this.continue = true
     }
     if(this.continue){
+      this.locationType = "RPM database"
       console.log('in dropped funtion')
     this.files = files;
     this.artefactInfo.art.template_url = this.artefactInfo.art.template_url + this.files[0].relativePath
